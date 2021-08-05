@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-    before_action :authorized
+    # before_action :authorized
 
     def encode_token(payload)
         JWT.encode(payload, 'yourSecret')
