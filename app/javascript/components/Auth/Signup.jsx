@@ -14,7 +14,7 @@ export default function Signup({history}) {
   const [password, setPassword] = useState("")
   const [passwordConfirmation, setPasswordConfirmation] = useState("")
   const [registrationErrors, setSegistrationErrors] = useState("")
-  const [loggedIn, setLoggedIn] = useState('Not_Logged_In')
+
   
   const handleSignup = (event) => {
     event.preventDefault();
@@ -39,7 +39,7 @@ export default function Signup({history}) {
           type:'Signup',
           payload: response.data.user.username,
         })
-        history.push('/')
+        history.push('/login')
       })
       .catch(error=>{
         console.log("registration error", error)
@@ -53,6 +53,7 @@ export default function Signup({history}) {
       setPassword={setPassword}
       setPasswordConfirmation={setPasswordConfirmation}
       handleSubmit={handleSignup}
+      loading={loading}
     />
   )
 }

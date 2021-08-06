@@ -6,7 +6,7 @@ import Button from "../Button";
 import Signup from "./Signup";
 // import SocialLogin from './SocialLogin'
 
-const LoginForm = ({ handleSubmit, setEmail, setPassword, loading, setLoggedInStatus }) => {
+const LoginForm = ({ handleSubmit, setEmail, setPassword, loading }) => {
   return (
 
     <div
@@ -54,7 +54,7 @@ const LoginForm = ({ handleSubmit, setEmail, setPassword, loading, setLoggedInSt
             placeholder="********"
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Button type="submit" buttonText="Sign In" loading={loading} />
+          <Button type="submit" buttonText="Sign In" loading={loading} disabled={loading} />
         </form>
       </div>
     </div>

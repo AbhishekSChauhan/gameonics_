@@ -59,18 +59,14 @@ const App = () => {
 
   return ( 
     <AuthContext.Provider 
-    value={{state,dispatch}}
+      value={{state,dispatch}}
     >  
       <Router>
         <div>
-          <NavBar  />
+          <NavBar />
           <Switch>
             <Route 
-              exact path="/" 
-              render={props => (
-                <Home {...props} loggedInStatus={state.isLoggedIn} />
-              )} 
-            />
+              exact path="/" component={Home}/>
             <Route exact path="/login"  component={Login} />
             <Route exact path="/signup"  component={Signup} />            
           </Switch>
