@@ -5,9 +5,9 @@ import Input from "../Input";
 import Button from "../Button";
 const SignupForm = ({
   handleSubmit,
+  setUsername,
   setEmail,
   setPassword,
-  loading,
   setPasswordConfirmation,
 }) => {
   
@@ -34,7 +34,14 @@ const SignupForm = ({
           </Link>
         </div>
         <form className="mt-8" onSubmit={handleSubmit}>
-                    
+
+          <Input
+            type="text"
+            label="Name"
+            placeholder="Enter your Name"
+            onChange={(e) => setUsername(e.target.value)}
+          />
+
           <Input
             type="email"
             label="Email"
@@ -53,7 +60,7 @@ const SignupForm = ({
             placeholder="Retype your password"
             onChange={(e) => setPasswordConfirmation(e.target.value)}
           />
-          <Button type="submit" buttonText="Register" loading={loading} />
+          <Button type="submit" buttonText="Register" />
         </form>
       </div>
     </div>

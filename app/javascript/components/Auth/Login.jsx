@@ -4,7 +4,7 @@ import authApi from '../apis/auth'
 import LoginForm from "./LoginForm"
 
 
-export default function Login({history}) {
+export default function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -30,6 +30,7 @@ export default function Login({history}) {
       setPassword={setPassword}
       loading={loading}
       handleSubmit={handleLogin}
+      setLoggedInStatus={setLoggedInStatus}
     />
   )
 }

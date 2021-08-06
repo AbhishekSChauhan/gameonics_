@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 
 import Input from "../Input";
 import Button from "../Button";
+import Signup from "./Signup";
 // import SocialLogin from './SocialLogin'
 
-const LoginForm = ({ handleSubmit, setEmail, setPassword, loading }) => {
+const LoginForm = ({ handleSubmit, setEmail, setPassword, loading, setLoggedInStatus }) => {
   return (
 
     <div
@@ -20,8 +21,10 @@ const LoginForm = ({ handleSubmit, setEmail, setPassword, loading }) => {
           Sign In
         </h2>
         <div className="text-center">
-          <Link
-            to="/signup"
+          <Link to="/signup"
+            render={props=>(
+              <Signup {...props} setLoggedInStatus={setLoggedInStatus} />
+            )}
             className="mt-2 text-sm font-medium text-bb-purple
             transition duration-150 ease-in-out focus:outline-none
             focus:underline"

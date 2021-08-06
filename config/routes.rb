@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
-  resources :blogs
-  resource :users, only: [:create]
-  post "/login", to: "users#login"
-  get "/auto_login", to: "users#auto_login"
-  root "home#index"
+  resources :sessions, only: [:create] 
+  resources :registrations, only: [:create] 
+  delete :logout, to: "sessions#logout" 
+  get :logged_in, to: "sessions#logged_in"
+  root to: "home#index"
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
