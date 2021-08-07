@@ -6,9 +6,11 @@ import Signup from './Auth/Signup'
 import Login from './Auth/Login'
 import PageLoader from './PageLoader'
 import {setAuthHeaders} from './apis/axios'
-
+import axios from 'axios'
 export const AuthContext = React.createContext();
 
+// const [isLoggedIn, setIsLoggedIn] = useState(false)
+// const [user, setUser] = useState(null)
 const initialState = {
   isLoggedIn: false,
   user: null
@@ -43,10 +45,33 @@ const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const [loading, setLoading] = useState(true);
 
+  const checkLoginStatus = () => {
+    axios.get('/logged_in',{withCredentials: true})
+    .then(response => {
+      if(response.data.logged_in && state.isLoggedIn === false){
+        dispatch({
+          type: 'Login',
+          payload: response.data.user.username
+        }) 
+      }
+      else if(!response.data.logged_in && state.isLoggedIn === true ){
+        dispatch({
+          type: 'Logout',
+          payload: null
+        })
+      }
+      console.log("logged in ",response)
+    })
+    .catch(error=>{
+      console.log(error)
+    })
+  }
+
   useEffect(() => {
     // registerIntercepts();
     // initializeLogger();
     setAuthHeaders(setLoading);
+    checkLoginStatus()
   }, []);
 
   if (loading) {

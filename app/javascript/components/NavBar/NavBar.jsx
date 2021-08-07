@@ -5,10 +5,25 @@ import { AiOutlineMenuFold,AiOutlineMenuUnfold } from "react-icons/ai";
 import NavItems from './NavItems';
 import Signup from '../Auth/Signup';
 import {AuthContext} from '../App'
+import axios from 'axios'
 
 function NavBar(props) {
-    const {state} = React.useContext(AuthContext)
-    console.log("UserDetails",state.user)
+    const UserDetails = React.useContext(AuthContext)
+    const {dispatch} = React.useContext(AuthContext)
+
+    const handleLogout=() => {
+        axios.delete('/logout', { withCredentials: true})
+        .then(response =>{
+            dispatch({
+                type:'Logout',
+            })
+        })
+        .catch(error => {
+            console.log('logout error', error);
+        })        
+        console.log("logout clicked", UserDetails)
+    }
+    console.log("UserDetails ",UserDetails.state.user)
     return (
         
         <header className="bg-white">
@@ -29,8 +44,12 @@ function NavBar(props) {
                     </Link>
 
                     <div>
-                        Welcome {state.user}
+                        Welcome {UserDetails.state.user}
                     </div>
+                    <div>
+                        <button onClick={handleLogout}>Logout</button>
+                    </div>
+
                     <Link to="/login"
                         className="absolute inset-y-0 right-0 flex items-center sm:static sm:inset-auto sm:ml-4 sm:pr-0 ">
                         <a className="flex flex-row items-center text-gray-600 transition duration-150 ease-in transform hover:text-gray-800 hover:-translate-y-1 hover:scale-110">
