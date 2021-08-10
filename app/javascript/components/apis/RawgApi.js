@@ -73,7 +73,7 @@ const getCurrentMonth = () => {
   const nextYear = `${currentYear + 1}-${currentMonth}-${currentDay}`;
   
   const baseURL = 'https://api.rawg.io/api/';
-  const key = API_KEY;
+  const key = "914b1fb52d0e46e1a557fbf0a3e5d092";
   
   const popularGames = `games?key=${key}&dates=${lastYear},${currentDate}&ordering=-rating&page_size=12`;
   const upcomingGames = `games?key=${key}&dates=${currentDate},${nextYear}&ordering=-added&page_size=12`;
