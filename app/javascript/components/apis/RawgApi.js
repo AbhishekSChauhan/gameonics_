@@ -73,13 +73,12 @@ const getCurrentMonth = () => {
   const nextYear = `${currentYear + 1}-${currentMonth}-${currentDay}`;
   
   const baseURL = 'https://api.rawg.io/api/';
-  const key = "914b1fb52d0e46e1a557fbf0a3e5d092";
+  const key = API_KEY;
   
   const popularGames = `games?key=${key}&dates=${lastYear},${currentDate}&ordering=-rating&page_size=12`;
   const upcomingGames = `games?key=${key}&dates=${currentDate},${nextYear}&ordering=-added&page_size=12`;
   const newGames = `games?key=${key}&dates=${lastYear},${currentDate}&ordering=-released&page_size=12`;
   
-  // const url = "https://api.rawg.io/api/games?key=914b1fb52d0e46e1a557fbf0a3e5d092&dates=2020-09-01,2021-09-30&platforms=18,1,7"
 
   export const popularGamesURL = () => `${baseURL}${popularGames}`;
   export const upcomingGamesURL = () => `${baseURL}${upcomingGames}`;
