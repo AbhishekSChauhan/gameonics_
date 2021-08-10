@@ -60,7 +60,7 @@ const App = () => {
           payload: null
         })
       }
-      console.log("logged in ",response)
+      console.log("logged in ",response.data.logged_in)
     })
     .catch(error=>{
       console.log(error)

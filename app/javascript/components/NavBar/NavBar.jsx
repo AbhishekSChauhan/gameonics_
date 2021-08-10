@@ -23,7 +23,7 @@ function NavBar(props) {
         })        
         console.log("logout clicked", UserDetails)
     }
-    console.log("UserDetails ",UserDetails.state.user)
+    console.log("UserDetails ",UserDetails)
     return (
         
         <header className="bg-white">
@@ -44,21 +44,22 @@ function NavBar(props) {
                     </Link>
 
                     <div>
-                        Welcome {UserDetails.state.user}
+                        {
+                         UserDetails.state.isLoggedIn ? 
+                            (
+                            <div>Welcome {UserDetails.state.user}
+                                <button onClick={handleLogout}>Logout</button>
+                            </div>
+                            ) : (
+                            <Link to="/login"
+                                className="absolute inset-y-0 right-0 flex items-center sm:static sm:inset-auto sm:ml-4 sm:pr-0 ">
+                                <a className="flex flex-row items-center text-gray-600 transition duration-150 ease-in transform hover:text-gray-800 hover:-translate-y-1 hover:scale-110">
+                                    <IoMdLogIn className="mx-1" />
+                                    <span>Login</span>
+                                </a>
+                            </Link>) 
+                        }
                     </div>
-                    <div>
-                        <button onClick={handleLogout}>Logout</button>
-                    </div>
-
-                    <Link to="/login"
-                        className="absolute inset-y-0 right-0 flex items-center sm:static sm:inset-auto sm:ml-4 sm:pr-0 ">
-                        <a className="flex flex-row items-center text-gray-600 transition duration-150 ease-in transform hover:text-gray-800 hover:-translate-y-1 hover:scale-110">
-                            <IoMdLogIn className="mx-1" />
-                            <span>Login</span>
-                        </a>
-                    </Link>
-                    
-                    
                 </div>
             </div>
         </header>
