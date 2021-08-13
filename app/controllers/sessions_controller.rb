@@ -1,5 +1,7 @@
 class SessionsController < ApplicationController
-include CurrentUserConcern
+    include CurrentUserConcern
+
+    # before_action :authorized
 
     def create
         user = User
@@ -35,6 +37,5 @@ include CurrentUserConcern
         reset_session
         render json: {status:200, logged_out: true}
     end
-
 
 end

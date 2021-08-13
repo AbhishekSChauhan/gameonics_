@@ -1,11 +1,14 @@
 class BlogsController < ApplicationController
+
   before_action :set_blog, only: [:show, :update, :destroy]
   before_action :authorized, except: [:index, :show, :get_comments]
-  
-  def index
-    @blogs = Blog.where user: @user.id
 
-    render json: @notes
+  include CurrentUserConcern
+
+  def index
+    # @blogs = Blog.where user: @user.id
+    @blogs = Blog.all
+    render json: { blogs: @blogs },status: :ok
   end
 
   def show
@@ -13,8 +16,8 @@ class BlogsController < ApplicationController
   end
 
   def create
-    @blog =Blog.new(blog_params)
-    @blog.user = @user
+    @blog = Blog.new(blog_params.merge(user_id: @current_user.id))
+    # @blog.user = @user
 
     if @blog.save
       render status: :ok,
@@ -45,6 +48,7 @@ class BlogsController < ApplicationController
     end
   end
 
+  
   def get_comments
     comments = @blog.comments.select("comments.*, users.name").joins(:user),by_created_at
     render json: {comments: comments}

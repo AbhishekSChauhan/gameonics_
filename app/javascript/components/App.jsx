@@ -7,6 +7,13 @@ import Login from './Auth/Login'
 import PageLoader from './PageLoader'
 import {setAuthHeaders} from './apis/axios'
 import axios from 'axios'
+import BlogsDashboard from "./Blogs/BlogsDashboard";
+import Blogs from "./Blogs/Blogs";
+import ShowBlog from "./Blogs/ShowBlog";
+import CreateBlog from "./Blogs/CreateBlog";
+import EditBlog from "./Blogs/EditBlog";
+
+
 export const AuthContext = React.createContext();
 
 // const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -90,10 +97,13 @@ const App = () => {
         <div>
           <NavBar />
           <Switch>
-            <Route 
-              exact path="/" component={Home}/>
+            <Route exact path="/" component={Home}/>
             <Route exact path="/login"  component={Login} />
-            <Route exact path="/signup"  component={Signup} />            
+            <Route exact path="/signup"  component={Signup} />
+            <Route exact path="/blogs" component={Blogs} /> 
+            <Route exact path="/blogs/:id/show" component={ShowBlog} />  
+            <Route exact path="/blogs/:id/edit" component={EditBlog} />   
+            <Route exact path="/blogs/create" component={CreateBlog} />      
           </Switch>
         </div>      
       </Router>
