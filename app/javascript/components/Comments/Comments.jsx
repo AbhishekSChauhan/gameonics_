@@ -3,25 +3,44 @@ import axios from 'axios'
 import Comment from './Comment'
 import CommentsForm from './CommentsForm'
 import { AuthContext } from '../App'
+import PageLoader from '../PageLoader'
+import { useParams } from 'react-router-dom'
 
 export const Comments = ({blogId}) => {
     const UserDetails = React.useContext(AuthContext)
+    const {id} = useParams()
     const user = UserDetails.state.user
     const [comments, setComments] = useState([])
     const [updateComments, setUpdateComments] = useState(0)
     const [newComment, setNewComment] = useState("")
     const [loading, setLoading] = useState(false)
 
-    useEffect(()=>{
-        axios.get(`/blogs/${blogId}/get_comments`)
-        .then((data)=>{
-            setComments(data.data.comments)
+    const source = axios.CancelToken.source()
+
+    const fetchCommentDetails = async() => {
+        try{
+            const response = await axios.get(`/blogs/${id}`,{cancelToken:source.token})
+            setComments(response.data.comments)
+            console.log("Comments data",response.data.comments)
             setLoading(true)
-        })
-        .catch((err)=>{
-            console.log(err);
-        })
+        }catch(error){
+            if(axios.isCancel(error)){
+                console.log("cancelled")
+            }else{
+                throw error
+            }
+            console.log(error)
+        } 
+    }
+
+    useEffect(()=>{
+        fetchCommentDetails()
+        return () => {
+            source.cancel()
+        }
     }, [updateComments])
+
+    
 
     const handleSubmit = (event) => {
         event.preventDefault()
@@ -39,7 +58,7 @@ export const Comments = ({blogId}) => {
     }
 
     const commentsComp = comments.map((comment)=>{
-        return <Comment comment={comment} key={comment.is} />
+        return <Comment comment={comment} key={comment.id} />
     })
 
     return (
@@ -53,7 +72,7 @@ export const Comments = ({blogId}) => {
             )}
             
             <div>
-                <p>Comments</p>
+                <p>Comment</p>
                 {comments.length === 0 && <p>There are no comments!</p> }
                 {loading ? commentsComp : <p>Loading</p>}
             </div>

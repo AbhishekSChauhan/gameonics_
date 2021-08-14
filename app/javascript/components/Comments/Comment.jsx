@@ -6,7 +6,7 @@ export default function Comment({comment}) {
     }
     return (
         <div>
-            <div>{comment.name} | </div>
+            <div>{comment.username} | </div>
             <div>{comment.content}</div>
         </div>
     )

@@ -12,6 +12,7 @@ import Blogs from "./Blogs/Blogs";
 import ShowBlog from "./Blogs/ShowBlog";
 import CreateBlog from "./Blogs/CreateBlog";
 import EditBlog from "./Blogs/EditBlog";
+import { Comments } from "./Comments/Comments";
 
 
 export const AuthContext = React.createContext();
@@ -102,7 +103,9 @@ const App = () => {
             <Route exact path="/blogs" component={Blogs} /> 
             <Route exact path="/blogs/:id/show" component={ShowBlog} />  
             <Route exact path="/blogs/:id/edit" component={EditBlog} />   
-            <Route exact path="/blogs/create" component={CreateBlog} />      
+            <Route exact path="/blogs/create" component={CreateBlog} />   
+            <Route exact path="/blogs/:id/get_comments" component={Comments} />
+            <Route exact path="/blogs/:id/comments" component={Comments} />
           </Switch>
         </div>      
       </Router>

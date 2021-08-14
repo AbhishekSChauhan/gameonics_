@@ -31,7 +31,6 @@ export default function ShowBlog() {
             setLoading(false)
         }
     }
-
     
     useEffect(()=>{
         fetchBlogDetails()

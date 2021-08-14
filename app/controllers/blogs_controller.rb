@@ -1,20 +1,25 @@
 class BlogsController < ApplicationController
 
   before_action :set_blog, only: [:show, :update, :destroy]
-  before_action :authenticate, only: [:create, :update, :destroy]
+  before_action :authenticate, except: [:index, :show, :get_comments]
 
 
   def index
     #only current users blogs
-    #@blogs = Blog.where(user_id: @current_user.id)
+    # @blogs = Blog.where(user_id: @current_user.id)
+    # @blogs = @current_user.blogs.all    
+
+    #All users blogs
     @blogs = Blog.all
+    # @users = User.all 
     render json: { blogs: @blogs },status: :ok
 
   end
 
   def show
-    blog_creator = User.find(@blog.user_id)
-    render status: :ok, json: {blog: @blog, blog_creator:blog_creator}
+    # blog_creator = User.find(@blog.user_id)
+    comments = @blog.comments.select("comments.*, users.username").joins(:user).by_created_at
+    render status: :ok, json: { blog: @blog, blog_creator: @blog.user, comments: comments }
   end
 
   def create
@@ -61,7 +66,7 @@ class BlogsController < ApplicationController
 
   
   def get_comments
-    comments = @blog.comments.select("comments.*, users.name").joins(:user),by_created_at
+    comments = @blog.comments.select("comments.*, users.username").joins(:user).by_created_at
     render json: {comments: comments}
   end
 
@@ -76,7 +81,8 @@ class BlogsController < ApplicationController
   end
 
   def authorized?
-    @blog.user == @current_user
+    # @blog.user == @current_user
+    @blog.user_id == @current_user.id
   end
 
   def handle_unauthorized

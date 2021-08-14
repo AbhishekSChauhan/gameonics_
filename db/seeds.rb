@@ -17,7 +17,7 @@ body:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod te
 user_id:2)
 
 
-Blog.last.comments.create!([{ content: "This is a very good post", user_id: 1 }, 
-                            { content: "I agree with all of this", user_id: 1 }, 
-                            { content: "I don't agree with all of this", user_id: 1 }])
+Blog.last.comments.create!([{ content: "This is a very good post", user_id: 21 }, 
+                            { content: "I agree with all of this", user_id: 10 }, 
+                            { content: "I don't agree with all of this", user_id: 11 }])
 
