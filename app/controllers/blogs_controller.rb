@@ -1,18 +1,18 @@
 class BlogsController < ApplicationController
 
   before_action :set_blog, only: [:show, :update, :destroy]
-  before_action :authorized, except: [:index, :show, :get_comments]
-
-  include CurrentUserConcern
+  before_action :authenticate, only: [:create, :update, :destroy]
 
   def index
     # @blogs = Blog.where user: @user.id
     @blogs = Blog.all
     render json: { blogs: @blogs },status: :ok
+
   end
 
   def show
-    render status: :ok, json: {blog: @blog}
+    blog_creator = User.find(@blog.user_id)
+    render status: :ok, json: {blog: @blog, blog_creator:blog_creator}
   end
 
   def create
@@ -41,7 +41,7 @@ class BlogsController < ApplicationController
   def destroy
     if @blog.destroy
       render status: :ok, 
-        json: {}
+        json: {notice:'Blog deleted'}
     else
       render status: :unprocessable_entity,
         json: {errors: @blog.errors.full_messages.to_sentence}

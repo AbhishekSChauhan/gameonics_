@@ -22,8 +22,7 @@ export default function Login({history}) {
           email,
           password,
         }
-      } ,
-      { withCredentials: true}
+      } ,{ withCredentials: true}
       )
       .then(response => {
         if(response.data.logged_in === true){
@@ -33,7 +32,7 @@ export default function Login({history}) {
         console.log("Login success: Welcome", response.data.user.username)
         dispatch({
           type:'Login',
-          payload: response.data.user.username,
+          payload: response.data,
         })
         history.push('/')
       })

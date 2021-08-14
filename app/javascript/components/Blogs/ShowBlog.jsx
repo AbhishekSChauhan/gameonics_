@@ -18,6 +18,8 @@ export default function ShowBlog() {
         try{
             const response = await axios.get(`/blogs/${id}`, {cancelToken:source.token})
             setBlogDetails(response.data.blog)
+            setBlogCreator(response.data.blog_creator)
+            console.log("Show Blog details",response)
         } catch(error){
             if(axios.isCancel(error)){
                 console.log('cancelled')
@@ -45,8 +47,9 @@ export default function ShowBlog() {
 
     return (
         <div>
-            <div>{blogDetails?.title}</div>
-            <div>{blogDetails?.body}</div>
+            <div>Title: {blogDetails?.title}</div>
+            <div>Body: {blogDetails?.body}</div>
+            <div>Written by {blogCreator?.username}</div>
             <Comments blogId={blogDetails?.id} />
             
         </div>

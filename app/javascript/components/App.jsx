@@ -16,8 +16,6 @@ import EditBlog from "./Blogs/EditBlog";
 
 export const AuthContext = React.createContext();
 
-// const [isLoggedIn, setIsLoggedIn] = useState(false)
-// const [user, setUser] = useState(null)
 const initialState = {
   isLoggedIn: false,
   user: null
@@ -58,7 +56,7 @@ const App = () => {
       if(response.data.logged_in && state.isLoggedIn === false){
         dispatch({
           type: 'Login',
-          payload: response.data.user.username
+          payload: response.data
         }) 
       }
       else if(!response.data.logged_in && state.isLoggedIn === true ){
@@ -67,7 +65,8 @@ const App = () => {
           payload: null
         })
       }
-      console.log("logged in ",response.data.logged_in)
+      console.log("response.data ",response.data)
+      console.log("logged in response ",response)
     })
     .catch(error=>{
       console.log(error)

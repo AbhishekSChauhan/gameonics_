@@ -1,6 +1,6 @@
 import React, { useEffect, useState} from 'react'
 import axios from 'axios'
-export default function BlogsDashboard({data,showBlog,updateBlog}) {
+export default function BlogsDashboard({data,showBlog,updateBlog,destroyBlog}) {
     
     return (
         <div className="mx-auto py-10">
@@ -21,6 +21,16 @@ export default function BlogsDashboard({data,showBlog,updateBlog}) {
                          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#photography</span>
                          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#travel</span>
                          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#winter</span>
+                     </div>
+                     <div className="px-6 pt-4 pb-2">
+                         <span className="inline-block rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Written by:</span>
+                         <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{cardData.user_id}</span>
+                     </div>
+                     <div className="px-6 pt-4 pb-2">
+                        <button onClick={()=>destroyBlog(cardData.id)}
+                            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">
+                            Delete
+                        </button>
                      </div>
                  </div>
                 ))}                 

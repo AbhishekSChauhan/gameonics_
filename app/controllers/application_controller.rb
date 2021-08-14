@@ -3,11 +3,12 @@ class ApplicationController < ActionController::Base
 
     include CurrentUserConcern
 
-    def authorized
+    def authenticate
         if @current_user
-            render json:{ notice:"Logged In" }
+            render json:{ message:"Logged in" }
         else
-            render json: { notice: "Please Log in" }
+            render json: { message: "Please Log in" }
         end
     end
+
 end
