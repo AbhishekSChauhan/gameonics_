@@ -1,7 +1,7 @@
 import React,{useState} from 'react'
 import Input from '../Input'
 import Button from '../Button'
-import ReactQuill from 'react-quill'
+// import ReactQuill from 'react-quill'
 
 export default function CreateForm({type="create",setTitle,setBody,loading,handleSubmit}) {
     const [value, setValue] = useState('');
@@ -18,7 +18,7 @@ export default function CreateForm({type="create",setTitle,setBody,loading,handl
             placeholder="Blog Body (Max Upto your imagination)"
             onChange={e => setBody(e.target.value)}
         />
-        <ReactQuill theme="snow" value={value} onChange={setValue}/>
+        {/* <ReactQuill theme="snow" value={value} onChange={setValue}/> */}
         <Button
             type="submit"
             buttonText={type === "create" ? "Create Blog" : "Update Blog"}

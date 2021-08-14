@@ -3,8 +3,10 @@ class BlogsController < ApplicationController
   before_action :set_blog, only: [:show, :update, :destroy]
   before_action :authenticate, only: [:create, :update, :destroy]
 
+
   def index
-    # @blogs = Blog.where user: @user.id
+    #only current users blogs
+    #@blogs = Blog.where(user_id: @current_user.id)
     @blogs = Blog.all
     render json: { blogs: @blogs },status: :ok
 
@@ -17,35 +19,44 @@ class BlogsController < ApplicationController
 
   def create
     @blog = Blog.new(blog_params.merge(user_id: @current_user.id))
-    # @blog.user = @user
-
-    if @blog.save
-      render status: :ok,
-        json: {notice: "Blog Successfully created"}
-    else
-      errors= @blog.errors.full_messages.to_sentence
-      render status: :unprocessable_entity, json: {errors:errors}
+    
+    if authorized?
+      if @blog.save
+        render status: :ok,
+              json: {notice: "Blog Successfully created"}
+      else
+        errors= @blog.errors.full_messages.to_sentence
+        render status: :unprocessable_entity, json: {errors:errors}
+      end
     end
   end
 
   def update
-    if @blog.update(blog_params)
-      render status: :ok, 
-        json: @blog
+    if authorized?
+      if @blog.update(blog_params)
+        render status: :ok, 
+          json: @blog
+      else
+        render status: :unprocessable_entity,
+          json: {errors: @blog.errors.full_messages.to_sentence}
+      end
     else
-      render status: :unprocessable_entity,
-        json: {errors: @blog.errors.full_messages.to_sentence}
+      handle_unauthorized
     end
   end
 
   def destroy
-    if @blog.destroy
-      render status: :ok, 
-        json: {notice:'Blog deleted'}
+    if authorized?
+      if @blog.destroy
+        render status: :ok, 
+          json: {notice:'Blog deleted'}
+      else
+        render status: :unprocessable_entity,
+          json: {errors: @blog.errors.full_messages.to_sentence}
+      end
     else
-      render status: :unprocessable_entity,
-        json: {errors: @blog.errors.full_messages.to_sentence}
-    end
+      handle_unauthorized
+    end    
   end
 
   
@@ -59,8 +70,19 @@ class BlogsController < ApplicationController
   def set_blog
     @blog = Blog.find(params[:id])
   end
-  # Only allow a list of trusted parameters through.
+
   def blog_params
     params.require(:blog).permit(:title, :body)
   end
+
+  def authorized?
+    @blog.user == @current_user
+  end
+
+  def handle_unauthorized
+    unless authorized?
+      render json:{notice:"Not authorized"}, status:401
+    end
+  end
+
 end
