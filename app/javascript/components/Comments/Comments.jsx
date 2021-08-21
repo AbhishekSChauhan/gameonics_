@@ -3,8 +3,8 @@ import axios from 'axios'
 import Comment from './Comment'
 import CommentsForm from './CommentsForm'
 import { AuthContext } from '../App'
-import PageLoader from '../PageLoader'
 import { useParams } from 'react-router-dom'
+import toast from "react-hot-toast";
 
 export const Comments = ({blogId}) => {
     const UserDetails = React.useContext(AuthContext)
@@ -51,8 +51,26 @@ export const Comments = ({blogId}) => {
             console.log("Server response:", response)
             setNewComment("");
             setUpdateComments(updateComments + 1)
+            if(response){
+                response.success = response.status === 200;
+                if (response.data.notice){
+                    toast.success(response.data.notice)                    
+                }
+            }
         })
         .catch((error)=>{
+            if(error){
+                toast.error(
+                    error.response?.data?.notice ||
+                    error.response?.data?.error ||
+                    error.message ||
+                    error.notice ||
+                    "Something went wrong!"
+                )
+            }
+            if (error.response?.status === 423) {
+                window.location.href = "/";
+            }
             console.log("Error:", error)
         })
     }
@@ -63,16 +81,15 @@ export const Comments = ({blogId}) => {
 
     return (
         <div>
-            {user !== null && (
-                <CommentsForm 
-                    handleSubmit={handleSubmit}
-                    setNewComment={setNewComment}
-                    blogId={blogId}
-                />
-            )}
+        
+            <CommentsForm 
+                handleSubmit={handleSubmit}
+                setNewComment={setNewComment}
+                blogId={blogId}
+            />
+        
             
             <div>
-                <p>Comment</p>
                 {comments.length === 0 && <p>There are no comments!</p> }
                 {loading ? commentsComp : <p>Loading</p>}
             </div>

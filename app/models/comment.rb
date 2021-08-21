@@ -8,4 +8,9 @@ class Comment < ApplicationRecord
     order("created_at DESC")
   end
 
+  def created_at
+    time = attributes['created_at']
+    time.strftime('%a, %-d %b %Y')
+  end
+
 end

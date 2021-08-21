@@ -30,8 +30,8 @@ class BlogsController < ApplicationController
         render status: :ok,
               json: {notice: "Blog Successfully created"}
       else
-        errors= @blog.errors.full_messages.to_sentence
-        render status: :unprocessable_entity, json: {errors:errors}
+        errors = @blog.errors.full_messages.to_sentence
+        render status: :unprocessable_entity, json: {error:errors}
       end
     end
   end
@@ -40,7 +40,7 @@ class BlogsController < ApplicationController
     if authorized?
       if @blog.update(blog_params)
         render status: :ok, 
-          json: @blog
+          json: {blog: @blog, notice:"Blog successfully updated"}
       else
         render status: :unprocessable_entity,
           json: {errors: @blog.errors.full_messages.to_sentence}
@@ -65,10 +65,10 @@ class BlogsController < ApplicationController
   end
 
   
-  def get_comments
-    comments = @blog.comments.select("comments.*, users.username").joins(:user).by_created_at
-    render json: {comments: comments}
-  end
+  # def get_comments
+  #   comments = @blog.comments.select("comments.*, users.username").joins(:user).by_created_at
+  #   render json: {comments: comments}
+  # end
 
   private 
 
@@ -87,8 +87,8 @@ class BlogsController < ApplicationController
 
   def handle_unauthorized
     unless authorized?
-      render json:{notice:"Not authorized"}, status:401
+      render json:{notice:"Not authorized to perform this task"}, status:401
     end
   end
-
+  
 end

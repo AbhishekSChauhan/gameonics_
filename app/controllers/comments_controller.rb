@@ -6,18 +6,24 @@ class CommentsController < ApplicationController
     def create
         comment = @current_user.comments.new(content: params[:newComment],blog_id: params[:blog_id])
 
-        if comment.save
-            render json: {comment: comment}, status: :ok
+        if @current_user
+            if comment.save
+                render json: {comment: comment, notice:"Comment successfully posted"}, status: :ok
+            else
+                errors = @comment.errors.full_messages.to_sentence
+                render json: {error: errors}, status: 422
+            end
         else
-            render json: {error: comment.errors.full_messages}, status: 422
-        end
+            render json:{notice:"Login to comment"}
+        end        
+        
     end
 
     def destroy
         if comment.destroy
             render status: :ok, json: {}
         else
-            render json: {error: @comment.errors.full_messages}, status: 422
+            render json: {error: @comment.errors.full_messages.to_sentence}, status: 422
         end
     end
 

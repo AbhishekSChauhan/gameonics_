@@ -1,8 +1,12 @@
 module.exports = {
   purge: [],
-  darkMode: false, // or 'media' or 'class'
+  darkMode: 'media', // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      width:{
+        'card': '480px',
+      }
+    },
   },
   variants: {
     extend: {},

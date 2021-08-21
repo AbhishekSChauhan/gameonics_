@@ -4,6 +4,8 @@ import {Link} from 'react-router-dom'
 import SignupForm from './SignupForm'
 import axios from 'axios'
 import {AuthContext} from '../App'
+import toast, { Toaster } from "react-hot-toast";
+
 
 export default function Signup({history}) {
   const {dispatch} = React.useContext(AuthContext)
@@ -33,8 +35,13 @@ export default function Signup({history}) {
         if(response.data.status === 'created'){
           setLoading(false)
         }
+        if(response){
+          response.success = response.status === 200;
+          if (response.data.notice){
+              toast.success(response.data.notice)                  
+          }
+        }
         console.log("registration success", response)
-        console.log(response.data.user.username)
         dispatch({
           type:'Signup',
           payload: response.data.user.username,
@@ -42,19 +49,41 @@ export default function Signup({history}) {
         history.push('/login')
       })
       .catch(error=>{
+        if(error){
+          console.log("Signup error", error)
+          // const err = Object.entries(error);
+          // err.map(
+            toast.error(
+              error.response?.data?.notice ||
+              error.response?.data?.error ||
+              error.response?.data?.username_error ||
+              error.response?.data?.email_error ||
+              error.response?.data?.password_error ||
+              error.response?.data?.passwordConf_error ||
+              "Something went wrong!"
+          )
+        // )          
+      }
+      if (error.response?.status === 423) {
+          window.location.href = "/";
+      }
         console.log("registration error", error)
       })
   }
 
   return (
-    <SignupForm 
-      setUsername = {setUsername}
-      setEmail={setEmail}
-      setPassword={setPassword}
-      setPasswordConfirmation={setPasswordConfirmation}
-      handleSubmit={handleSignup}
-      loading={loading}
-    />
+    <div>
+      
+      <SignupForm 
+        setUsername = {setUsername}
+        setEmail={setEmail}
+        setPassword={setPassword}
+        setPasswordConfirmation={setPasswordConfirmation}
+        handleSubmit={handleSignup}
+        loading={loading}
+      />
+    </div>
+    
   )
 }
 

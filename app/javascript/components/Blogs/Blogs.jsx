@@ -4,6 +4,7 @@ import PageLoader from '../PageLoader';
 import BlogNav from './BlogNav';
 import BlogsDashboard from './BlogsDashboard';
 import axios from 'axios'
+import toast, { Toaster } from "react-hot-toast";
 
 export default function Blogs({history}) {
     const [blogs, setBlogs] = useState([]);
@@ -15,7 +16,7 @@ export default function Blogs({history}) {
             const response = await blogsApi.list({cancelToken:source.token})
             setBlogs(response.data.blogs)
 
-            console.log(response)
+            console.log("Blogs",response)
             setLoading(false)
         } catch (error) {
             if(axios.isCancel(error)){
@@ -32,15 +33,33 @@ export default function Blogs({history}) {
         history.push(`/blogs/${id}/show`)
     }
 
-    const updateBlog = () => {
+    const updateBlog = (id) => {
         history.push(`/blogs/${id}/edit`)
     }
 
     const destroyBlog = async(id) => {
         try {
-            await axios.delete(`/blogs/${id}`);
+            const response = await axios.delete(`/blogs/${id}`);
+            if(response){
+                response.success = response.status === 200;
+                if (response.data.notice){
+                    toast.success(response.data.notice)                  
+                }
+            }
             await fetchBlogs();
         }catch(error){
+            if(error){
+                toast.error(
+                    error.response?.data?.notice ||
+                    error.response?.data?.error ||
+                    error.message ||
+                    error.notice ||
+                    "Something went wrong!"
+                )
+            }
+            if (error.response?.status === 423) {
+                window.location.href = "/";
+            }
             console.log(error)
         }
     }
@@ -59,15 +78,28 @@ export default function Blogs({history}) {
             </div>
         )
     }
+
+    // const blogComponent = blogs.map((blog)=>{
+    //     return <BlogsDashboard 
+    //             blog={blog}
+    //             showBlog={showBlog}
+    //             updateBlog={updateBlog}
+    //             destroyBlog={destroyBlog}
+    //             key={blog.id}
+    //             />  
+    // })
+
     return (
         <div>
             <BlogNav />
+            <div>
             <BlogsDashboard 
                 data={blogs}
                 showBlog={showBlog}
                 updateBlog={updateBlog}
                 destroyBlog={destroyBlog}
-            />            
+                />  
+            </div>            
         </div>
     )
 }

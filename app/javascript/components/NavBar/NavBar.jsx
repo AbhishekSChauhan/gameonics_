@@ -5,6 +5,7 @@ import { AiOutlineMenuFold,AiOutlineMenuUnfold } from "react-icons/ai";
 import NavItems from './NavItems';
 import {AuthContext} from '../App'
 import axios from 'axios'
+import toast, { Toaster } from "react-hot-toast";
 
 function NavBar() {
     const UserDetails = React.useContext(AuthContext)
@@ -14,11 +15,29 @@ function NavBar() {
     const handleLogout=() => {
         axios.delete('/logout', { withCredentials: true})
         .then(response =>{
+            if(response){
+                response.success = response.status === 200;
+                if (response.data.notice){
+                    toast.success(response.data.notice)                  
+                }
+            }
             dispatch({
                 type:'Logout',
             })
         })
         .catch(error => {
+            if(error){
+                toast.error(
+                    error.response?.data?.notice ||
+                    error.response?.data?.error ||
+                    error.message ||
+                    error.notice ||
+                    "Something went wrong!"
+                )
+            }
+            if (error.response?.status === 423) {
+                window.location.href = "/";
+            }
             console.log('logout error', error);
         })        
         console.log("logout clicked",UserDetails)
@@ -29,25 +48,26 @@ function NavBar() {
         <header className="bg-white">
             <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
                 <div className="relative flex items-center justify-between h-16">
+                    <div>
+                        <Link to="/" className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+                            <div className="flex-shrink-0 flex">
+                                <span className="font-bold font-serif text-gray-700 ">Gameonics</span>
+                            </div>
+                            <div className="absolute inset-x-0 right-0 inline-block items-center sm:hidden pl-2">
+                                <AiOutlineMenuUnfold />
+                            </div>  
+                        </Link>
+                    </div>
                     
-
-                    <Link to="/" className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-                        <div className="flex-shrink-0 flex">
-                            <span className="font-bold font-serif text-gray-700 ">Gameonics</span>
-                        </div>
-
-                        <div className="absolute inset-x-0 right-0 inline-block items-center sm:hidden pl-2">
-                            <AiOutlineMenuUnfold />
-                        </div>  
-
+                    <div>
                         <NavItems />
-                    </Link>
+                    </div>
 
                     <div>
                         {
                          UserDetails.state.isLoggedIn ? 
                             (
-                            <div>Welcome {UserDetails.state.user.user.username}
+                            <div>Welcome {UserDetails?.state?.user?.user?.username}
                                 <button onClick={handleLogout}>Logout</button>
                             </div>
                             ) : (

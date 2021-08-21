@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom'
 import LoginForm from './LoginForm'
 import axios from 'axios'
 import {AuthContext} from '../App'
+import toast, { Toaster } from "react-hot-toast";
 
 export default function Login({history}) {
   const {dispatch} = React.useContext(AuthContext)
@@ -25,29 +26,53 @@ export default function Login({history}) {
       } ,{ withCredentials: true}
       )
       .then(response => {
-        if(response.data.logged_in === true){
+        if(response.data.status === 'created'){
           setLoading(false)
+          dispatch({
+            type:'Login',
+            payload: response.data,
+          })
+          history.push('/')
+        }
+        if(response){
+            response.success = response.status === 200;
+            if (response.data.notice){
+                toast.success(response.data.notice)                  
+            }
         }
         console.log(response)
-        console.log("Login success: Welcome", response.data.user.username)
-        dispatch({
-          type:'Login',
-          payload: response.data,
-        })
-        history.push('/')
+        // console.log("Login success: Welcome", response.data.user.username)
+        
       })
       .catch(error=>{
+        if(error){
+          toast.error(
+              error.response?.data?.notice ||
+              error.response?.data?.error ||
+              error.message ||
+              error.notice ||
+              "Something went wrong!"
+          )
+      }
+      if (error.response?.status === 423) {
+          window.location.href = "/";
+      }
         console.log("login error", error)
+
       })
   }
 
   return (
-    <LoginForm 
-      setEmail={setEmail}
-      setPassword={setPassword}
-      loading={loading}
-      handleSubmit={handleSignup}
-    />
+    <div>
+      <LoginForm 
+        setEmail={setEmail}
+        setPassword={setPassword}
+        loading={loading}
+        handleSubmit={handleSignup}
+      />
+
+    </div>
+    
   )
 }
 

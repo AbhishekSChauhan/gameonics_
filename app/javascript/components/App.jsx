@@ -13,6 +13,8 @@ import ShowBlog from "./Blogs/ShowBlog";
 import CreateBlog from "./Blogs/CreateBlog";
 import EditBlog from "./Blogs/EditBlog";
 import { Comments } from "./Comments/Comments";
+import Footer from "./Footer/Footer";
+import toast, { Toaster } from "react-hot-toast";
 
 
 export const AuthContext = React.createContext();
@@ -95,6 +97,12 @@ const App = () => {
     >  
       <Router>
         <div>
+          <div>
+            <Toaster
+                  position="top-right"
+                  reverseOrder={false}
+            />
+          </div>
           <NavBar />
           <Switch>
             <Route exact path="/" component={Home}/>
@@ -107,6 +115,7 @@ const App = () => {
             <Route exact path="/blogs/:id/get_comments" component={Comments} />
             <Route exact path="/blogs/:id/comments" component={Comments} />
           </Switch>
+          <Footer />
         </div>      
       </Router>
     </AuthContext.Provider>    
