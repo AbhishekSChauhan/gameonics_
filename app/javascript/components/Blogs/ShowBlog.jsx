@@ -79,7 +79,7 @@ export default function ShowBlog() {
                             <div id='bodyContainer'
                             // dangerouslySetInnerHTML={{ __html: blogDetails?.body}}
                                 className="text-gray-600 dark:text-gray-100 text-sm tracking-normal font-normal mb-8  w-10/12">
-                                    {getBodyHTML(blogDetails.body)}
+                                    {parse(blogDetails.body)}
                             </div>
                             
                         </div>  

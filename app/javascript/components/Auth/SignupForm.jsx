@@ -50,7 +50,9 @@ const SignupForm = ({
           />
           <Input
             type="password"
-            label="Password"
+            label="Password: (At least 8 characters, 
+              must contain at least one lower-case letter, 
+              one upper-case letter, one digit and a special character)"
             placeholder="Password"
             onChange={(e) => setPassword(e.target.value)}
           />

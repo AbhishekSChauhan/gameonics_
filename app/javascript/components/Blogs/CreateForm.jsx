@@ -57,11 +57,11 @@ export default function CreateForm(
         
 
     return (
-        <form className="max-w-lg mx-auto" onSubmit={handleSubmit}>
+        <form className="max-w-full" onSubmit={handleSubmit}>
         <Input
             label="Title"
             placeholder="Blog Title (Max 50 Characters Allowed)"
-            onChange={e => setTitle(e.target.value.slice(0, 50))}
+            onChange={e => setTitle(e.target.value)}
         />
         {/* <Input
             label="Body"
@@ -88,8 +88,8 @@ export default function CreateForm(
             isRailsDirectUpload='true'
         /> */}
         <ReactQuill 
+            theme="snow"
             placeholder="Write your story" 
-            onChange={handleChange}
             modules={modules}
             formats={formats}
             onChange={setBody}

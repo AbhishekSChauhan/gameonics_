@@ -23,6 +23,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'rack-cors'
 gem 'jwt'
 gem 'react-rails'
+gem 'cloudinary'
 
 # Use Active Storage variant
 gem 'image_processing', '~> 1.2'

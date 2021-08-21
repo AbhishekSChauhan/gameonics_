@@ -12,7 +12,7 @@ export default function CreateBlog({history}) {
     const [title, setTitle] = useState("")
     const [body, setBody] = useState("")
     const [loading, setLoading] = useState(false)
-    const [files, setFiles] = useState([])
+    const [image, setImage] = useState('')
 
     const handleChange = (value)=>{
         setBody(value)
@@ -28,19 +28,34 @@ export default function CreateBlog({history}) {
     //     setFiles(files)
     // }
 
+    const handleCheckFileSize = e => {
+        const elem = e.target;
+        if (elem.files[0].size > 1048576) {
+        alert('File is too big!', 'blogForm');
+        // setRequest('waiting');
+        elem.value = '';
+        } else { setImage(elem.files[0]); }
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault()
         // if(!UserDetails.state.isLogggedIn){
         //     alert('Please log in first!')
         // }
-        const variables = {
-            title: title,
-            body:body,
-        }
+
+        const formData = new FormData();
+        formData.append(title.trim())
+        formData.append(body)
+        formData.append(image)
+        // const variables = {
+        //     title: title,
+        //     body:body,
+        // }
         try{
-            const response = await axios.post("/blogs",variables)
+            const response = await axios.post("/blogs",formData)
             setLoading(false)
             if(response){
+
                 response.success = response.status === 200;
                 if (response.data.notice){
                     toast.success(response.data.notice)                    
@@ -81,7 +96,8 @@ export default function CreateBlog({history}) {
                 handleSubmit={handleSubmit}  
                 // onEditorChange={onEditorChange}
                 // onFilesChange={onFilesChange} 
-                handleChange={handleChange}                         
+                handleChange={handleChange} 
+                handleCheckFileSize={handleCheckFileSize}                        
             />            
         </div>
     )
