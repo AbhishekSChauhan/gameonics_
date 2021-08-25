@@ -4,7 +4,8 @@ class Blog < ApplicationRecord
   belongs_to :user
   has_many :comments, dependent: :destroy
 
-  validates_presence_of :title,:body
+  validates :title, length: { in: 3..48 }, presence: true
+  validates :body, length: { in: 5..100000000 }, presence: true
   
   def created_at
     time = attributes['created_at']

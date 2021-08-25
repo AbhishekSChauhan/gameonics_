@@ -23,7 +23,8 @@ class BlogsController < ApplicationController
   end
 
   def create
-    @blog = Blog.new(blog_params.merge(user_id: @current_user.id))
+      @blog = Blog.new(blog_params.merge(user_id: @current_user.id))
+    #  blog = @current_user.blogs.build(blog_params)
     
     if authorized?
       if @blog.save
@@ -77,12 +78,12 @@ class BlogsController < ApplicationController
   end
 
   def blog_params
-    params.require(:blog).permit(:title, :body)
+    params.require(:blog).permit(:title,:body,:image)
   end
 
   def authorized?
-    # @blog.user == @current_user
-    @blog.user_id == @current_user.id
+    #  @blog.user == @current_user
+     @blog.user_id == @current_user.id
   end
 
   def handle_unauthorized

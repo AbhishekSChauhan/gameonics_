@@ -80,20 +80,22 @@ export const Comments = ({blogId}) => {
     })
 
     return (
-        <div>
-        
+        <div className="max-w-2xl mx-auto mt-20 mb-20">  
             <CommentsForm 
-                handleSubmit={handleSubmit}
-                setNewComment={setNewComment}
-                blogId={blogId}
-            />
-        
-            
-            <div>
-                {comments.length === 0 && <p>There are no comments!</p> }
-                {loading ? commentsComp : <p>Loading</p>}
-            </div>
-            
+                    handleSubmit={handleSubmit}
+                    setNewComment={setNewComment}
+                    blogId={blogId}
+                />              
+                <div className="text-lg my-5">
+                    {comments.length === 0 ? 
+                        <p>There are no comments!</p> :
+                        <span>Comments({comments.length})</span>
+                    }
+                </div>
+                <div>
+                    {loading ? commentsComp : <p>Loading</p>}
+                </div>
         </div>
+   
     )
 }

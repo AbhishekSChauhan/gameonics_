@@ -1,15 +1,13 @@
-module.exports = {
+module.exports = {  
   purge: [],
   darkMode: 'media', // or 'media' or 'class'
   theme: {
-    extend: {
-      width:{
-        'card': '480px',
-      }
-    },
+    extend: {},
   },
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
 }

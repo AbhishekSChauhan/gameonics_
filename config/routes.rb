@@ -12,9 +12,9 @@ Rails.application.routes.draw do
   ###   Blogs and comments routes  ###
   resources :blogs do
     resources :comments, only: [:create]
-    member do
-      get :get_comments
-    end
+    # member do
+    #   # get :get_comments
+    # end
   end
   
 

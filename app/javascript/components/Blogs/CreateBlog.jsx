@@ -13,20 +13,12 @@ export default function CreateBlog({history}) {
     const [body, setBody] = useState("")
     const [loading, setLoading] = useState(false)
     const [image, setImage] = useState('')
+    const [files, setFiles] = useState('')
 
     const handleChange = (value)=>{
         setBody(value)
         console.log(value)
     }
-
-    // const onEditorChange = (value) => {
-    //     setBody(value)
-    //     console.log(value)
-    // }
-
-    // const onFilesChange = (files) => {
-    //     setFiles(files)
-    // }
 
     const handleCheckFileSize = e => {
         const elem = e.target;
@@ -43,26 +35,28 @@ export default function CreateBlog({history}) {
         //     alert('Please log in first!')
         // }
 
-        const formData = new FormData();
-        formData.append(title.trim())
-        formData.append(body)
-        formData.append(image)
-        // const variables = {
-        //     title: title,
-        //     body:body,
-        // }
+        // const formData = new FormData();
+        // formData.append('blog[title]',title.trim())
+        // formData.append('blog[body]',body)
+        // formData.append('blog[image]',image)
+        const variables = {
+            title: title,
+            body: body,
+            image: image
+        }
         try{
-            const response = await axios.post("/blogs",formData)
+            const response = await axios.post("/blogs",variables)
             setLoading(false)
             if(response){
-
                 response.success = response.status === 200;
                 if (response.data.notice){
                     toast.success(response.data.notice)                    
                 }
             }
             console.log("blog submit response", response)
+            console.log("img",image)
             history.push("/blogs")
+            
 
         } catch(error){
             console.log("blog not saved error",error)
@@ -91,11 +85,10 @@ export default function CreateBlog({history}) {
             <CreateForm 
                 setTitle={setTitle}
                 setBody={setBody}
+                setImage={setImage}
                 body={body}
                 loading={loading}
                 handleSubmit={handleSubmit}  
-                // onEditorChange={onEditorChange}
-                // onFilesChange={onFilesChange} 
                 handleChange={handleChange} 
                 handleCheckFileSize={handleCheckFileSize}                        
             />            

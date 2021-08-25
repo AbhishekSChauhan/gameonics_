@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import ReactQuill, { Quill } from 'react-quill';
 import "react-quill/dist/quill.snow.css";
-
+import "react-quill/dist/quill.bubble.css";
 import axios from 'axios';
 const __ISMSIE__ = navigator.userAgent.match(/Trident/i) ? true : false;
 
@@ -274,7 +274,7 @@ class QuillEditor extends React.Component {
 
                         //먼저 노드 서버에다가 이미지를 넣은 다음에   여기 아래에 src에다가 그걸 넣으면 그게 
                         //이미지 블롯으로 가서  크리에이트가 이미지를 형성 하며 그걸 발류에서     src 랑 alt 를 가져간후에  editorHTML에 다가 넣는다.
-                        quill.insertEmbed(position, "image", { src: "http://localhost:5000/" + response.data.url, alt: response.data.fileName });
+                        quill.insertEmbed(position, "image", { src: "http://localhost:3000/" + response.data.url, alt: response.data.fileName });
                         quill.setSelection(position + 1);
 
                         if (this._isMounted) {
@@ -395,7 +395,7 @@ class QuillEditor extends React.Component {
                 </div>
                 <ReactQuill
                     ref={(el) => { this.reactQuillRef = el }}
-                    theme={'snow'}
+                    theme={'bubble'}
                     onChange={this.handleChange}
                     modules={this.modules}
                     formats={this.formats}
@@ -409,8 +409,11 @@ class QuillEditor extends React.Component {
         )
     }
 
-    modules = {
-        // syntax: true,
+    modules = useMemo(()=>({
+        imageResize: {
+          parchment: Quill.import('parchment'),
+          modules: ['Resize', 'DisplaySize', 'Toolbar']
+       },
         toolbar: {
             container: "#toolbar",
             //id ="toorbar"는  그 위에 B I U S I V F P 이거 있는 곳이다. 
@@ -421,8 +424,23 @@ class QuillEditor extends React.Component {
                 insertPoll: this.pollHandler,
             }
         },
+      }));
+      
 
-    };
+    // modules = {
+    //     // syntax: true,
+    //     toolbar: {
+    //         container: "#toolbar",
+    //         //id ="toorbar"는  그 위에 B I U S I V F P 이거 있는 곳이다. 
+    //         handlers: {
+    //             insertImage: this.imageHandler,
+    //             insertVideo: this.videoHandler,
+    //             insertFile: this.fileHandler,
+    //             insertPoll: this.pollHandler,
+    //         }
+    //     },
+
+    // };
 
     formats = [
         'header',

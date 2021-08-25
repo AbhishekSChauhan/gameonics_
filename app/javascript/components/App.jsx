@@ -16,7 +16,6 @@ import { Comments } from "./Comments/Comments";
 import Footer from "./Footer/Footer";
 import toast, { Toaster } from "react-hot-toast";
 
-
 export const AuthContext = React.createContext();
 
 const initialState = {
@@ -111,7 +110,8 @@ const App = () => {
             <Route exact path="/blogs" component={Blogs} /> 
             <Route exact path="/blogs/:id/show" component={ShowBlog} />  
             <Route exact path="/blogs/:id/edit" component={EditBlog} />   
-            <Route exact path="/blogs/create" component={CreateBlog} />   
+            <Route exact path="/blogs/create" component={CreateBlog} />
+            {/* <Route exact path="/blogs/create" component={Editor} />    */}
             <Route exact path="/blogs/:id/get_comments" component={Comments} />
             <Route exact path="/blogs/:id/comments" component={Comments} />
           </Switch>

@@ -6,6 +6,7 @@ import axios from 'axios'
 import { Comments } from '../Comments/Comments'
 import parse from 'html-react-parser';
 
+
 export default function ShowBlog() {
     const componentMounted = true
     const {id} = useParams()
@@ -34,15 +35,6 @@ export default function ShowBlog() {
         }
     }
     
-    const getBodyHTML = (str) => {
-        if (str === ''){
-            return null;
-        } else {
-            var htmlContent = document.getElementById('bodyContainer');
-            htmlContent.insertAdjacentHTML('afterbegin',str)
-        }
-    }
-    
     useEffect(()=>{
         fetchBlogDetails()
         return () => {
@@ -56,47 +48,31 @@ export default function ShowBlog() {
 
 
     return (
-        // <div>
-        //     <div>Title: {blogDetails?.title}</div>
-        //     <div>Body: {blogDetails?.body}</div>
-        //     <div>Written by {blogCreator?.username}</div>
-        //     <Comments blogId={blogDetails?.id} />
-        // </div>
-
-        <div className="w-full bg-gray-200 dark:bg-gray-900 py-10">
-            <div className="container mx-auto px-6 flex items-start">
-                <div className="w-full">
+        <div className="bg-white">
+            <div className="max-w-6xl mx-auto mt-10">
+                <div className="relative max-w-4xl mx-auto items-center justify-between">
                     {/* Card is full width. Use in 12 col grid for best view. */}
                     {/* Card code block start */}
-                    <div className="flex flex-col lg:flex-row mx-auto bg-white dark:bg-gray-800 shadow rounded">
-                        <div className="w-full lg:w-1/3 px-12 flex flex-col items-center py-10">
-                            <h2 className="text-gray-800 dark:text-gray-100 text-xl tracking-normal font-medium mb-1">
+                    <div className="flex flex-col ">
+                        <div className="w-full ">
+                            <h2 className="text-gray-800 ">
                                 {blogDetails?.title}
                             </h2>
-                            <div className="flex text-gray-600 dark:text-gray-100 text-sm tracking-normal font-normal mb-3 ">
+                            <div className="flex ">
                                 <span>by {blogCreator?.username}</span> 
                             </div>
-                            <div id='bodyContainer'
-                            // dangerouslySetInnerHTML={{ __html: blogDetails?.body}}
-                                className="text-gray-600 dark:text-gray-100 text-sm tracking-normal font-normal mb-8  w-10/12">
+                            <div className="prose-xl">
                                     {parse(blogDetails.body)}
                             </div>
                             
                         </div>  
                     </div>
                     {/* Card code block end */}
+                    {/* Comments Block */}
+                    <div className="mx-auto py-2 my-10">
+                        <Comments blogId={blogDetails?.id} /> 
+                    </div>
                 </div>
-            </div>
-            <div className="w-full lg:w-1/3 flex-col flex justify-center items-center mt-5 px-12 py-8">
-                <div className="container mx-auto px-6 flex items-start justify-center">
-                    <div className="w-full">
-                    <div className="flex flex-col lg:flex-row mx-auto bg-white dark:bg-gray-800 shadow rounded">
-                        <div className="w-full px-12 flex flex-col items-center py-10">
-                            <Comments blogId={blogDetails?.id} /> 
-                        </div>
-                    </div>
-                    </div>
-                </div>                                              
             </div>
         </div>
     )
