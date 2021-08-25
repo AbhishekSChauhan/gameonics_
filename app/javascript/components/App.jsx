@@ -15,6 +15,7 @@ import EditBlog from "./Blogs/EditBlog";
 import { Comments } from "./Comments/Comments";
 import Footer from "./Footer/Footer";
 import toast, { Toaster } from "react-hot-toast";
+import ScrollToTop from "./ScrollToTop";
 
 export const AuthContext = React.createContext();
 
@@ -96,13 +97,9 @@ const App = () => {
     >  
       <Router>
         <div>
-          <div>
-            <Toaster
-                  position="top-right"
-                  reverseOrder={false}
-            />
-          </div>
+          <Toaster position="top-right" reverseOrder={false}/>          
           <NavBar />
+          <ScrollToTop />
           <Switch>
             <Route exact path="/" component={Home}/>
             <Route exact path="/login"  component={Login} />

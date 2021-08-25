@@ -61,7 +61,7 @@ export default function ShowBlog() {
                             <div className="flex ">
                                 <span>by {blogCreator?.username}</span> 
                             </div>
-                            <div className="prose-xl">
+                            <div className="prose-lg">
                                     {parse(blogDetails.body)}
                             </div>
                             
