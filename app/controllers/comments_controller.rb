@@ -29,12 +29,26 @@ class CommentsController < ApplicationController
 
     private
 
+    def set_blog
+        @blog = Blog.find(params[:comment][:blog_id])
+      end
+
     def set_comment
         @comment = Comment.find(params[:id])
     end
 
     def comment_params
-        params.require(:comment).permit(:content, :blog_id)
+        params.require(:comment).permit(:content, :comment_id, :user_id)
     end
+
+    def suspended(date)
+        if data > DateTime.now 
+            json_response(errors: ['Your commenting communications
+                                    are still suspended'])
+            return true
+        end
+        false
+    end
+
 
 end

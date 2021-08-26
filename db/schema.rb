@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_22_091123) do
+ActiveRecord::Schema.define(version: 2021_08_26_102526) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,6 +60,8 @@ ActiveRecord::Schema.define(version: 2021_08_22_091123) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "image"
+    t.boolean "is_pinned"
+    t.boolean "is_locked"
     t.index ["user_id"], name: "index_blogs_on_user_id"
   end
 
@@ -69,7 +71,9 @@ ActiveRecord::Schema.define(version: 2021_08_22_091123) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id", null: false
+    t.bigint "comment_id"
     t.index ["blog_id"], name: "index_comments_on_blog_id"
+    t.index ["comment_id"], name: "index_comments_on_comment_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
@@ -79,11 +83,21 @@ ActiveRecord::Schema.define(version: 2021_08_22_091123) do
     t.string "password_digest"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "admin_level"
+    t.boolean "is_activated"
+    t.string "activation_key"
+    t.string "token"
+    t.datetime "token_date"
+    t.string "password_reset_token"
+    t.datetime "password_reset_date"
+    t.datetime "can_post_date"
+    t.datetime "can_comment_date"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "blogs", "users"
   add_foreign_key "comments", "blogs"
+  add_foreign_key "comments", "comments"
   add_foreign_key "comments", "users"
 end

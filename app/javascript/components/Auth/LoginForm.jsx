@@ -43,9 +43,9 @@ const LoginForm = ({ handleSubmit, setEmail, setPassword, loading }) => {
 
         <form className="mt-8" onSubmit={handleSubmit}>
           <Input
-            label="Email"
-            type="email"
-            placeholder="Email"
+            label="Username/Email"
+            type="text"
+            placeholder="Username or Email"
             onChange={(e) => setEmail(e.target.value)}
           />
           <Input
