@@ -16,6 +16,7 @@ import { Comments } from "./Comments/Comments";
 import Footer from "./Footer/Footer";
 import toast, { Toaster } from "react-hot-toast";
 import ScrollToTop from "./ScrollToTop";
+import ForgotPassword from "./Auth/ForgotPassword";
 
 export const AuthContext = React.createContext();
 
@@ -116,6 +117,7 @@ const App = () => {
               )}
             />
             <Route exact path="/signup"  component={Signup} />
+            <Route exact path="/forgot_password" component={ForgotPassword} />
             <Route exact path="/blogs" component={Blogs} /> 
             <Route exact path="/blogs/:id/show" component={ShowBlog} />  
             <Route exact path="/blogs/:id/edit" component={EditBlog} />   

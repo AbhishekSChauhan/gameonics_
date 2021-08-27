@@ -66,7 +66,7 @@ class RegistrationsController < ApplicationController
                 render json:({ errors: user.errors.full_messages}, 401)
             end
         end
-        render json:{message: 'Password reset information sent to associated account.'} 
+        render json:{notice: 'Password reset information sent to associated account.'} , status: 200
     end
 
     def password_reset_token
