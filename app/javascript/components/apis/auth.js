@@ -16,11 +16,16 @@ const forgotPassword = async(email) => {
     axios.patch('/forgot_password', email)
 }
 
+const resetPassword = async(password_reset_token, user) => {
+    axios.patch("/reset_password",{password_reset_token, user})
+}
+
 const authApi = {
     login,
     logout,
     signup,
     forgotPassword,
+    resetPassword,
 }
 
 export default authApi;

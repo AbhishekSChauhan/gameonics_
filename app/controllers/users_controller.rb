@@ -27,7 +27,9 @@ class UsersController < ApplicationController
 
     def update_image
         if @current_user.update_attribute(:profile_image params[:user][:profile_image])
-            render json:{user: user_with_image(@current_user)}
+            render json:{user: user_with_image(@current_user),
+                        notice:"Image added successfully"},
+                        status: 200
         else
             render json: {errors:@current_user.errors.full_messages}, status: 422
         end

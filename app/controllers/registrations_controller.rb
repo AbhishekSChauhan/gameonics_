@@ -79,11 +79,11 @@ class RegistrationsController < ApplicationController
         user = User.find_by(password_reset_token: token) if token.present?
         if user
             #Check token validity
-            return render json:{message:'Token expired'},status: 400 if user.password_token_expired?
+            return render json:{error:'Token expired'},status: 400 if user.password_token_expired?
             
             if user.update(password_params)
                 user.update_attribute(:password_reset_token, nil)
-                render json: {message:'Password changed successfully'}
+                render json: {notice:'Password changed successfully'}, status: 200
             else
                 render json:{errors: user.errors.full_messages}, status: 400
             end
