@@ -52,6 +52,12 @@ const reducer = (state, action) => {
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState({logged_in: false})
+
+  const handleLogin = (user) => {
+    setUser(user)
+    history.push("/")
+  }
 
   const checkLoginStatus = () => {
     axios.get('/logged_in',{withCredentials: true})
@@ -102,7 +108,13 @@ const App = () => {
           <ScrollToTop />
           <Switch>
             <Route exact path="/" component={Home}/>
-            <Route exact path="/login"  component={Login} />
+            <Route 
+              exact 
+              path="/login" 
+              render={()=>(
+                <Login handleLogin={handleLogin}/>
+              )}
+            />
             <Route exact path="/signup"  component={Signup} />
             <Route exact path="/blogs" component={Blogs} /> 
             <Route exact path="/blogs/:id/show" component={ShowBlog} />  

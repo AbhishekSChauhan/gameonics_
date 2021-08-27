@@ -1,10 +1,16 @@
 import axios from 'axios'
 
-const login = (payload) => axios.post("/users/sign_in", payload);
+const login = async(payload) => {
+    sessionStorage.clear()
+    return axios.post("/sessions", payload)
+}
 
 const logout = () => axios.delete("/users/sign_out");
 
-const signup = (payload) => axios.post("/users", payload);
+const signup = async(payload) => {
+    sessionStorage.clear()
+    return axios.post("/registrations", payload)
+}
 
 const authApi = {
     login,

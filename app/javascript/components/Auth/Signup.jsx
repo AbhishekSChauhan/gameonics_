@@ -5,6 +5,8 @@ import SignupForm from './SignupForm'
 import axios from 'axios'
 import {AuthContext} from '../App'
 import toast, { Toaster } from "react-hot-toast";
+import authApi from '../apis/auth'
+import ConfirmPage from './ConfirmPage'
 
 
 export default function Signup({history}) {
@@ -15,65 +17,60 @@ export default function Signup({history}) {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [passwordConfirmation, setPasswordConfirmation] = useState("")
-  const [registrationErrors, setSegistrationErrors] = useState("")
+  const [emailConfirm, setEmailConfirm] = useState(false)
+  const [userCreds, setUserCreds] = useState({});
 
-  
-  const handleSignup = (event) => {
+ const handleSignup = async (event) => {
     event.preventDefault();
     setLoading(true)
-    axios.post("/registrations", {
-        user:{
-          username,
-          email,
-          password,
-          password_confirmation: passwordConfirmation
-        }
-      } ,
-      { withCredentials: true}
-      )
-      .then(response => {
-        if(response.data.status === 'created'){
-          setLoading(false)
-        }
-        if(response){
-          response.success = response.status === 200;
-          if (response.data.notice){
-              toast.success(response.data.notice)                  
-          }
-        }
-        console.log("registration success", response)
-        dispatch({
-          type:'Signup',
-          payload: response.data.user.username,
-        })
-        history.push('/login')
-      })
-      .catch(error=>{
+    const user = {
+      username: username.trim(),
+      email: email.trim(),
+      password,
+      password_confirmation:passwordConfirmation,
+    }
+
+    authApi.signup(user)
+    .then(response => {
+      if(response.data.status === 'created'){
+        setLoading(false)
+        setEmailConfirm(true)
+        setUserCreds({ username: username.trim(), email: email.trim() });
+        toast.success(response.data.notice)  
+      }
+      history.push("/")
+    })
+    console.log("resgister res",response)
+      
+    // .then(response => {
+    //     if(response.data.status === 'created'){
+    //       setLoading(false)
+    //     }
+    //     console.log("registration success", response)
+    //     dispatch({
+    //       type:'Signup',
+    //       payload: response.data.user.username,
+    //     })
+    //     history.push('/login')
+    //   })
+    .catch(error=>{
         if(error){
           console.log("Signup error", error)
-          // const err = Object.entries(error);
-          // err.map(
-            toast.error(
-              error.response?.data?.notice ||
-              error.response?.data?.error ||
-              error.response?.data?.username_error ||
-              error.response?.data?.email_error ||
-              error.response?.data?.password_error ||
-              error.response?.data?.passwordConf_error ||
-              "Something went wrong!"
+          
+          toast.error(
+            error.response?.data?.notice ||
+            error.response?.data?.error ||
+            error.response?.data?.errors ||
+            "Something went wrong!"
           )
-        // )          
       }
-      if (error.response?.status === 423) {
-          window.location.href = "/";
-      }
-        console.log("registration error", error)
-      })
+      console.log("registration error", error)
+    })
   }
 
-  return (
-    <div>
-      
+  return emailConfirm ? <ConfirmPage user={userCreds} />
+  : (
+    <div>      
       <SignupForm 
         setUsername = {setUsername}
         setEmail={setEmail}

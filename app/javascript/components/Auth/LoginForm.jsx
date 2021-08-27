@@ -6,7 +6,7 @@ import Button from "../Button";
 import Signup from "./Signup";
 // import SocialLogin from './SocialLogin'
 
-const LoginForm = ({ handleSubmit, setEmail, setPassword, loading }) => {
+const LoginForm = ({ handleSubmit, setCredential, setPassword, loading }) => {
   return (
 
     <div
@@ -43,10 +43,10 @@ const LoginForm = ({ handleSubmit, setEmail, setPassword, loading }) => {
 
         <form className="mt-8" onSubmit={handleSubmit}>
           <Input
-            label="Username/Email"
+            label="Email or Username"
             type="text"
             placeholder="Username or Email"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setCredential(e.target.value)}
           />
           <Input
             label="Password"
@@ -55,6 +55,20 @@ const LoginForm = ({ handleSubmit, setEmail, setPassword, loading }) => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <Button type="submit" buttonText="Sign In" loading={loading} disabled={loading} />
+          <Link to="/forgot_password"
+            className="mt-2 text-sm font-medium text-bb-purple
+            transition duration-150 ease-in-out focus:outline-none
+            focus:underline"
+          >
+            Forgot Password
+          </Link>
+          <Link to="/signup"
+            className="mt-2 text-sm font-medium text-bb-purple
+            transition duration-150 ease-in-out focus:outline-none
+            focus:underline"
+          >
+          Create an account
+          </Link>
         </form>
       </div>
     </div>

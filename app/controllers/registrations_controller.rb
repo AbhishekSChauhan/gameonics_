@@ -1,4 +1,6 @@
 class RegistrationsController < ApplicationController
+    before_action :authorized_user?, only: %i[change_password destroy]
+
     # def create
     #     user = User.new(
     #         username: params['user']['username'],
@@ -33,12 +35,12 @@ class RegistrationsController < ApplicationController
 
     def create
         user = User.create!(register_params)
-        new_activation_key = generate_token(user.id, 62)
+        new_activation_key = generate_token(user.id, 52)
         user.update_attribute(:admin_level, 3) if User.all.size <= 1
         if user.update_attribute(:activation_key, new_activation_key)
             ActivationMailer.with(user: user).welcome_email.deliver_now
         end
-        render json:{message: 'Account registered but activation required'},
+        render json:{notice: 'Account registered but activation required'},
                         status: :created
     end
 
@@ -88,6 +90,14 @@ class RegistrationsController < ApplicationController
         else
             render json: {errors:'Invalid Token'}, status: 401
         endf
+    end
+
+    def activate_account
+        user=User.find(params[:id])
+        if user.activation_key == params[:activation_key]
+            user.update_attribute(:is_activated, true)
+        end
+        render json:{message:'Successfully activated account'}
     end
 
 

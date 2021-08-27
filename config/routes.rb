@@ -9,6 +9,10 @@ Rails.application.routes.draw do
   delete :logout, to: "sessions#logout" 
   get :logged_in, to: "sessions#logged_in"
 
+  get '/activate_account',
+      to: 'registrations#activate_account',
+      as: 'activate_account'
+
   ###   Blogs and comments routes  ###
   resources :blogs do
     resources :comments, only: [:create]

@@ -1,37 +1,61 @@
 class CommentsController < ApplicationController
-    before_action :set_comment, only: [:destroy]
+    before_action :authorized_user?, except: [:show]
+    before_action :set_blog, only: [:show :create :update :destroy]
+    before_action :set_comment, only: [:show,:update,:destroy]
 
-    include CurrentUserConcern
+    # include CurrentUserConcern
+
+    def show
+        render json:{comment: @comment}
+    end
 
     def create
-        comment = @current_user.comments.new(content: params[:newComment],blog_id: params[:blog_id])
+        return if suspended(@current_user.can_comment_date)
 
-        if @current_user
-            if comment.save
-                render json: {comment: comment, notice:"Comment successfully posted"}, status: :ok
-            else
-                errors = @comment.errors.full_messages.to_sentence
-                render json: {error: errors}, status: 422
-            end
+        # comment = @current_user.comments.new(content: params[:newComment],blog_id: params[:blog_id])
+        comment = @blog.comments.build(comment_params)
+
+        if comment.save
+            render json: {comment: comment, 
+                            comments: Blog.author_comments_json(@blog.comments)
+                            notice:"Comment successfully posted"}, status: :ok
         else
-            render json:{notice:"Login to comment"}
-        end        
+            errors = comment.errors.full_messages.to_sentence
+            render json: {error: errors}, status: 422
+        end       
         
     end
 
-    def destroy
-        if comment.destroy
-            render status: :ok, json: {}
-        else
-            render json: {error: @comment.errors.full_messages.to_sentence}, status: 422
+    def update
+        # Only allow the owner of the post or an administrator to update the post
+        unless @blog.user == @current_user || @current_user.admin_level >= 1
+            render json:{errors: 'Not authorized to perform this task'}, status:401
         end
+
+        if @comment.update(comment_params)
+            render json:{comment: @comment,
+                        comments: Blog.author_comments_json(@blog.comments)}
+        else
+            errors = comment.errors.full_messages.to_sentence
+            render json: {error: errors}, status: 422
+    end
+
+    def destroy
+        # Only allow the owner of the post or an administrator to update the post
+        unless @blog.user == @current_user || @current_user.admin_level >= 1
+            render json:{errors: 'Not authorized to perform this task'}, status:401
+        end
+        
+        comment.destroy
+        render status: :ok, json: {message:'Comment deleted',
+                                   comments: Blog.author_comments_json(@blog.comments)}
     end
 
     private
 
     def set_blog
         @blog = Blog.find(params[:comment][:blog_id])
-      end
+    end
 
     def set_comment
         @comment = Comment.find(params[:id])
