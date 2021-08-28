@@ -51,39 +51,39 @@ const ProfilePage = ({
         } else { setProfileImage(elem.files[0]); }
     };
 
-    const handleProfileImageSubmit = e => {
+    const handleProfileImageSubmit = async(e) => {
         e.preventDefault()
         const formData = new FormDate()
         formDate.append('user[profile_image]',profileImage)
 
-        setLoading(true)
-        usersApi.userImage(selectedUser.id,formData)
-        .then(response => {
-            if(response.status === 200){
-                setSelectedUser(response.data.user)
-                setLoading(false)
-                toast.success(response.data.notice)
-
-            }
-        })
-        .catch(error=>{
-            if(error){
+        try{
+          setLoading(true)
+          const response = await usersApi.userImage(selectedUser.id,formData)
+          if(response.status === 200){
+            toast.success(response.data.notice)
+          }
+          setSelectedUser(response.data.user)
+          setLoading(false)
+        }catch(error) {
+          console.log("signup error",error)
+          setLoading(false)
+          if(error){
               toast.error(
                   error.response?.data?.notice ||
-                  error.response?.data?.error ||
                   error.response?.data?.errors ||
+                  error.response?.data?.error ||
                   error.message ||
                   error.notice ||
                   "Something went wrong!"
               )
-            }
-            console.log("login error", error)
-        })
+          }
+      }
     }
 
     const fetchUserDetails = () =>{
         const userID = UserDetails.id
         setLoading(true)
+
         usersApi.fetchUser(userID)
         .then(response => {
             if (response.status === 200){

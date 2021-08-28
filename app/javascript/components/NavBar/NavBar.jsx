@@ -65,9 +65,9 @@ function NavBar() {
 
                     <div>
                         {
-                         UserDetails.state.isLoggedIn ? 
+                         UserDetails.logged_in ? 
                             (
-                            <div>Welcome {UserDetails?.state?.user?.user?.username}
+                            <div>Welcome {UserDetails.logged_in}
                                 <button onClick={handleLogout}>Logout</button>
                             </div>
                             ) : (

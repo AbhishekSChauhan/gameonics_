@@ -22,30 +22,32 @@ const ResetPassword = ({history}) => {
         const token = query.get('token')
         const user = {password,passwordConfirmation}
         setLoading(true)
-        authApi.resetPassword(token,user)
-        .then(response=>{
-            if(response.status === 200){
-                setPasswordReset(true)
-                toast.success(response.data.notice)
-                setLoading(false)
-                history.push("/login")
+        try{
+            const response = authApi.resetPassword({token,user})
+            if(response){
+                if(response.status === 200){
+                    toast.success(response.data.notice)
+                }
             }
-        })
-        .catch(error=>{
+            setPasswordReset(true)
+            toast.success(response.data.notice)
+            setLoading(false)
+            history.push("/login")
+        }catch(error) {
+            console.log("signup error",error)
+            setLoading(false)
             if(error){
-              toast.error(
-                  error.response?.data?.notice ||
-                  error.response?.data?.error ||
-                  error.response?.data?.errors ||
-                  error.message ||
-                  error.notice ||
-                  "Something went wrong!"
-              )
+                toast.error(
+                    error.response?.data?.notice ||
+                    error.response?.data?.errors ||
+                    error.response?.data?.error ||
+                    error.message ||
+                    error.notice ||
+                    "Something went wrong!"
+                )
             }
-            console.log("reset error", error)
-          })
+        }
     }
-
 
     return (
         <div>

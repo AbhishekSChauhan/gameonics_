@@ -56,8 +56,6 @@ export default function CreateBlog({history}) {
             console.log("blog submit response", response)
             console.log("img",image)
             history.push("/blogs")
-            
-
         } catch(error){
             console.log("blog not saved error",error)
             setLoading(false)

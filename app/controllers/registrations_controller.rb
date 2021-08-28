@@ -44,6 +44,7 @@ class RegistrationsController < ApplicationController
                         status: :created
     end
 
+
     def activate_account
         url = 'http://localhost:3000/login'
         user = User.find(params[:id])
@@ -51,7 +52,7 @@ class RegistrationsController < ApplicationController
         if user.activation_key == params[:activation_key]
             user.update_attribute(:is_activated,true)
         end
-         # render json:(message: 'Successfully activated account')
+        render json:{message: 'Successfully activated account'}
         redirect_to url
     end
 
@@ -63,15 +64,27 @@ class RegistrationsController < ApplicationController
                 user.update_attribute(:password_reset_date, DateTime.now)
                 ActivationMailer.with(user: user).password_reset_email.deliver_now
             else
-                render json:({ errors: user.errors.full_messages}, 401)
+                render json:{ errors: user.errors.full_messages}, status: 401
             end
         end
         render json:{notice: 'Password reset information sent to associated account.'} , status: 200
     end
 
-    def password_reset_token
+    def password_reset_account
         reset_token = params[:password_reset_token]
         url = "http://localhost:3000/reset_password?token=#{reset_token}"
+    end
+
+    def change_password
+        if @current_user.try(:authenticate, params[:user][:old_password])
+            if @current_user.update(password_params)
+                render json:{notice:"Password changed successfully"}, status: 200
+            else
+                render json:{errors: @current_user.errors.full_messages}, status:400
+            end
+        else
+            render json:{errors:"Incorrect password"}, status:401
+        end
     end
 
     def change_password_with_token
@@ -89,21 +102,25 @@ class RegistrationsController < ApplicationController
             end
         else
             render json: {errors:'Invalid Token'}, status: 401
-        endf
+        end
     end
 
-    def activate_account
+
+    def destroy
         user=User.find(params[:id])
-        if user.activation_key == params[:activation_key]
-            user.update_attribute(:is_activated, true)
+        unless user == @current_user || @current_user.admin_level >= 1
+            return head(401)
         end
-        render json:{message:'Successfully activated account'}
+
+        user.destroy
+        render json:{notice:"Account deactivated"}
     end
 
 
     private
     def register_params
-        params.require(:user).permit(:username,:email,:password,:password_confirmation)
+        params.require(:user)
+          .permit(:username, :email, :password, :password_confirmation)
     end
 
     def password_params

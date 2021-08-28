@@ -12,12 +12,12 @@ const signup = async(payload) => {
     return axios.post("/registrations", payload)
 }
 
-const forgotPassword = async(email) => {
-    axios.patch('/forgot_password', email)
+const forgotPassword = async(payload) => {
+    axios.patch('/forgot_password', payload)
 }
 
-const resetPassword = async(password_reset_token, user) => {
-    axios.patch("/reset_password",{password_reset_token, user})
+const resetPassword = async(payload) => {
+    axios.patch("/reset_password",payload)
 }
 
 const authApi = {

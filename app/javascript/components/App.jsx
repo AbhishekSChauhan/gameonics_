@@ -87,7 +87,6 @@ const App = () => {
     // registerIntercepts();
     // initializeLogger();
     setAuthHeaders(setLoading);
-    checkLoginStatus()
   }, []);
 
   if (loading) {

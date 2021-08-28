@@ -13,41 +13,39 @@ export default function Login({handleLogin}) {
   const [loading, setLoading] = useState(false)
   const [password, setPassword] = useState("")
   const [credential, setCredential] = useState('');
-  const handleSubmit = (event) => {
+  
+  const handleSubmit = async(event) => {
     event.preventDefault();
     const user = { username: credential, email:credential, password}
 
     setLoading(true)
-    authApi.login(user)
-    .then(response => {
+    try{
+      const response = await authApi.login({user})
+      if(response){
         if(response.data.status === 'created'){
-          const retrievedUser = response.data.user
-          sessionStorage.setItem('user',JSON.stringify({ ...retrievedUser }))
-          handleLogin(retrievedUser)
-          setLoading(false)
-          toast.success(response.data.notice)          
-          // dispatch({
-          //   type:'Login',
-          //   payload: response.data,
-          // })
-        }
-        console.log(response)
-        // console.log("Login success: Welcome", response.data.user.username)
-        
-      })
-      .catch(error=>{
-        if(error){
+          toast.success(response.data.notice)  
+        }       
+      }
+      const retrievedUser = response.data.user
+      sessionStorage.setItem('user',JSON.stringify({ ...retrievedUser }))
+      handleLogin(retrievedUser)
+      setLoading(false)
+      console.log("login res",response)
+      history.push("/")
+    }catch(error) {
+      console.log("login error",error)
+      setLoading(false)
+      if(error){
           toast.error(
               error.response?.data?.notice ||
-              error.response?.data?.error ||
               error.response?.data?.errors ||
+              error.response?.data?.error ||
               error.message ||
               error.notice ||
               "Something went wrong!"
           )
-        }
-        console.log("login error", error)
-      })
+      }
+    }
   }
 
   return (

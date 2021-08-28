@@ -5,35 +5,37 @@ const ForgotPassword = () => {
     const [emailSent, setEmailSent] = useState(false)
     const [email, setEmail] = useState('')
     const [loading, setLoading] = useState(false)
-    const [notice, setNotice] = useState(initialState)
-    const handleSubmit = (event) => {
+    const [notice, setNotice] = useState('')
+
+    const handleSubmit = async(event) => {
         event.preventDefault()
         const emailTrim = email.trim()
         setLoading(true)
-        authApi.forgotPassword(emailTrim)
-        .then(response => {
-            if (response.status === 200){
+        try{
+            const response = await authApi.forgotPassword({emailTrim})
+            if(response.status === 200){
                 toast.success(response.data.notice)
-                setNotice(response.data.notice) 
-                setEmailSent(true)
-                setLoading(false)
+
             }
-        })
-        .catch(error=>{
+            setNotice(response.data.notice) 
+            setEmailSent(true)
+            setLoading(false)
+        }catch(error) {
+            console.log("forgot pass error",error)
+            setLoading(false)
             if(error){
-              toast.error(
-                  error.response?.data?.notice ||
-                  error.response?.data?.error ||
-                  error.response?.data?.errors ||
-                  error.message ||
-                  error.notice ||
-                  "Something went wrong!"
-              )
+                toast.error(
+                    error.response?.data?.notice ||
+                    error.response?.data?.errors ||
+                    error.response?.data?.error ||
+                    error.message ||
+                    error.notice ||
+                    "Something went wrong!"
+                )
             }
-            console.log("login error", error)
-        })
-        
+        }        
     }
+
     return emailSent ? (
         <div className="bg-white">
             <div className="max-w-6xl mx-auto mt-10">
