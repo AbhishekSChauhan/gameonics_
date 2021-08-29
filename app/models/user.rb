@@ -15,6 +15,7 @@ class User < ApplicationRecord
     validates :password, length: {minimum: 8}, presence: true, on: :create
     validates :password, confirmation: true
 
+
     validates :admin_level, numericality: { only_integer: true,
                                           less_than_or_equal_to: 3 }
     
@@ -27,5 +28,6 @@ class User < ApplicationRecord
         offset = (Time.zone.now - password_reset_date).round
         offset / 1.hours >= 1 # Token expires after 1 hour
     end
+
 
 end
