@@ -7,6 +7,7 @@ import Rails from "@rails/ujs"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
 import "../stylesheets/application.scss"
+import 'react-quill/dist/quill.snow.css';
 
 Rails.start()
 ActiveStorage.start()
@@ -14,3 +15,6 @@ ActiveStorage.start()
 var componentRequireContext = require.context("components", true);
 var ReactRailsUJS = require("react_ujs");
 ReactRailsUJS.useContext(componentRequireContext);
+
+require("trix")
+require("@rails/actiontext")

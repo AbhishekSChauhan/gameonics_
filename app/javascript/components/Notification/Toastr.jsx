@@ -1,10 +1,11 @@
 import React from 'react'
 
-export default function Registration() {
-    useState
+const Toastr = () => {
     return (
         <div>
             
         </div>
     )
 }
+
+export default Toastr
