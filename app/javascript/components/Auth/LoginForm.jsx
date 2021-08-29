@@ -1,121 +1,90 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { VscAccount } from "react-icons/vsc";
+import { MdLockOutline } from "react-icons/md";
 
-import Input from "../Input";
-import Button from "../Button";
-import Signup from "./Signup";
-// import SocialLogin from './SocialLogin'
 
 const LoginForm = ({ handleSubmit, setCredential, setPassword, loading }) => {
   return (
 
-    <div
-      className="flex items-center justify-center min-h-screen
-      px-4 py-12 lg:px-8 bg-gray-50 sm:px-6"
-    >
-      <div className="w-full max-w-md">
-        <h2
-          className="mt-6 text-3xl font-extrabold leading-9
-          text-center text-bb-gray-700"
-        >
-          Sign In
-        </h2>
-        <div className="text-center">
-          <Link to="/signup"
-            render={props=>(
-              <Signup {...props} setLoggedInStatus={setLoggedInStatus} />
-            )}
-            className="mt-2 text-sm font-medium text-bb-purple
-            transition duration-150 ease-in-out focus:outline-none
-            focus:underline"
-          >
-            Or Register Now
+  
+
+  <div className="flex flex-col md:flex-row h-screen items-center">
+
+  <div className="bg-indigo-600 hidden lg:block w-full md:w-1/2 xl:w-2/3 h-screen">
+    <img src="https://source.unsplash.com/random" alt="" className="w-full h-full object-cover" />
+  </div>
+
+  <div className="bg-white w-full md:max-w-md lg:max-w-full md:mx-auto md:mx-0 md:w-1/2 xl:w-1/3 h-screen px-6 lg:px-16 xl:px-12
+        flex items-center justify-center">
+
+    <div className="w-full h-100">
+
+
+      <h1 className="text-xl md:text-2xl font-bold leading-tight mt-12">Log in to your account</h1>
+
+      <form className="mt-6" onSubmit={handleSubmit} >
+        {/* <div>
+          <label className="block text-gray-700">Email or Username</label>
+          <input onChange={(e) => setCredential(e.target.value)}
+           placeholder="Enter Email or Username" 
+           className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none" autoFocus required />
+        </div> */}
+        
+      <div>
+        <label className="block text-gray-700">Email or Username</label>
+        <div className="flex">
+          <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center">
+          <VscAccount className="text-gray-400 text-lg"/>
+          </div>
+          <input onChange={(e) => setCredential(e.target.value)}
+          placeholder="Enter Email or Username" 
+          className="w-full py-3 -ml-10 pl-10 pr-3 rounded-lg bg-gray-200  
+          border items-center focus:border-blue-500 focus:bg-white focus:outline-none" autoFocus required />
+        </div>
+      </div>
+
+      <div className="mt-4">
+        <label className="block text-gray-700">Password</label>
+        <div className="flex">
+          <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center">
+            <MdLockOutline className="text-gray-400 text-lg" />
+          </div>
+          <input type="password" onChange={(e) => setPassword(e.target.value)} 
+          placeholder="********" minLength="8"
+          className="w-full py-3 -ml-10 pl-10 pr-3 rounded-lg bg-gray-200  
+          border items-center focus:border-blue-500 focus:bg-white focus:outline-none" />
+        </div>
+      </div>
+
+
+        <div className="text-right mt-2">
+          <Link to="/forgot_password" 
+          className="text-sm font-semibold text-gray-700 hover:text-blue-700 focus:text-blue-700">
+          Forgot Password?
           </Link>
         </div>
 
-        {/* <div>
-          <div className="mt-8 text-sm font-medium text-bb-purple
-            transition duration-150 ease-in-out focus:outline-none
-            focus:underline">
-              <SocialLogin />
-          </div>
-        </div> */}
+        <button type="submit" className="w-full block bg-indigo-500 hover:bg-indigo-400 focus:bg-indigo-400 text-white font-semibold rounded-lg
+              px-4 py-3 mt-6">Log In
+        </button>
+      </form>
 
-        <form className="mt-8" onSubmit={handleSubmit}>
-          <Input
-            label="Email or Username"
-            type="text"
-            placeholder="Username or Email"
-            onChange={(e) => setCredential(e.target.value)}
-          />
-          <Input
-            label="Password"
-            type="password"
-            placeholder="********"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Button type="submit" buttonText="Sign In" loading={loading} disabled={loading} />
-          <Link to="/forgot_password"
-            className="mt-2 text-sm font-medium text-bb-purple
-            transition duration-150 ease-in-out focus:outline-none
-            focus:underline"
-          >
-            Forgot Password
-          </Link>
-          <Link to="/signup"
-            className="mt-2 text-sm font-medium text-bb-purple
-            transition duration-150 ease-in-out focus:outline-none
-            focus:underline"
-          >
+      <hr className="my-6 border-gray-300 w-full" />
+
+
+      <p className="mt-8">
+        Need an account? 
+        <Link to="/signup" className="text-blue-500 hover:text-blue-700 font-semibold">
           Create an account
-          </Link>
-        </form>
-      </div>
+        </Link>
+      </p>
     </div>
+  </div>
 
-    // <div className="flex items-center justify-center mt-16 mx-6">
-    // <div className="p-6 max-w-sm w-full bg-gray-800 shadow rounded-md">
-    //     <h3 className="text-white text-xl text-center">Login</h3>
+</div>
 
-    //     <form className="mt-4" method="POST" onSubmit={handleSubmit}>
-    //         <input type="hidden" name="_token" value="96LGLQC0ylNCwHDLyTqFuBvSMwOqHi7voLu8lwj4" />
-    //         <label className="block">
-    //             <span className="text-white text-sm">E-Mail Address</span>
-    //             <input type="email" id="email" name="email" className="form-input mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white" 
-    //                 onChange={(e) => setEmail(e.target.value)} required autocomplete="email" autofocus />
-
-    //         </label>
-
-    //         <label className="block mt-3">
-    //             <span className="text-white text-sm">Password</span>
-    //             <input id="password" type="password" className="form-input mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white" 
-    //             name="password" onChange={(e) => setPassword(e.target.value)} required autocomplete="current-password" />
-
-    //         </label>
-
-    //         <div className="flex justify-between items-center mt-4">
-    //             <div>
-    //                 <label className="inline-flex items-center">
-    //                     <input type="checkbox" className="form-checkbox text-blue-500 bg-gray-800 border-gray-600" name="remember" id="remember" />
-    //                     <span className="mx-2 text-gray-200 text-sm">Remember Me</span>
-    //                 </label>
-    //             </div>
-
-    //             <div>
-    //                 <a className="block text-sm text-blue-500 hover:underline" href="http://localhost:8000/password/reset">
-    //                     Forgot Your Password?
-    //                 </a>
-    //             </div>
-    //         </div>
-
-    //         <div className="mt-6">
-    //             <button type="submit" className="w-full py-2 px-4 text-center bg-blue-600 rounded-md text-white text-sm hover:bg-blue-500 focus:outline-none">
-    //                 Login
-    //             </button>
-    //         </div>
-    //     </form>
-    // </div>
-    // </div>
+   
   );
 };
 

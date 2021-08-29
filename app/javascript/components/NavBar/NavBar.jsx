@@ -6,42 +6,12 @@ import NavItems from './NavItems';
 import {AuthContext} from '../App'
 import axios from 'axios'
 import toast, { Toaster } from "react-hot-toast";
+import Dropdown from './Dropdown';
 
-function NavBar() {
+function NavBar({handleLogout}) {
     const UserDetails = React.useContext(AuthContext)
-    const {dispatch} = React.useContext(AuthContext)
     console.log("UserDetails = ",UserDetails)
 
-    const handleLogout=() => {
-        axios.delete('/logout', { withCredentials: true})
-        .then(response =>{
-            if(response){
-                response.success = response.status === 200;
-                if (response.data.notice){
-                    toast.success(response.data.notice)                  
-                }
-            }
-            dispatch({
-                type:'Logout',
-            })
-        })
-        .catch(error => {
-            if(error){
-                toast.error(
-                    error.response?.data?.notice ||
-                    error.response?.data?.error ||
-                    error.message ||
-                    error.notice ||
-                    "Something went wrong!"
-                )
-            }
-            if (error.response?.status === 423) {
-                window.location.href = "/";
-            }
-            console.log('logout error', error);
-        })        
-        console.log("logout clicked",UserDetails)
-    }
     
     return (
         
@@ -67,9 +37,10 @@ function NavBar() {
                         {
                          UserDetails.logged_in ? 
                             (
-                            <div>Welcome {UserDetails.logged_in}
-                                <button onClick={handleLogout}>Logout</button>
-                            </div>
+                                <Dropdown handleLogout={handleLogout}/>
+                            // <div>Welcome {UserDetails.logged_in}
+                            //     <button onClick={handleLogout}>Logout</button>
+                            // </div>
                             ) : (
                             <Link to="/login"
                                 className="absolute inset-y-0 right-0 flex items-center sm:static sm:inset-auto sm:ml-4 sm:pr-0 ">

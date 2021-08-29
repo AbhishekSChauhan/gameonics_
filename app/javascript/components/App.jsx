@@ -17,6 +17,9 @@ import Footer from "./Footer/Footer";
 import toast, { Toaster } from "react-hot-toast";
 import ScrollToTop from "./ScrollToTop";
 import ForgotPassword from "./Auth/ForgotPassword";
+import ResetPassword from "./Auth/ResetPassword";
+import ProfilePage from "./ProfilePage/ProfilePage";
+import authApi from "./apis/auth";
 
 export const AuthContext = React.createContext();
 
@@ -54,10 +57,53 @@ const App = () => {
   // const [state, dispatch] = useReducer(reducer, initialState)
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({logged_in: false})
+  const [selectedBlog, setSelectedBlog] = useState(null)
+
+  const handleBlogSelect = (blog) => {
+    setSelectedBlog(blog)
+  }
 
   const handleLogin = (user) => {
     setUser(user)
     history.push("/")
+  }
+
+  const handleLogout = async() => {
+    try{
+      setLoading(true)
+      const response = await authApi.logout()
+      if(response.status === 200){
+        toast.success(response.data.notice)
+      }
+      setUser({logged_in:false})
+    }catch(error) {
+      console.log("signup error",error)
+      setLoading(false)
+      if(error){
+          toast.error(
+              error.response?.data?.notice ||
+              error.response?.data?.errors ||
+              error.response?.data?.error ||
+              error.message ||
+              error.notice ||
+              "Something went wrong!"
+        )
+      }
+    }            
+}
+
+  const checkLoginStatus = async() => {
+    if (sessionStorage.getItem('user')) setLoading(true)
+    try{
+      const response = await authApi.logged_in()
+      setUser(response.data.user)
+      if(sessionStorage.getItem('user')){
+        setLoading(false);
+      }
+    }catch(error) {
+      setLoading(false)
+    }
+    
   }
 
   // const checkLoginStatus = () => {
@@ -82,10 +128,12 @@ const App = () => {
   //     console.log(error)
   //   })
   // }
+  
 
   useEffect(() => {
     // registerIntercepts();
     // initializeLogger();
+    checkLoginStatus();
     setAuthHeaders(setLoading);
   }, []);
 
@@ -104,7 +152,7 @@ const App = () => {
       <Router>
         <div>
           <Toaster position="top-right" reverseOrder={false}/>          
-          <NavBar />
+          <NavBar handleLogout={handleLogout} />
           <ScrollToTop />
           <Switch>
             <Route exact path="/" component={Home}/>
@@ -117,15 +165,25 @@ const App = () => {
             />
             <Route exact path="/signup"  component={Signup} />
             <Route exact path="/forgot_password" component={ForgotPassword} />
+            <Route exact path="/reset_password" component={ResetPassword} />
             <Route exact path="/blogs" component={Blogs} /> 
             <Route exact path="/blogs/:id/show" component={ShowBlog} />  
             <Route exact path="/blogs/:id/edit" component={EditBlog} />   
             <Route exact path="/blogs/create" component={CreateBlog} />
             {/* <Route exact path="/blogs/create" component={Editor} />    */}
-            <Route exact path="/blogs/:id/get_comments" component={Comments} />
+            {/* <Route exact path="/blogs/:id/get_comments" component={Comments} /> */}
             <Route exact path="/blogs/:id/comments" component={Comments} />
+            <Route exact path="/users/:id" 
+              render={(props)=>(
+                <ProfilePage 
+                  user = {user} 
+                  handleLogout={handleLogout} 
+                  handleBlogSelect={handleBlogSelect}
+                />
+              )} />
+
           </Switch>
-          <Footer />
+          {/* <Footer /> */}
         </div>      
       </Router>
     </AuthContext.Provider>    

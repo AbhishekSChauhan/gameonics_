@@ -32,7 +32,7 @@ class SessionsController < ApplicationController
 
     def destroy
         @current_user.update(token: nil)
-        render json:{user:{logged_in:false}, notice:'Logout Successful'}
+        render json:{user:{logged_in:false}, notice:'Logout Successful'}, status:200
     end
 
 
