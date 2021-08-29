@@ -1,0 +1,22 @@
+# production:
+#   cloud_name: gameonics
+#   api_key: <%= ENV['CLOUDINARY_KEY'] %>
+#   api_secret: <%= ENV['CLOUDINARY_SECRET'] %>
+#   enhance_image_tag: true
+#   static_file_support: true
+
+development: 
+  cloud_name: "gameonics"
+  api_key: "967132691392636"
+  api_secret: "X2HcBKPWUSuLCpdwkxLUM1PZkh4"
+  secure: true
+  enhance_image_tag: true
+  static_file_support: true
+
+production:
+  cloud_name: "gameonics"
+  api_key: "967132691392636"
+  api_secret: "X2HcBKPWUSuLCpdwkxLUM1PZkh4"
+  secure: true
+  enhance_image_tag: true
+  static_file_support: true

@@ -4,51 +4,61 @@ import {Link} from 'react-router-dom'
 import LoginForm from './LoginForm'
 import axios from 'axios'
 import {AuthContext} from '../App'
+import toast, { Toaster } from "react-hot-toast";
+import authApi from '../apis/auth'
 
-export default function Login({history}) {
+export default function Login({handleLogin}) {
   const {dispatch} = React.useContext(AuthContext)
   
   const [loading, setLoading] = useState(false)
-  const [username, setUsername] = useState("")
-  const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [loginErrors, setLoginErrors] = useState("")
+  const [credential, setCredential] = useState('');
   
-  const handleSignup = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault();
+    const user = { username: credential, email:credential, password}
+
     setLoading(true)
-    axios.post("/sessions", {
-        user:{
-          email,
-          password,
-        }
-      } ,
-      { withCredentials: true}
-      )
-      .then(response => {
-        if(response.data.logged_in === true){
-          setLoading(false)
-        }
-        console.log(response)
-        console.log("Login success: Welcome", response.data.user.username)
-        dispatch({
-          type:'Login',
-          payload: response.data.user.username,
-        })
-        history.push('/')
-      })
-      .catch(error=>{
-        console.log("login error", error)
-      })
+    try{
+      const response = await authApi.login({user})
+      if(response){
+        if(response.data.status === 'created'){
+          toast.success(response.data.notice)  
+        }       
+      }
+      const retrievedUser = response.data.user
+      sessionStorage.setItem('user',JSON.stringify({ ...retrievedUser }))
+      handleLogin(retrievedUser)
+      setLoading(false)
+      console.log("login res",response)
+      history.push("/")
+    }catch(error) {
+      console.log("login error",error)
+      setLoading(false)
+      if(error){
+          toast.error(
+              error.response?.data?.notice ||
+              error.response?.data?.errors ||
+              error.response?.data?.error ||
+              error.message ||
+              error.notice ||
+              "Something went wrong!"
+          )
+      }
+    }
   }
 
   return (
-    <LoginForm 
-      setEmail={setEmail}
-      setPassword={setPassword}
-      loading={loading}
-      handleSubmit={handleSignup}
-    />
+    <div>
+      <LoginForm 
+        setCredential={setCredential}
+        setPassword={setPassword}
+        loading={loading}
+        handleSubmit={handleSubmit}
+      />
+
+    </div>
+    
   )
 }
 
