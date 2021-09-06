@@ -20,41 +20,13 @@ import ForgotPassword from "./Auth/ForgotPassword";
 import ResetPassword from "./Auth/ResetPassword";
 import ProfilePage from "./ProfilePage/ProfilePage";
 import authApi from "./apis/auth";
+import GameDetails from "./Games/GameDetails";
+
 
 export const AuthContext = React.createContext();
 
-// const initialState = {
-//   isLoggedIn: false,
-//   user: null
-// }
-
-// const reducer = (state, action) => {
-//   switch(action.type){
-//     case 'Login':
-//       return {
-//         ...state,
-//         isLoggedIn: true,
-//         user: action.payload
-//       }
-//     case 'Signup':
-//       return {
-//         ...state,
-//         isLoggedIn: true,
-//         user: action.payload,
-//       }
-//     case 'Logout':
-//       return {
-//         ...state,
-//         isLoggedIn: false,
-//         user: null
-//       } 
-//     default:
-//       return state
-//   }
-// }
 
 const App = () => {
-  // const [state, dispatch] = useReducer(reducer, initialState)
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({logged_in: false})
   const [selectedBlog, setSelectedBlog] = useState(null)
@@ -104,31 +76,7 @@ const App = () => {
       setLoading(false)
     }
     
-  }
-
-  // const checkLoginStatus = () => {
-  //   axios.get('/logged_in',{withCredentials: true})
-  //   .then(response => {
-  //     if(response.data.logged_in && state.isLoggedIn === false){
-  //       dispatch({
-  //         type: 'Login',
-  //         payload: response.data
-  //       }) 
-  //     }
-  //     else if(!response.data.logged_in && state.isLoggedIn === true ){
-  //       dispatch({
-  //         type: 'Logout',
-  //         payload: null
-  //       })
-  //     }
-  //     console.log("response.data ",response.data)
-  //     console.log("logged in response ",response)
-  //   })
-  //   .catch(error=>{
-  //     console.log(error)
-  //   })
-  // }
-  
+  } 
 
   useEffect(() => {
     // registerIntercepts();
@@ -181,6 +129,12 @@ const App = () => {
                   handleBlogSelect={handleBlogSelect}
                 />
               )} />
+            <Route path="/games/:slug" 
+              render={(props)=>(
+                <GameDetails 
+                />
+              )}
+            />
 
           </Switch>
           {/* <Footer /> */}
