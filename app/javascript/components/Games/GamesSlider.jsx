@@ -64,9 +64,9 @@ const GamesSlider = ({history,upcomingGames,newGames,popularGames}) => {
                             <img src={game.background_image} 
                                 onClick={()=>showGame(game.slug)}
                                 alt="game_img" 
-                                className="object-fill cursor-pointer rounded-lg h-80 w-72
-                                transition duration-300 transform shadow-md 
-                                hover:shadow-lg" 
+                                className="h-80 w-72 object-fill cursor-pointer rounded-lg 
+                                transition duration-300 transform shadow-md rounded border-2
+                                hover:shadow-lg ml-3" 
                             />
                         </div> 
                     </div>
@@ -90,9 +90,9 @@ const GamesSlider = ({history,upcomingGames,newGames,popularGames}) => {
                             <img src={game.background_image}
                                 onClick={()=>showGame(game.slug)} 
                                 alt=" random imgee" 
-                                className="object-fill cursor-pointer rounded-lg h-80 w-72
-                                transition duration-300 transform  shadow-md 
-                                shadow-lg " 
+                                className="h-80 w-72 object-fill cursor-pointer rounded-lg 
+                                transition duration-300 transform shadow-md rounded border-2
+                                hover:shadow-lg ml-3" 
                             /> 
                         </div> 
                     </div>
@@ -115,9 +115,9 @@ const GamesSlider = ({history,upcomingGames,newGames,popularGames}) => {
                             <img src={game.background_image} 
                                 onClick={()=>showGame(game.slug)}
                                 alt=" random imgee" 
-                                className="object-fill cursor-pointer rounded-lg h-80 w-72
-                                transition duration-300 transform  shadow-md 
-                                shadow-lg " 
+                                className="h-80 w-72 object-fill cursor-pointer rounded-lg 
+                                transition duration-300 transform shadow-md rounded border-2
+                                hover:shadow-lg ml-3" 
                             /> 
                         </div> 
                     </div>

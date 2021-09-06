@@ -6,8 +6,6 @@ import Signup from './Auth/Signup'
 import Login from './Auth/Login'
 import PageLoader from './PageLoader'
 import {setAuthHeaders} from './apis/axios'
-import axios from 'axios'
-import BlogsDashboard from "./Blogs/BlogsDashboard";
 import Blogs from "./Blogs/Blogs";
 import ShowBlog from "./Blogs/ShowBlog";
 import CreateBlog from "./Blogs/CreateBlog";
@@ -22,14 +20,15 @@ import ProfilePage from "./ProfilePage/ProfilePage";
 import authApi from "./apis/auth";
 import GameDetails from "./Games/GameDetails";
 
-
-export const AuthContext = React.createContext();
-
-
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({logged_in: false})
   const [selectedBlog, setSelectedBlog] = useState(null)
+
+  useEffect(() => {
+    checkLoginStatus();
+    setAuthHeaders(setLoading);
+  }, []);
 
   const handleBlogSelect = (blog) => {
     setSelectedBlog(blog)
@@ -62,7 +61,7 @@ const App = () => {
         )
       }
     }            
-}
+  }
 
   const checkLoginStatus = async() => {
     if (sessionStorage.getItem('user')) setLoading(true)
@@ -74,16 +73,9 @@ const App = () => {
       }
     }catch(error) {
       setLoading(false)
-    }
-    
-  } 
-
-  useEffect(() => {
-    // registerIntercepts();
-    // initializeLogger();
-    checkLoginStatus();
-    setAuthHeaders(setLoading);
-  }, []);
+    } 
+  }
+  
 
   if (loading) {
     return (
@@ -94,13 +86,10 @@ const App = () => {
   }
 
   return ( 
-    <AuthContext.Provider 
-      value={user}
-    >  
       <Router>
         <div>
           <Toaster position="top-right" reverseOrder={false}/>          
-          <NavBar handleLogout={handleLogout} />
+          <NavBar handleLogout={handleLogout} user={user} />
           <ScrollToTop />
           <Switch>
             <Route exact path="/" component={Home}/>
@@ -118,8 +107,6 @@ const App = () => {
             <Route exact path="/blogs/:id/show" component={ShowBlog} />  
             <Route exact path="/blogs/:id/edit" component={EditBlog} />   
             <Route exact path="/blogs/create" component={CreateBlog} />
-            {/* <Route exact path="/blogs/create" component={Editor} />    */}
-            {/* <Route exact path="/blogs/:id/get_comments" component={Comments} /> */}
             <Route exact path="/blogs/:id/comments" component={Comments} />
             <Route exact path="/users/:id" 
               render={(props)=>(
@@ -140,7 +127,7 @@ const App = () => {
           {/* <Footer /> */}
         </div>      
       </Router>
-    </AuthContext.Provider>    
+ 
   );
 };
 

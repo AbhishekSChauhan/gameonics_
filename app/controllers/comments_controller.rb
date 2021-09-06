@@ -1,6 +1,6 @@
 class CommentsController < ApplicationController
     before_action :authorized_user?, except: [:show]
-    before_action :set_blog, only: [:show :create :update :destroy]
+    before_action :set_blog, only: [:show, :create, :update, :destroy]
     before_action :set_comment, only: [:show,:update,:destroy]
 
     # include CurrentUserConcern
@@ -16,9 +16,9 @@ class CommentsController < ApplicationController
         comment = @blog.comments.build(comment_params)
 
         if comment.save
-            render json: {comment: comment, 
-                            comments: Blog.author_comments_json(@blog.comments)
-                            notice:"Comment successfully posted"}, status: :ok
+            render json: {comment: comment,
+                         comments: Blog.author_comments_json(@blog.comments),
+                         notice:"Comment successfully posted"}, status: :ok
         else
             errors = comment.errors.full_messages.to_sentence
             render json: {error: errors}, status: 422
@@ -38,6 +38,7 @@ class CommentsController < ApplicationController
         else
             errors = comment.errors.full_messages.to_sentence
             render json: {error: errors}, status: 422
+        end
     end
 
     def destroy

@@ -8,39 +8,32 @@ import "slick-carousel/slick/slick-theme.css";
 const SliderWithThumbs = ({screenshot}) => {
     const [nav1, setNav1] = useState(null)
     const [nav2, setNav2] = useState(null)
-    const [slider1, setSlider1] = useState(null)
-    const [slider2, setSlider2] = useState(null)
 
-    useEffect(() => {
-        setNav1(slider1)
-        setNav2(slider2)        
-    }, [])
 
-    // const settingsMain = {
-    //     slidesToShow: 1,
-    //     slidesToScroll: 1,
-    //     arrows: false,
-    //     fade: true,
-    // };
+    const settingsMain = {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false,
+        fade: true,
+    };
 
-    // const settingsThumbs = {
-    //     slidesToShow: 3,
-    //     slidesToScroll: 1,
-    //     dots: true,
-    //     centerMode: true,
-    //     swipeToSlide: true,
-    //     focusOnSelect: true,
-    //     centerPadding: '10px'
-    //   };
+    const settingsThumbs = {
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        dots: true,
+        // centerMode: true,
+        swipeToSlide: true,
+        focusOnSelect: true,
+      };
 
 
     return (
         <div>
             <div className="mx-10 my-10 grid grid-cols-1 ">
                 <Slider 
-                    // {...settingsMain}
+                    {...settingsMain}
                     asNavFor={nav2}
-                    ref={slider => (setSlider1(slider))}
+                    ref={(slider1) => setNav1(slider1)}
                 >
                     {screenshot.map((shot)=>
                         <div className="relative">
@@ -57,21 +50,18 @@ const SliderWithThumbs = ({screenshot}) => {
                 </Slider>
                 <div>
                     <Slider
-                        // {...settingsThumbs}
+                        {...settingsThumbs}
                         asNavFor={nav1}
-                        ref={slider => (setSlider2(slider))}
-                        slidesToShow={3}
-                        swipeToSlide={true}
-                        focusOnSelect={true}
+                        ref={slider2 => (setNav2(slider2))}
                     >
                         {screenshot.map((shot)=>
                             <div className=" relative">
-                            <div className="my-4">   
+                            <div>   
                                 <img src={shot.image} 
-                                    alt=" random imgee" 
-                                    className="object-fill cursor-pointer rounded-lg h-20 w-6/12
+                                    alt=" random image" 
+                                    className="object-fill cursor-pointer rounded-lg h-36 w-11/12
                                     transition duration-300 transform shadow-md rounded border-2
-                                    hover:shadow-lg" 
+                                    hover:shadow-lg ml-3" 
                                 />
                             </div> 
                             </div>

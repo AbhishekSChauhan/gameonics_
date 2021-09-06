@@ -3,16 +3,10 @@ import {Link} from 'react-router-dom'
 import { IoMdLogIn } from "react-icons/io";
 import { AiOutlineMenuFold,AiOutlineMenuUnfold } from "react-icons/ai";
 import NavItems from './NavItems';
-import {AuthContext} from '../App'
-import axios from 'axios'
-import toast, { Toaster } from "react-hot-toast";
 import Dropdown from './Dropdown';
 
-function NavBar({handleLogout}) {
-    const UserDetails = React.useContext(AuthContext)
-    console.log("UserDetails = ",UserDetails)
+function NavBar({handleLogout,user}) {
 
-    
     return (
         
         <header className="bg-white">
@@ -35,7 +29,7 @@ function NavBar({handleLogout}) {
 
                     <div>
                         {
-                         UserDetails.logged_in ? 
+                         user.logged_in ? 
                             (
                                 <Dropdown handleLogout={handleLogout}/>
                             // <div>Welcome {UserDetails.logged_in}

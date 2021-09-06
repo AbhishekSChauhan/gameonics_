@@ -19,9 +19,9 @@ class BlogsController < ApplicationController
 
   def show
     # blog_creator = User.find(@blog.user_id)
-    # comments = @blog.comments.select("comments.*, users.username").joins(:user).by_created_at
-    comments = Blog.author_comments_json(@blog.comments)
-    render status: :ok, json: { blog: @blog.blog_json, blog_creator: @blog.user, comments: comments }
+    comments = @blog.comments.select("comments.*, users.username").joins(:user).by_created_at
+    # comments = Blog.author_comments_json(@blog.comments)
+    render status: :ok, json: { blog: @blog, blog_creator: @blog.user, comments: comments }
   end
 
   def create
@@ -33,7 +33,7 @@ class BlogsController < ApplicationController
     # if authorized?
       if @blog.save
         render status: :ok,
-              json: {blog: @blog.blog_json , notice: "Blog Successfully created"}
+              json: {blog: @blog , notice: "Blog Successfully created"}
       else
         errors = @blog.errors.full_messages.to_sentence
         render status: :unprocessable_entity, json: {error:errors}
@@ -49,7 +49,7 @@ class BlogsController < ApplicationController
 
     if @blog.update(blog_params)
       render status: :ok, 
-                json: {blog: @blog.blog_json, notice:"Blog successfully updated"}
+                json: {blog: @blog, notice:"Blog successfully updated"}
     else
       render status: :unprocessable_entity,
           json: {errors: @blog.errors.full_messages.to_sentence}
@@ -73,7 +73,7 @@ class BlogsController < ApplicationController
 
   def pin_blog
     if @blog.update(is_pinned: !@blog.is_pinned)
-      render json:{blog: @blog.blog_json}
+      render json:{blog: @blog}
     else
       render json: {errors: @blog.errors.full_messages.to_sentence}, status: 401
     end
@@ -81,7 +81,7 @@ class BlogsController < ApplicationController
 
   def lock_blog
     if @blog.update(is_locked: !@blog.is_locked)
-      render json:{blog:@blog.blog_json}
+      render json:{blog:@blog}
     else
       render json:{errors:@blog.errors.full_messages.to_sentence}, status: 401
     end

@@ -26,3 +26,10 @@
       }
 }
 
+@layer utilities {
+  .slick-next:before,
+  .slick-prev:before {
+  color: #808080 !important;
+}
+}
+

@@ -61,7 +61,9 @@ export default function ShowBlog() {
                             <div className="flex ">
                                 <span>by {blogCreator?.username}</span> 
                             </div>
-                            <div className="prose-lg">
+                            <div 
+                                // dangerouslySetInnerHTML={{ __html: blogDetails.body }}
+                                className="prose">
                                     {parse(blogDetails.body)}
                             </div>
                             

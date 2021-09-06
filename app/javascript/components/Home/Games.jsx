@@ -2,13 +2,19 @@ import React, { useEffect, useReducer, useState } from 'react'
 import axios from 'axios'
 import { gamesDetailsURL, newGamesURL, popularGamesURL, searchedGamesURL, upcomingGamesURL } from "../apis/RawgApi";
 import GamesSlider from '../Games/GamesSlider';
-
+import PageLoader from '../PageLoader'
 const Games = () => {    
     const [loading, setLoading] = useState(false)
     const [upcomingGames, setUpcomingGames] = useState([])
     const [newGames, setNewGames] = useState([])
     const [popularGames, setPopularGames] = useState([])
 
+    useEffect(()=>{
+        getUpcomingGames();
+        getNewGames();
+        getPopularGames();
+        // getSearchedGames();
+    },[])
 
     const getUpcomingGames = async (event) => {
         setLoading(true)
@@ -43,12 +49,13 @@ const Games = () => {
         }
     }
 
-    useEffect(()=>{
-        getUpcomingGames();
-        getNewGames();
-        getPopularGames();
-        // getSearchedGames();
-    },[])
+    if (loading) {
+        return (
+          <div className="h-screen">
+            <PageLoader />
+          </div>
+        );
+    }    
 
     return (
         <div>
