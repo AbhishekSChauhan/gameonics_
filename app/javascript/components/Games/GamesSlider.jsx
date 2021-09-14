@@ -59,17 +59,23 @@ const GamesSlider = ({history,upcomingGames,newGames,popularGames}) => {
             <div className="mx-10 my-10 grid grid-cols-1 ">
                 <Slider {...settings}>
                     {upcomingGames.map((game)=>(
-                        <div className=" relative">
-                        <div className="my-4">   
-                            <img src={game.background_image} 
-                                onClick={()=>showGame(game.slug)}
-                                alt="game_img" 
-                                className="h-80 w-72 object-fill cursor-pointer rounded-lg 
-                                transition duration-300 transform shadow-md rounded border-2
-                                hover:shadow-lg ml-3" 
-                            />
-                        </div> 
-                    </div>
+                        <div className="relative">
+                            <div className="h-80 w-80 border-2 border-solid border-gray-500 
+                                rounded-lg shadow-lg hover:border-purple-900 ">
+                                <div className="my-4">   
+                                    <img src={game.background_image} 
+                                        onClick={()=>showGame(game.slug)}
+                                        alt="game_img" 
+                                        className="h-52 w-72 object-fill cursor-pointer rounded-lg 
+                                        transition duration-300 transform shadow-md rounded border-2
+                                        hover:shadow-lg ml-3" 
+                                    />
+                                </div>
+                                <div className="flex items-center justify-center py-1 overflow-hidden">
+                                    <h3>{game.name}</h3>
+                                </div> 
+                            </div>
+                        </div>
                     ))}                        
                 </Slider>
             </div>
