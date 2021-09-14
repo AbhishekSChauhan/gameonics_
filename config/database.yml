@@ -17,8 +17,8 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  username: postgres
-  password: Abh@2101#SCh
+  username: <%= ENV['gameonics__db_username'] %>
+  password: <%= ENV['gameonics__db_password'] %>
   host: localhost
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
