@@ -55,15 +55,25 @@ export default function ShowBlog() {
                     {/* Card code block start */}
                     <div className="flex flex-col ">
                         <div className="w-full ">
-                            <h2 className="text-gray-800 ">
-                                {blogDetails?.title}
-                            </h2>
+                            <div className="flex items-center justify-center py-1 overflow-hidden">
+                                <h2 className="text-gray-700 text-xl font-bold ">
+                                    {blogDetails?.title}
+                                </h2>
+                                by <span className="text-gray-700 pl-2 text-lg font-bold">{blogCreator?.username}</span>
+                            </div>
+
+
+                            <div className="flex items-center justify-center py-1 overflow-hidden">
+                                <div 
+                                    // dangerouslySetInnerHTML={{ __html: blogDetails.body }}
+                                    className="prose-lg">
+                                        {parse(blogDetails.body)}
+                                </div>
+                            </div>
                             <div className="flex ">
-                                <span>by {blogCreator?.username}</span> 
+                                 
                             </div>
-                            <div className="prose-lg">
-                                    {parse(blogDetails.body)}
-                            </div>
+                            
                             
                         </div>  
                     </div>

@@ -2,14 +2,11 @@ import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import Comment from './Comment'
 import CommentsForm from './CommentsForm'
-import { AuthContext } from '../App'
 import { useParams } from 'react-router-dom'
 import toast from "react-hot-toast";
 
 export const Comments = ({blogId}) => {
-    const UserDetails = React.useContext(AuthContext)
     const {id} = useParams()
-    const user = UserDetails.state.user
     const [comments, setComments] = useState([])
     const [updateComments, setUpdateComments] = useState(0)
     const [newComment, setNewComment] = useState("")
