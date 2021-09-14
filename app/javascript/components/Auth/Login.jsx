@@ -1,14 +1,11 @@
 import React, { useState } from 'react'
-// import authApi from '../apis/auth'
 import {Link} from 'react-router-dom'
 import LoginForm from './LoginForm'
 import axios from 'axios'
-import {AuthContext} from '../App'
 import toast, { Toaster } from "react-hot-toast";
 import authApi from '../apis/auth'
 
 export default function Login({handleLogin}) {
-  const {dispatch} = React.useContext(AuthContext)
   
   const [loading, setLoading] = useState(false)
   const [password, setPassword] = useState("")

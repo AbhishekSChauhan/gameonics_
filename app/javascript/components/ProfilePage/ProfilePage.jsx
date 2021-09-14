@@ -1,12 +1,10 @@
 import React, { useState } from 'react'
 import toast from 'react-hot-toast'
 import usersApi from '../apis/users'
-import { AuthContext } from '../App'
 
 const ProfilePage = ({
     user, handleLogout, handleBlogSelect
 }) => {
-    const UserDetails = React.useContext(AuthContext)
 
     const [selectedUser, setSelectedUser] = useState({})
     const [userblogs, setUserblogs] = useState([])

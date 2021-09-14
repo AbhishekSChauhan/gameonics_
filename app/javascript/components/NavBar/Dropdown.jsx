@@ -2,10 +2,8 @@ import { Menu, Transition } from '@headlessui/react'
 import { Fragment, useEffect, useRef, useState } from 'react'
 import { HiChevronDown } from "react-icons/hi";
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../App';
 
 export default function Dropdown({handleLogout}) {
-    const UserDetails = React.useContext(AuthContext)
 
   return (
     <div className="w-56 text-right fixed top-16">
