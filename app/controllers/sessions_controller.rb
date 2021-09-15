@@ -25,16 +25,37 @@ class SessionsController < ApplicationController
         user=User.where(username: params[:user][:username].downcase)
                  .or(User.where(email: params[:user][:email].downcase))
                  .first
-        render json:{errors: 'Incorrect login credentials'}, status: 401 unless user
+                
+        if user
+            authenticate_user(user)
+        else
+            render json:{errors: 'Incorrect login credentials'}, status: 401 
+        end        
+    end
 
-        authenticate_user(user)
+    def authenticate_user(user)
+        if user.try(:authenticate, params[:user][:password])
+            return unless activated(user)
+
+            new_token = generate_token(user.id)
+            if user.update_attribute(:token, new_token)
+                user.update_attribute(:token_date, DateTime.now)
+                render json:{user: user_status(user),
+                            status: :created,
+                            notice: "Login Successful"
+                           }
+            else
+                render json:{errors: user.errors.full_messages.to_sentence}, status: 401
+            end
+        else
+            render json:{ errors:'Incorrect login credentials'}, status: 401
+        end
     end
 
     def destroy
         @current_user.update(token: nil)
         render json:{user:{logged_in:false}, notice:'Logout Successful'}, status:200
     end
-
 
     def logged_in
         if @current_user
@@ -66,24 +87,7 @@ class SessionsController < ApplicationController
         user_with_status
     end
 
-    def authenticate_user(user)
-        if user.try(:authenticate, params[:user][:password])
-            return unless activated(user)
-
-            new_token = generate_token(user.id)
-            if user.update_attribute(:token, new_token)
-                user.update_attribute(:token_date, DateTime.now)
-                render json:{user: user_status(user),
-                            status: :created,
-                            notice: "Login Successful"
-                           }
-            else
-                render json:{errors: user.errors.full_messages.to_sentence}, status: 401
-            end
-        else
-            render json:{ errors:'Incorrect login credentials'}, status: 401
-        end
-    end
+    
 
     def activated(user)
         unless user.is_activated
