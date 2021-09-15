@@ -8,5 +8,5 @@ class ActivationMailer < ApplicationMailer
     def password_reset_email
         @user = params[:user]
         mail(to: @user.email, subject: 'Forgot your password?')
-      end
+    end
 end
