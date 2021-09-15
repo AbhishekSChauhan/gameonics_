@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
     before_action :authorized_user?, only: [:update_image]
-    before_action :authorized_admin?, only: [:suspend_communication :set_admin_level]
-    before_action :set_user, only: [:show :update_image :set_admin_level :suspend_communication]
+    before_action :authorized_admin?, only: [:suspend_communication, :set_admin_level]
+    before_action :set_user, only: [:show, :update_image, :set_admin_level, :suspend_communication]
 
     def index
         all_users = User.all.order(created_at: :desc)
@@ -26,7 +26,7 @@ class UsersController < ApplicationController
     end
 
     def update_image
-        if @current_user.update_attribute(:profile_image params[:user][:profile_image])
+        if @current_user.update_attribute(:profile_image, params[:user][:profile_image])
             render json:{user: user_with_image(@current_user),
                         notice:"Image added successfully"},
                         status: 200
