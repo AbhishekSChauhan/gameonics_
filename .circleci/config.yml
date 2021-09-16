@@ -24,8 +24,7 @@ jobs:
           bundle config set --local path 'vendor/bundle'
       # Yarn install
       - run:
-          chmod a+x ./bin/yarn && ./bin/yarn install --cache-folder
-          vendor/node_modules
+          yarn install
       # Ensure Rubocop has linted all Ruby files
       - run: bundle exec rubocop
       # Ensure Prettier+ESLint has been run on all JS files
