@@ -32,15 +32,15 @@ jobs:
       #     npx prettier "./app/javascript/src/**/*.{js,jsx,json}" && npx eslint
       #     "./app/javascript/src/**/*.{js,jsx,json}"
       # Setup database
-      - run: cp config/database.yml.ci config/database.yml
-      - run: bundle exec rails db:create db:schema:load --trace
+      # - run: cp config/database.yml.ci config/database.yml
+      # - run: bundle exec rails db:create db:schema:load --trace
       # Generate assets
-      - run: chmod a+x ./bin/webpack && ./bin/webpack
-      - run: bundle exec rails webpacker:compile
+      # - run: chmod a+x ./bin/webpack && ./bin/webpack
+      # - run: bundle exec rails webpacker:compile
       # Unit tests
-      - run:
-          shell: /bin/bash
-          command: bundle exec rake db:test:prepare && bundle exec rails t -v
+      # - run:
+      #    shell: /bin/bash
+      #    command: bundle exec rake db:test:prepare && bundle exec rails t -v
 workflows:
   version: 2
   commit:
