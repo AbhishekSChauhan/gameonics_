@@ -19,6 +19,7 @@ import ResetPassword from "./Auth/ResetPassword";
 import ProfilePage from "./ProfilePage/ProfilePage";
 import authApi from "./apis/auth";
 import GameDetails from "./Games/GameDetails";
+import axios from 'axios'
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -36,7 +37,6 @@ const App = () => {
 
   const handleLogin = (user) => {
     setUser(user)
-    history.push("/")
   }
 
   const handleLogout = async() => {
@@ -47,6 +47,7 @@ const App = () => {
         toast.success(response.data.notice)
       }
       setUser({logged_in:false})
+      setLoading(false)
     }catch(error) {
       console.log("signup error",error)
       setLoading(false)
@@ -64,16 +65,23 @@ const App = () => {
   }
 
   const checkLoginStatus = async() => {
-    if (sessionStorage.getItem('user')) setLoading(true)
-    try{
-      const response = await authApi.logged_in()
-      setUser(response.data.user)
-      if(sessionStorage.getItem('user')){
-        setLoading(false);
-      }
-    }catch(error) {
-      setLoading(false)
-    } 
+    setLoading(true)
+    if(sessionStorage.getItem('user')){
+      const retrievedUser = JSON.parse(sessionStorage.getItem('user'))
+      console.log('Session Storage user',retrievedUser)
+      setUser(retrievedUser)
+    }
+    // try{
+    //   // const response = await authApi.logged_in()
+    //   const response = await axios.get("/logged_in",{ headers: { Authorization: user.token } })
+    //   setUser(response.data.user)
+    //   console.log('logged in status', response)
+    //   if(sessionStorage.getItem('user')){
+    //     setLoading(false);
+    //   }
+    // }catch(error) {
+    //   setLoading(false)
+    // } 
   }
   
 

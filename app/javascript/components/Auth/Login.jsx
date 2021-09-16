@@ -4,8 +4,10 @@ import LoginForm from './LoginForm'
 import axios from 'axios'
 import toast, { Toaster } from "react-hot-toast";
 import authApi from '../apis/auth'
+import { useHistory } from 'react-router-dom'
 
 export default function Login({handleLogin}) {
+  const history = useHistory()
   
   const [loading, setLoading] = useState(false)
   const [password, setPassword] = useState("")

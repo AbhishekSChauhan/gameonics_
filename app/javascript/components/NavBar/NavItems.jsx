@@ -7,7 +7,7 @@ import { IoNewspaperSharp } from "react-icons/io5";
 
 const NavItems = () => {
     return (
-        <div className="hidden sm:ml-7 md:ml-14 sm:block lg:justify-center"> 
+        <div className="hidden sm:ml-7 sm:block lg:justify-center"> 
             <div className="flex flex-row sm:space-x-9 text-gray-600">
                 <Link to="/" 
                     className="flex flex-row items-center transition duration-250 ease-in transform hover:text-gray-800 hover:-translate-y-1 hover:scale-110 ">                    

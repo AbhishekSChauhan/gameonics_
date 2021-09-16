@@ -35,14 +35,22 @@ class SessionsController < ApplicationController
 
     def authenticate_user(user)
         if user.try(:authenticate, params[:user][:password])
-            return unless activated(user)
+            # return unless activated(user)
+
+            # session[:user_id] = user.id
+            # render json:{user: user_status(user),
+            #                 status: :created,
+            #                 notice: "Login Successful"
+            #             }
 
             new_token = generate_token(user.id)
             if user.update_attribute(:token, new_token)
                 user.update_attribute(:token_date, DateTime.now)
+                session[:token] = new_token
                 render json:{user: user_status(user),
                             status: :created,
-                            notice: "Login Successful"
+                            notice: "Login Successful",
+                            current_user:@current_user
                            }
             else
                 render json:{errors: user.errors.full_messages.to_sentence}, status: 401
@@ -53,11 +61,16 @@ class SessionsController < ApplicationController
     end
 
     def destroy
-        @current_user.update(token: nil)
+        # @current_user.update(token: nil)
+        reset_session
         render json:{user:{logged_in:false}, notice:'Logout Successful'}, status:200
     end
 
     def logged_in
+        # render json:{
+        #         # logged_in: true,
+        #         user: user_status(@current_user)
+        #     }
         if @current_user
             render json:{
                 logged_in: true,
@@ -78,11 +91,11 @@ class SessionsController < ApplicationController
 
     def user_status(user)
         user_with_status = user.as_json(only: %i[id username
-                                        is_activated token admin_level can_blog_date
+                                        is_activated token admin_level can_post_date
                                         can_comment_date])
         user_with_status['logged_in'] = true
-        user_with_status['can_post'] = DateTime.now > user.can_blog_date
-        user_with_status['can_comment'] = DateTime.now > user.can_comment_date
+        # user_with_status['can_blog'] = DateTime.now > user.can_post_date
+        # user_with_status['can_comment'] = DateTime.now > user.can_comment_date
 
         user_with_status
     end

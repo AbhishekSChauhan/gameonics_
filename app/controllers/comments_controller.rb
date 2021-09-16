@@ -10,10 +10,10 @@ class CommentsController < ApplicationController
     end
 
     def create
-        return if suspended(@current_user.can_comment_date)
+        # return if suspended(@current_user.can_comment_date)
 
-        # comment = @current_user.comments.new(content: params[:newComment],blog_id: params[:blog_id])
-        comment = @blog.comments.build(comment_params)
+        comment = @current_user.comments.new(content: params[:newComment],blog_id: params[:blog_id])
+        # comment = @blog.comments.build(comment_params)
 
         if comment.save
             render json: {comment: comment,
