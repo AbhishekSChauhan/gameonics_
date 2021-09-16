@@ -26,7 +26,7 @@ jobs:
       - run:
           yarn install
       # Ensure Rubocop has linted all Ruby files
-      - run: bundle exec rubocop
+      # - run: bundle exec rubocop
       # Ensure Prettier+ESLint has been run on all JS files
       # - run:
       #     npx prettier "./app/javascript/src/**/*.{js,jsx,json}" && npx eslint
