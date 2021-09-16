@@ -21,8 +21,7 @@ jobs:
       - run: gem install bundler:2.2.20
       # Bundle install
       - run:
-          bundle check --path=vendor/bundle || bundle install
-          --path=vendor/bundle --jobs=4 --retry=3
+          bundle config set --local path 'vendor/bundle'
       # Yarn install
       - run:
           chmod a+x ./bin/yarn && ./bin/yarn install --cache-folder
