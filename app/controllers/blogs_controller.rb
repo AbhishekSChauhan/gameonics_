@@ -18,9 +18,7 @@ class BlogsController < ApplicationController
   end
 
   def show
-    # blog_creator = User.find(@blog.user_id)
-    comments = @blog.comments.select("comments.*, users.username").joins(:user).by_created_at
-    # comments = Blog.author_comments_json(@blog.comments)
+    # comments = @blog.comments.select("comments.*, users.username").joins(:user).by_created_at
     render status: :ok, json: { blog: @blog, blog_creator: @blog.user, comments: comments }
   end
 
@@ -111,8 +109,10 @@ class BlogsController < ApplicationController
     false
   end
 
+
+  # Only allow the owner of the post or an administrator to destroy/update the post
+
   def authorized?
-    # Only allow the owner of the post or an administrator to destroy the post
 
     #  @blog.user == @current_user ||  @current_user.admin_level >= 1
      @blog.user_id == @current_user.id || @current_user.admin_level >= 1

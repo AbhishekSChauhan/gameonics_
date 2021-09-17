@@ -12,15 +12,17 @@ class CommentsController < ApplicationController
     def create
         # return if suspended(@current_user.can_comment_date)
 
-        comment = @current_user.comments.new(content: params[:newComment],blog_id: params[:blog_id])
-        # comment = @blog.comments.build(comment_params)
+        # comment = @current_user.comments.new(content: params[:newComment],blog_id: params[:blog_id])
+        comment = @blog.comments.build(comment_params)
+        # comment = @current_user.comments.new(comment_params.merge(blog_id: params[:blog_id]))
+
 
         if comment.save
             render json: {comment: comment,
                          comments: Blog.author_comments_json(@blog.comments),
                          notice:"Comment successfully posted"}, status: :ok
         else
-            errors = comment.errors.full_messages.to_sentence
+            errors = comment.errors.full_messages
             render json: {error: errors}, status: 422
         end       
         

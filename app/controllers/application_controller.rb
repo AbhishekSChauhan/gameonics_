@@ -31,8 +31,6 @@ class ApplicationController < ActionController::Base
         
         if session[:token]
             @current_user = User.find_by(token: session[:token])
-            # user_id = user.id
-            # @current_user=user.id
         end
     end
 
