@@ -1,5 +1,5 @@
 class ActivationMailer < ApplicationMailer
-    default from: 'activation@gameonics.com'
+    # default from: 'activation@gameonics.com'
 
     def welcome_email
         @user = params[:user]
