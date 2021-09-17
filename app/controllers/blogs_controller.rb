@@ -40,18 +40,17 @@ class BlogsController < ApplicationController
   end
 
   def update
-    # Only allow the owner of the post or an administrator to update the post
-    unless @blog.user == @current_user || @current_user.admin_level >= 1
-      render json:{errors: 'Not authorized to perform this task'}, status:401
-    end
-
-    if @blog.update(blog_params)
-      render status: :ok, 
-                json: {blog: @blog, notice:"Blog successfully updated"}
+    if authorized?
+      if @blog.update(blog_params)
+        render status: :ok, 
+                  json: {blog: @blog, notice:"Blog successfully updated"}
+      else
+        render status: :unprocessable_entity,
+            json: {errors: @blog.errors.full_messages.to_sentence}
+      end 
     else
-      render status: :unprocessable_entity,
-          json: {errors: @blog.errors.full_messages.to_sentence}
-    end
+      handle_unauthorized
+    end 
   end
 
   def destroy 
