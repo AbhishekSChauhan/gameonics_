@@ -131,6 +131,7 @@ Rails.application.configure do
   #   :authentication       => "plain",
   #   :enable_starttls_auto => true
   # }
+  config.action_mailer.default_url_options = { :host => "https://fathomless-earth-98069.herokuapp.com/" }
   ActionMailer::Base.smtp_settings = {
   :user_name => 'gameonics_key', # This is the string literal 'apikey', NOT the ID of your API key
   :password => ENV['sendrid_key'], # This is the secret sendgrid API key which was issued during API key creation
