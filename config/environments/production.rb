@@ -118,30 +118,31 @@ Rails.application.configure do
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
 
-  # config.action_mailer.delivery_method = :smtp
-  # host = 'https://fathomless-earth-98069.herokuapp.com/' #replace with your own url
-  # config.action_mailer.default_url_options = { host: host }
-
-  # # SMTP settings for gmail
-  # config.action_mailer.smtp_settings = {
-  #   :address              => "smtp.gmail.com",
-  #   :port                 => 587,
-  #   :user_name            => ENV['gmail_username'],
-  #   :password             => ENV['gmail_password'],
-  #   :authentication       => "plain",
-  #   :enable_starttls_auto => true
-  # }
   config.action_mailer.delivery_method = :smtp
   host = 'https://fathomless-earth-98069.herokuapp.com/' #replace with your own url
   config.action_mailer.default_url_options = { host: host }
 
-  ActionMailer::Base.smtp_settings = {
-  :user_name => 'gameonics_key', # This is the string literal 'apikey', NOT the ID of your API key
-  :password => ENV['sendrid_key'], # This is the secret sendgrid API key which was issued during API key creation
-  :domain => 'https://fathomless-earth-98069.herokuapp.com/',
-  :address => 'smtp.sendgrid.net',
-  :port => 587,
-  :authentication => :plain,
-  :enable_starttls_auto => true
-}
+  # SMTP settings for gmail
+  config.action_mailer.smtp_settings = {
+    :address              => "smtp.gmail.com",
+    :port                 => 587,
+    :user_name            => ENV['gmail_username'],
+    :password             => ENV['gmail_password'],
+    :authentication       => "plain",
+    :enable_starttls_auto => true
+  }
+  
+#   config.action_mailer.delivery_method = :smtp
+#   host = 'https://fathomless-earth-98069.herokuapp.com/' #replace with your own url
+#   config.action_mailer.default_url_options = { host: host }
+
+#   ActionMailer::Base.smtp_settings = {
+#   :user_name => 'gameonics_key', # This is the string literal 'apikey', NOT the ID of your API key
+#   :password => ENV['sendrid_key'], # This is the secret sendgrid API key which was issued during API key creation
+#   :domain => 'https://fathomless-earth-98069.herokuapp.com/',
+#   :address => 'smtp.sendgrid.net',
+#   :port => 587,
+#   :authentication => :plain,
+#   :enable_starttls_auto => true
+# }
 end
