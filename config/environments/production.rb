@@ -153,14 +153,21 @@ Rails.application.configure do
 #   :enable_starttls_auto => true
 # }
 
-config.action_mailer.delivery_method = :smtp
-config.action_mailer.smtp_settings = {
-  user_name: 'apikey',
-  password: ENV['gameonics_smtp'],
-  domain: 'https://shielded-spire-91772.herokuapp.com/',
-  address: 'smtp.sendgrid.net',
-  port: 465,
-  authentication: :plain,
-  enable_starttls_auto: true
+# config.action_mailer.delivery_method = :smtp
+# config.action_mailer.smtp_settings = {
+#   user_name: 'apikey',
+#   password: ENV['gameonics_smtp'],
+#   domain: 'https://shielded-spire-91772.herokuapp.com/',
+#   address: 'smtp.sendgrid.net',
+#   port: 465,
+#   authentication: :plain,
+#   enable_starttls_auto: true
+# }
+
+config.action_mailer.delivery_method = :sendgrid_actionmailer
+config.action_mailer.sendgrid_actionmailer_settings = {
+  api_key: ENV['SENDGRID_API_KEY'],
+  raise_delivery_errors: true
 }
+
 end
