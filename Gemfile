@@ -24,6 +24,7 @@ gem 'rack-cors'
 gem 'jwt'
 gem 'react-rails'
 gem 'cloudinary'
+gem 'sendgrid-actionmailer'
 gem 'figaro'
 
 # Use Active Storage variant
