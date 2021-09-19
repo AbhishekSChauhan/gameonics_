@@ -35,8 +35,8 @@ class SessionsController < ApplicationController
 
     def authenticate_user(user)
         if user.try(:authenticate, params[:user][:password])
-            # return unless activated(user)
-            session[:user_id] = user.id
+            return unless activated(user)
+            # session[:user_id] = user.id
 
             new_token = generate_token(user.id)
             if user.update_attribute(:token, new_token)
