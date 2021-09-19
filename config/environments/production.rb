@@ -139,37 +139,26 @@ Rails.application.configure do
 #   authentication: :plain,
 #   enable_starttls_auto: true
 # }
-#   config.action_mailer.delivery_method = :smtp
-#   host = 'https://fathomless-earth-98069.herokuapp.com/' #replace with your own url
-#   config.action_mailer.default_url_options = { host: host }
+  config.action_mailer.delivery_method = :smtp
+  host = 'https://shielded-spire-91772.herokuapp.com/' #replace with your own url
+  config.action_mailer.default_url_options = { host: host }
 
-#   ActionMailer::Base.smtp_settings = {
-#   :user_name => 'apikey', # This is the string literal 'apikey', NOT the ID of your API key
-#   :password => ENV['gameonics_smtp'], # This is the secret sendgrid API key which was issued during API key creation
-#   :domain => 'https://fathomless-earth-98069.herokuapp.com/',
-#   :address => 'smtp.sendgrid.net',
-#   :port => 587,
-#   :authentication => :plain,
-#   :enable_starttls_auto => true
-# }
-
-# config.action_mailer.delivery_method = :smtp
-# config.action_mailer.smtp_settings = {
-#   user_name: 'apikey',
-#   password: ENV['gameonics_smtp'],
-#   domain: 'https://shielded-spire-91772.herokuapp.com/',
-#   address: 'smtp.sendgrid.net',
-#   port: 465,
-#   authentication: :plain,
-#   enable_starttls_auto: true
-# }
-
-config.action_mailer.delivery_method = :sendgrid_actionmailer
-host = 'https://shielded-spire-91772.herokuapp.com/' #replace with your own url
-config.action_mailer.default_url_options = { host: host }
-config.action_mailer.sendgrid_actionmailer_settings = {
-  api_key: ENV['SENDGRID_API_KEY'],
-  raise_delivery_errors: true
+  ActionMailer::Base.smtp_settings = {
+  :user_name => ENV['SENDGRID_Username'], # This is the string literal 'apikey', NOT the ID of your API key
+  :password => ENV['SENDGRID_API_KEY'], # This is the secret sendgrid API key which was issued during API key creation
+  :domain => 'https://shielded-spire-91772.herokuapp.com/',
+  :address => 'smtp.sendgrid.net',
+  :port => 587,
+  :authentication => :plain,
+  :enable_starttls_auto => true
 }
+
+# config.action_mailer.delivery_method = :sendgrid_actionmailer
+# host = 'https://shielded-spire-91772.herokuapp.com/' #replace with your own url
+# config.action_mailer.default_url_options = { host: host }
+# config.action_mailer.sendgrid_actionmailer_settings = {
+#   api_key: ENV['SENDGRID_API_KEY'],
+#   raise_delivery_errors: true
+# }
 
 end
