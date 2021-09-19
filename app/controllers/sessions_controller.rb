@@ -3,6 +3,24 @@ class SessionsController < ApplicationController
 
     before_action :authorized_user?, except: :create
 
+    # def create
+    #     user = User
+    #              .find_by(email: params["user"]["email"])
+    #              .try(:authenticate, params["user"]["password"])
+        
+    #     if user
+    #         session[:user_id] = user.id
+    #         render json:{
+    #             status: :created,
+    #             logged_in: true,
+    #             user: user,
+    #             notice: "Login Successful"
+    #         }
+    #     else
+    #         render json: {status: 401, notice:"Invalid Email or password"}
+    #     end
+    # end
+
     def create
         user=User.where(username: params[:user][:username].downcase)
                  .or(User.where(email: params[:user][:email].downcase))
@@ -17,7 +35,9 @@ class SessionsController < ApplicationController
 
     def authenticate_user(user)
         if user.try(:authenticate, params[:user][:password])
-            return unless activated(user)
+            # return unless activated(user)
+            session[:user_id] = user.id
+
             new_token = generate_token(user.id)
             if user.update_attribute(:token, new_token)
                 user.update_attribute(:token_date, DateTime.now)
@@ -36,8 +56,8 @@ class SessionsController < ApplicationController
     end
 
     def destroy
-        @current_user.update(token: nil)
-        # reset_session
+        # @current_user.update(token: nil)
+        reset_session
         render json:{user:{logged_in:false}, notice:'Logout Successful'}, status:200
     end
 

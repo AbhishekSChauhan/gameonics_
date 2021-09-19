@@ -6,8 +6,8 @@ module CurrentUserConcern
     end
 
     def set_current_user
-        if session[:token]
-            @current_user = User.find_by(token: session[:token])
+        if session[:user_id]
+            @current_user = User.find(session[:user_id])
         end
     end
 
