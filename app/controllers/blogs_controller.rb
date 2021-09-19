@@ -27,7 +27,7 @@ class BlogsController < ApplicationController
 
     @blog = Blog.new(blog_params.merge(user_id: @current_user.id))
     
-    # if authorized?
+    if authorized?
       if @blog.save
         render status: :ok,
               json: {blog: @blog , notice: "Blog Successfully created"}
@@ -35,7 +35,7 @@ class BlogsController < ApplicationController
         errors = @blog.errors.full_messages.to_sentence
         render status: :unprocessable_entity, json: {error:errors}
       end
-    # end
+    end
   end
 
   def update
