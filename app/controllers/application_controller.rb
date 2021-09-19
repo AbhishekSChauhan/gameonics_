@@ -29,8 +29,10 @@ class ApplicationController < ActionController::Base
 
         # @current_user
         
-        if session[:token]
-            @current_user = User.find_by(token: session[:token])
+        if session[:token] || session[:user_id]
+            user = User.where(token: session[:token])
+                    .or(User.where(id: session[:user_id]))
+            @current_user = user
         end
     end
 
