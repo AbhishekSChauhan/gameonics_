@@ -46,7 +46,7 @@ class RegistrationsController < ApplicationController
 
 
     def activate_account
-        url = 'https://fathomless-earth-98069.herokuapp.com/'
+        url = 'https://shielded-spire-91772.herokuapp.com/'
         user = User.find(params[:id])
 
         if user.activation_key == params[:activation_key]
