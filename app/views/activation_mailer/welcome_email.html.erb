@@ -10,6 +10,7 @@
       You have successfully signed up but you need to activate your account.<br>
     </p>
     <p>
+    
       To activate your account and login to the site, just follow this link: 
       <%= link_to "Confirmation link", activate_account_url(:id => @user.id, :activation_key => @user.activation_key) %>
     </p>
