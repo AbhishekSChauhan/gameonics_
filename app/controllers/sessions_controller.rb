@@ -36,7 +36,7 @@ class SessionsController < ApplicationController
     def authenticate_user(user)
         if user.try(:authenticate, params[:user][:password])
             return unless activated(user)
-            # session[:user_id] = user.id
+            session[:user_id] = user.id
 
             new_token = generate_token(user.id)
             if user.update_attribute(:token, new_token)
@@ -89,7 +89,7 @@ class SessionsController < ApplicationController
                                         is_activated token admin_level can_post_date
                                         can_comment_date])
         user_with_status['logged_in'] = true
-        # user_with_status['can_blog'] = DateTime.now > user.can_post_date
+        # user_with_status['can_post'] = DateTime.now > user.can_post_date
         # user_with_status['can_comment'] = DateTime.now > user.can_comment_date
 
         user_with_status
