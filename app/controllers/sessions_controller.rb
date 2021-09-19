@@ -3,24 +3,6 @@ class SessionsController < ApplicationController
 
     before_action :authorized_user?, except: :create
 
-    # def create
-    #     user = User
-    #              .find_by(email: params["user"]["email"])
-    #              .try(:authenticate, params["user"]["password"])
-        
-    #     if user
-    #         session[:user_id] = user.id
-    #         render json:{
-    #             status: :created,
-    #             logged_in: true,
-    #             user: user,
-    #             notice: "Login Successful"
-    #         }
-    #     else
-    #         render json: {status: 401, notice:"Invalid Email or password"}
-    #     end
-    # end
-
     def create
         user=User.where(username: params[:user][:username].downcase)
                  .or(User.where(email: params[:user][:email].downcase))

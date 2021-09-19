@@ -1,7 +1,6 @@
 class ApplicationController < ActionController::Base
     skip_before_action :verify_authenticity_token
-    before_action :set_current_user
-    # include CurrentUserConcern
+    include CurrentUserConcern
     include ExceptionHandlerConcern
     include TokenGenerator
     include CompareDates
@@ -16,23 +15,6 @@ class ApplicationController < ActionController::Base
     end
 
     private
-
-    def set_current_user
-        # if access_token.present?
-        #     @current_user = User.find_by(token: access_token)
-        # end
-        # return nil unless access_token.present?
-
-        # @current_user ||= User.find_by(token: access_token)
-        # return nil unless @current_user
-        # return nil if token_expire?(@current_user.token_date)
-
-        # @current_user
-        
-        if session[:token]
-            @current_user = User.find_by(token: session[:token])
-        end
-    end
 
     def token_expire?(token_date, days = 1, hours = 24, minutes = 0, seconds = 0)
         date_diff = compare_dates(token_date)

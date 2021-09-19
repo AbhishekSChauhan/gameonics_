@@ -26,7 +26,6 @@ class BlogsController < ApplicationController
     # return if suspended(@current_user.can_post_date)
 
     @blog = Blog.new(blog_params.merge(user_id: @current_user.id))
-    # @blog = @current_user.blog.build(blog_params)
     
     # if authorized?
       if @blog.save
