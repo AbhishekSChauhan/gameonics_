@@ -36,13 +36,6 @@ class SessionsController < ApplicationController
     def authenticate_user(user)
         if user.try(:authenticate, params[:user][:password])
             return unless activated(user)
-
-            # session[:user_id] = user.id
-            # render json:{user: user_status(user),
-            #                 status: :created,
-            #                 notice: "Login Successful"
-            #             }
-
             new_token = generate_token(user.id)
             if user.update_attribute(:token, new_token)
                 user.update_attribute(:token_date, DateTime.now)
@@ -61,8 +54,8 @@ class SessionsController < ApplicationController
     end
 
     def destroy
-        # @current_user.update(token: nil)
-        reset_session
+        @current_user.update(token: nil)
+        # reset_session
         render json:{user:{logged_in:false}, notice:'Logout Successful'}, status:200
     end
 
