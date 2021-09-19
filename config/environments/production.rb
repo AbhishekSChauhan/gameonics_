@@ -165,6 +165,8 @@ Rails.application.configure do
 # }
 
 config.action_mailer.delivery_method = :sendgrid_actionmailer
+host = 'https://shielded-spire-91772.herokuapp.com/' #replace with your own url
+config.action_mailer.default_url_options = { host: host }
 config.action_mailer.sendgrid_actionmailer_settings = {
   api_key: ENV['SENDGRID_API_KEY'],
   raise_delivery_errors: true
