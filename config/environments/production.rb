@@ -157,7 +157,7 @@ config.action_mailer.delivery_method = :smtp
 config.action_mailer.smtp_settings = {
   user_name: 'apikey',
   password: ENV['gameonics_smtp'],
-  domain: 'https://fathomless-earth-98069.herokuapp.com/',
+  domain: 'https://shielded-spire-91772.herokuapp.com/',
   address: 'smtp.sendgrid.net',
   port: 465,
   authentication: :plain,
