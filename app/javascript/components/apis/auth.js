@@ -12,7 +12,7 @@ const logout = () => {
         // console.log('login token', login.token)
     }
     sessionStorage.clear();
-    return axios.delete("/logout",null, { headers: { Authorization: login.token } });
+    return axios.delete("/logout");
 }
 
 const signup = (payload) => {
