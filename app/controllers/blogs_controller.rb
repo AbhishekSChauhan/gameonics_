@@ -1,5 +1,4 @@
 class BlogsController < ApplicationController
-  include CurrentUserConcern
   before_action :set_blog, only: [:show, :update, :destroy, :lock_blog, :pin_blog]
   before_action :authorized_user?, except: [:index, :show, :lock_blog, :pin_blog]
   before_action :authorized_admin?, only: [:lock_blog,:pin_blog]
