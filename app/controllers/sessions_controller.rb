@@ -35,7 +35,7 @@ class SessionsController < ApplicationController
 
     def authenticate_user(user)
         if user.try(:authenticate, params[:user][:password])
-            # return unless activated(user)
+            return unless activated(user)
             session[:user_id] = user.id
 
             new_token = generate_token(user.id)
@@ -69,7 +69,7 @@ class SessionsController < ApplicationController
         if @current_user
             render json:{
                 logged_in: true,
-                user: user_status(@current_user)
+                user: @current_user
             }
         else
             render json: {
