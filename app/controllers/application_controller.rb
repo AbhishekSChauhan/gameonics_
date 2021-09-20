@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
-    skip_before_action :verify_authenticity_token
-    before_action :set_current_user
+    # skip_before_action :verify_authenticity_token
+    # before_action :set_current_user
     # include CurrentUserConcern
     include ExceptionHandlerConcern
     include TokenGenerator
@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
 
     private
 
-    def set_current_user
+    def current_user
         # if access_token.present?
         #     @current_user = User.find_by(token: access_token)
         # end
@@ -29,10 +29,10 @@ class ApplicationController < ActionController::Base
 
         # @current_user
         
-        if session[:token] || session[:user_id]
-            user = User.where(token: session[:token])
-                    .or(User.where(id: session[:user_id]))
-            @current_user = user
+        if session[:token] 
+            # user = User.where(token: session[:token])
+            #         .or(User.where(id: session[:user_id]))
+            @current_user = User.find_by(token: session[:user_id])
         end
     end
 
