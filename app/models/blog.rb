@@ -9,10 +9,10 @@ class Blog < ApplicationRecord
   scope :pins, -> { where('is_pinned = true')}
   scope :not_pinned, ->{ where('is_pinned = false')}
 
-  # def blog_json
-  #   new_blog = attributes
-  #   new_blog['author'] = user.username
-  # end
+  def blog_json
+    new_blog = attributes
+    new_blog['author'] = user.username
+  end
 
   # def self.author_blogs_json(blogs_array)
   #   returned_blogs = []

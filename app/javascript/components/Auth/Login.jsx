@@ -30,7 +30,8 @@ export default function Login({handleLogin}) {
       handleLogin(retrievedUser)
       setLoading(false)
       console.log("login res",response)
-      history.push("/")
+      // history.push("/")
+      history.goBack();
     }catch(error) {
       console.log("login error",error)
       setLoading(false)

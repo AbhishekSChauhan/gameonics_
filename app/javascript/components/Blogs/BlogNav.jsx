@@ -27,7 +27,7 @@ export default function BlogNav() {
         <div>   
             <Link to="/blogs/create">
             <button 
-                className="bg-blue-500 justify-center items-center  hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
+                className="bg-transparent hover:bg-blue-500 text-blue-700 mt-1 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
                 Create your own blog
             </button>
             </Link>  

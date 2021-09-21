@@ -35,7 +35,7 @@ class SessionsController < ApplicationController
 
     def authenticate_user(user)
         if user.try(:authenticate, params[:user][:password])
-            return unless activated(user)
+            # return unless activated(user)s
             session[:user_id] = user.id
 
             new_token = generate_token(user.id)
@@ -89,10 +89,15 @@ class SessionsController < ApplicationController
                                         is_activated token admin_level can_post_date
                                         can_comment_date])
         user_with_status['logged_in'] = true
+        user_with_status['profile_image'] = nil
         # user_with_status['can_post'] = DateTime.now > user.can_post_date
         # user_with_status['can_comment'] = DateTime.now > user.can_comment_date
+        unless user.profile_image_attachment.nil?
+            user_with_status['profile_image'] = url_for(user.profile_image)
+        end
 
         user_with_status
+
     end
 
     

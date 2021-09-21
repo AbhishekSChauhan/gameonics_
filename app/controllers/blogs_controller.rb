@@ -6,14 +6,13 @@ class BlogsController < ApplicationController
 
   def index
     #only current users blogs
-    # @blogs = Blog.where(user_id: @current_user.id)
-    # @blogs = @current_user.blogs.all    
+    # @current_user_blogs = Blog.where(user_id: @current_user.id)
+    # @current_user_blogs = @current_user.blogs.all    
 
     #All users blogs
     @blogs = Blog.all
-    # @users = User.all 
-    render json: { blogs: @blogs },status: :ok
-
+    all_users = User.blogs 
+    render json: { blogs: @blogs, all_users:all_users },status: :ok
   end
 
   def show
