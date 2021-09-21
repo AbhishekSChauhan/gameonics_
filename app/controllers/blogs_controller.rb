@@ -11,8 +11,9 @@ class BlogsController < ApplicationController
 
     #All users blogs
     @blogs = Blog.all
-    all_users = User.blogs 
-    render json: { blogs: @blogs, all_users:all_users },status: :ok
+    # @users = User.all 
+    render json: { blogs: @blogs },status: :ok
+
   end
 
   def show
