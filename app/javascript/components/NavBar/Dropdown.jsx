@@ -3,6 +3,7 @@ import { Fragment, useEffect, useRef, useState } from 'react'
 import { HiChevronDown } from "react-icons/hi";
 import { Link } from 'react-router-dom';
 import React from 'react'
+import { FaUser } from 'react-icons/fa'
 
 export default function Dropdown({handleLogout,user}) {
 
@@ -12,7 +13,13 @@ export default function Dropdown({handleLogout,user}) {
         <div>
           <Menu.Button className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-white rounded-md bg-opacity-20 ">
             <div className="flex items-center px-4 py-3"> 
-                <img className="h-8 w-8 rounded-full object-cover mx-1" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80" alt="avatar"/>
+                {!user.profile_image && (
+                  <FaUser className="h-8 w-8 rounded-full object-cover mx-1" />
+                )}
+                {user.profile_image && (
+                  <img className="h-8 w-8 rounded-full object-cover mx-1" 
+                  src={user.profile_image} alt="avatar"/>
+                )}                
                 <p className="text-gray-500 hover:text-gray-600 text-base mx-2">
                     <span className="font-semibold">{user.username}</span>
                 </p>
@@ -39,9 +46,8 @@ export default function Dropdown({handleLogout,user}) {
               <div className="px-1 py-1 text-gray-500">
                 <Menu.Item>
                 {({ active }) => (
-                    <Link to=""
+                    <Link to={`/users/${user.id}`}
                     className={`${active && 'text-gray-700'}`}
-                    href="/account-settings"
                     >
                     My Profile
                     </Link>

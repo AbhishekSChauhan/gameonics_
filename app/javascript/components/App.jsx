@@ -19,7 +19,7 @@ import ResetPassword from "./Auth/ResetPassword";
 import ProfilePage from "./ProfilePage/ProfilePage";
 import authApi from "./apis/auth";
 import GameDetails from "./Games/GameDetails";
-import axios from 'axios'
+import { Redirect } from "react-router-dom";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -45,9 +45,11 @@ const App = () => {
       const response = await authApi.logout()
       if(response.status === 200){
         toast.success(response.data.notice)
+        setUser({logged_in:false})
+        setLoading(false)
+        // {<Redirect to="/" />}
       }
-      setUser({logged_in:false})
-      setLoading(false)
+      
     }catch(error) {
       console.log("signup error",error)
       setLoading(false)

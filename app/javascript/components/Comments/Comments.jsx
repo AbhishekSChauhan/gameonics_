@@ -85,7 +85,7 @@ export const Comments = ({blogId}) => {
                 />              
                 <div className="text-lg my-5">
                     {comments.length === 0 ? 
-                        <p>There are no comments!</p> :
+                        <p>Be the first one to comment</p> :
                         <span>Comments({comments.length})</span>
                     }
                 </div>
