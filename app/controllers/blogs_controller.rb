@@ -12,7 +12,8 @@ class BlogsController < ApplicationController
     #All users blogs
     @blogs = Blog.all
     # @users = User.all 
-    render json: { blogs: @blogs },status: :ok
+    all_users = User.joins(:blogs).where('blogs.user_id = users.id')
+    render json: { blogs: @blogs, all_users: all_users },status: :ok
 
   end
 
@@ -82,6 +83,17 @@ class BlogsController < ApplicationController
     end
   end
 
+  def banner_image
+    if @blog.update_attribute(:images, params[:blog][:images])
+      render json:{
+        blog: blog_with_banner_image(@blog),
+        notice:'Banner Image Added Successfully'
+      }, status:200
+    else
+      render json:{errors:@blog.errors.full_messages},status:401
+    end
+  end
+
   
   # def get_comments
   #   comments = @blog.comments.select("comments.*, users.username").joins(:user).by_created_at
@@ -90,12 +102,23 @@ class BlogsController < ApplicationController
 
   private 
 
+  def blog_with_banner_image(user)
+    blog_with_attachment = blog.as_json(only: %i[title body])
+    blog_with_attachment['images'] = nil
+
+    unless blog.images_attachment.nil?
+      blog_with_attachment['images'] = url_for(blog.images)
+    end
+
+    blog_with_attachment
+end
+
   def set_blog
     @blog = Blog.find(params[:id])
   end
 
   def blog_params
-    params.require(:blog).permit(:title,:body,:image,:is_pinned, :is_locked)
+    params.require(:blog).permit(:title, :body,:is_pinned, :is_locked, images:[])
   end
 
   def suspended(date)

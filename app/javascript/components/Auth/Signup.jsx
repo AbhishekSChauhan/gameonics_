@@ -32,6 +32,7 @@ export default function Signup({history}) {
       }
       setEmailConfirm(true)
       setUserCreds({ username: username.trim(), email: email.trim() });
+      console.log('signup',response)
       setLoading(false)
     }catch(error) {
       console.log("signup error",error)
