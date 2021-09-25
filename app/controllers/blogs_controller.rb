@@ -5,28 +5,31 @@ class BlogsController < ApplicationController
 
 
   def index
-    #only current users blogs
-    # @current_user_blogs = Blog.where(user_id: @current_user.id)
-    # @current_user_blogs = @current_user.blogs.all    
-
-    #All users blogs
-    @blogs = Blog.all
+    @blogs = Blog.active
     # @users = User.all 
-    all_users = User.joins(:blogs).where('blogs.user_id = users.id')
-    render json: { blogs: @blogs, all_users: all_users },status: :ok
-
+    render json: { blogs: @blogs },status: :ok
   end
 
-  def show
-    comments = @blog.comments.select("comments.*, users.username").joins(:user).by_created_at
-    render status: :ok, json: { blog: @blog, blog_creator: @blog.user, comments: comments }
+  def show    
+    # if @blog.published == true
+      comments = @blog.comments.select("comments.*, users.username").joins(:user).by_created_at
+      render status: :ok, json: { blog: @blog, blog_creator: @blog.user, comments: comments }
+    
+    # end    
+  end
+
+  def preview
+    blog = Blog.find_by(published:false)
+    render status: :ok, json: { blog: blog }
   end
 
   def create
     # return if suspended(@current_user.can_post_date)
-
     @blog = Blog.new(blog_params.merge(user_id: @current_user.id))
-    
+    upload_image = Cloudinary::Uploader.upload(params[:blog][:image])
+    @blog.update(image: upload_image['url'])
+
+
     if authorized?
       if @blog.save
         render status: :ok,
@@ -83,17 +86,6 @@ class BlogsController < ApplicationController
     end
   end
 
-  def banner_image
-    if @blog.update_attribute(:images, params[:blog][:images])
-      render json:{
-        blog: blog_with_banner_image(@blog),
-        notice:'Banner Image Added Successfully'
-      }, status:200
-    else
-      render json:{errors:@blog.errors.full_messages},status:401
-    end
-  end
-
   
   # def get_comments
   #   comments = @blog.comments.select("comments.*, users.username").joins(:user).by_created_at
@@ -101,24 +93,13 @@ class BlogsController < ApplicationController
   # end
 
   private 
-
-  def blog_with_banner_image(user)
-    blog_with_attachment = blog.as_json(only: %i[title body])
-    blog_with_attachment['images'] = nil
-
-    unless blog.images_attachment.nil?
-      blog_with_attachment['images'] = url_for(blog.images)
-    end
-
-    blog_with_attachment
-end
-
+  
   def set_blog
     @blog = Blog.find(params[:id])
   end
 
   def blog_params
-    params.require(:blog).permit(:title, :body,:is_pinned, :is_locked, images:[])
+    params.require(:blog).permit(:title, :body, :published, :is_pinned, :is_locked, :image)
   end
 
   def suspended(date)
@@ -134,7 +115,7 @@ end
 
   def authorized?
 
-    #  @blog.user == @current_user ||  @current_user.admin_level >= 1
+    # @blog.user == @current_user ||  @current_user.admin_level >= 1
      @blog.user_id == @current_user.id || @current_user.admin_level >= 1
   end
 

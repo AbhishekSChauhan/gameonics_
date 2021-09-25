@@ -24,14 +24,12 @@ Rails.application.routes.draw do
   ###   Blogs and comments routes  ###
   resources :blogs do
     member do
+      get :preview, to: 'blogs#preview'
       patch :lock_post, to: 'blogs#lock_post'
       patch :pin_post, to: 'blogs#pin_post'
       patch :banner_image, to: 'blogs#banner_image'
     end
     resources :comments, only: [:create]
-    # member do
-    #   # get :get_comments
-    # end
   end
 
   resources :users, only: %i[index show] do

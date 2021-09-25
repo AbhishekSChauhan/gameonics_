@@ -1,44 +1,13 @@
 import React, { useEffect, useState} from 'react'
 import axios from 'axios'
 import { MdDelete,MdEdit } from "react-icons/md";
+import parse from 'html-react-parser';
+
 export default function BlogsDashboard({data,showBlog,updateBlog,destroyBlog}) {
 
 
     
     return (
-        // <div className="mx-auto py-10">
-        //     <div className="p-10 grid grid-cols-1 sm:grid-cols-1 sm:justify-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5">
-        //         {data.map((cardData) => (
-        //              <div key={cardData.id}
-        //               className="max-w-sm rounded overflow-hidden shadow-lg">
-        //              <img className="w-full" src="https://gmedia.playstation.com/is/image/SIEPDC/the-last-of-us-part-ii-key-art-wallpaper-desktop-image-block-01-ps4-us-04oct19?$1600px$" alt="Mountain" />
-        //              <div className="px-6 py-4">
-        //                  <div onClick={()=>showBlog(cardData.id)}
-        //                      className="font-bold text-xl mb-2 cursor-pointer"
-        //                      >
-        //                      {cardData.title}
-        //                      </div>
-        //                  <p className="text-gray-700 text-base cursor-pointer">{cardData.body}</p>
-        //              </div>
-        //              <div className="px-6 pt-4 pb-2">
-        //                  <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#photography</span>
-        //                  <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#travel</span>
-        //                  <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#winter</span>
-        //              </div>
-        //              <div className="px-6 pt-4 pb-2">
-        //                  <span className="inline-block rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Written by:</span>
-        //                  <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{cardData.user_id}</span>
-        //              </div>
-        //              <div className="px-6 pt-4 pb-2">
-        //                 <button onClick={()=>destroyBlog(cardData.id)}
-        //                     className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">
-        //                     Delete
-        //                 </button>
-        //              </div>
-        //          </div>
-        //         ))}                 
-        //     </div>
-
       <div className="p-10 grid grid-cols-1 sm:grid-cols-1 sm:justify-center md:grid-cols-2 lg:grid-cols-3 gap-8">
         {data.map((blog)=>(
           <div key={blog.id}
@@ -55,7 +24,7 @@ export default function BlogsDashboard({data,showBlog,updateBlog,destroyBlog}) {
                   <MdEdit onClick={()=>updateBlog(blog.id)}/>
               </div>
               <img onClick={()=>showBlog(blog.id)}
-                src="https://gmedia.playstation.com/is/image/SIEPDC/the-last-of-us-part-ii-key-art-wallpaper-desktop-image-block-01-ps4-us-04oct19?$1600px$"
+                src={blog.image}
                 alt="Blog Cover"
                 className="object-fill w-full cursor-pointer rounded-lg rounded-b-none md:h-56"
               />
@@ -137,7 +106,7 @@ export default function BlogsDashboard({data,showBlog,updateBlog,destroyBlog}) {
             <div className="flex flex-wrap items-center flex-1 px-4 py-1 text-center mx-auto">
               <a onClick={()=>showBlog(blog.id)} className="hover:underline">
                 <h2 className="text-2xl font-bold tracking-normal text-gray-800 cursor-pointer">
-                  {blog.title}
+                  {parse(blog.title)}
                 </h2>
               </a>
             </div>

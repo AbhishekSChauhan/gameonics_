@@ -1,20 +1,27 @@
 class Blog < ApplicationRecord
   default_scope {order(created_at: :desc)}
+  scope :active, -> { where(published: true) }
+
+  def self.active?
+    published
+  end
+
 
   belongs_to :user
   has_many :comments, dependent: :destroy
 
-  has_many_attached :images
+  # has_one_attached :banner_image
 
   validates :title, length: { in: 3..48 }, presence: true
   validates :body, length: { in: 5..100000000 }, presence: true
+  # validates :image, presence: true
   scope :pins, -> { where('is_pinned = true')}
   scope :not_pinned, ->{ where('is_pinned = false')}
 
-  def blog_json
-    new_blog = attributes
-    new_blog['author'] = user.username
-  end
+  # def blog_json
+  #   new_blog = attributes
+  #   new_blog['author'] = user.username
+  # end
 
   # def self.author_blogs_json(blogs_array)
   #   returned_blogs = []

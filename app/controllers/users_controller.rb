@@ -91,7 +91,7 @@ class UsersController < ApplicationController
         user_with_attachment['server_date'] = DateTime.now
 
         unless user.profile_image_attachment.nil?
-        user_with_attachment['profile_image'] = url_for(user.profile_image)
+            user_with_attachment['profile_image'] = url_for(user.profile_image)
         end
 
         user_with_attachment

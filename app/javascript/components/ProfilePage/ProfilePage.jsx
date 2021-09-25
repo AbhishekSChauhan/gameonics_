@@ -161,7 +161,6 @@ const ProfilePage = ({
           <div className="w-full rounded-lg shadow-2xl bg-white mx-6 lg:mx-0">
             <div className="p-4 md:p-14 text-center">
               <div>
-
                 {!selectedUser.profile_image && (
                   <FaUser className="block rounded-full shadow-xl mx-auto -mt-24 h-48 w-48 bg-cover bg-center" />
                 )}
