@@ -22,8 +22,11 @@ class UsersController < ApplicationController
 
     def show
         selected_user = User.find(params[:id])
-        blogs = Blog.where(user_id: selected_user.id)
-        render json:{user: user_with_image(selected_user), blogs: blogs}
+        published_blogs = Blog.where(published:true)
+        draft_blogs = Blog.where(published:false)
+        render json:{user: user_with_image(selected_user), 
+                    published_blogs: published_blogs,
+                    draft_blogs=draft_blogs }
     end
 
     def update_image

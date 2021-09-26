@@ -13,7 +13,8 @@ const ProfilePage = ({
 }) => {
     let history = useHistory()
     const [selectedUser, setSelectedUser] = useState({})
-    const [userblogs, setUserblogs] = useState([])
+    const [publishedBlogs, setPublishedBlogs] = useState([])
+    const [draftBlogs, setDraftBlogs] = useState([])
     const [profileImage, setProfileImage] = useState()
     const [loading, setLoading] = useState(false)
 
@@ -30,9 +31,9 @@ const ProfilePage = ({
 
     const handleProfileImageSubmit = async(e) => {
         e.preventDefault()
+        setLoading(true)
         const formData = new FormData()
         formData.append('user[profile_image]',profileImage)
-
         try{
           setLoading(true)
           const response = await usersApi.userImage(selectedUser.id,formData)
@@ -59,29 +60,28 @@ const ProfilePage = ({
     }
 
     const fetchUserDetails = async() =>{
-        const userID = user.id
-        setLoading(true)
-        try{
-          const response = await usersApi.fetchUser(userID)
-          if (response.status === 200){
-            toast.success(response.data.notice)            
+      setLoading(true)
+      const userID = user.id
+      try{
+        const response = await usersApi.fetchUser(userID)
+        setSelectedUser(response.data.user)
+        setPublishedBlogs(response.data.published_blogs)
+        setDraftBlogs(response.data.draft_blogs)
+        setLoading(false)
+        console.log('user details',response)
+      }catch(error){
+          if(error){
+            toast.error(
+                error.response?.data?.notice ||
+                error.response?.data?.error ||
+                error.response?.data?.errors ||
+                error.message ||
+                error.notice ||
+                "Something went wrong!"
+            )
           }
-          setSelectedUser(response.data.user)
-          setUserblogs(response.data.blogs)
+          console.log("login error", error)
           setLoading(false)
-          console.log('user details',response)
-        }catch(error){
-            if(error){
-              toast.error(
-                  error.response?.data?.notice ||
-                  error.response?.data?.error ||
-                  error.response?.data?.errors ||
-                  error.message ||
-                  error.notice ||
-                  "Something went wrong!"
-              )
-            }
-            console.log("login error", error)
       }
     }
 
@@ -93,18 +93,18 @@ const ProfilePage = ({
         loadData();
 
         // if (Object.keys(selectedUser).length > 0) {
-        //     const allUserblogs = selectedUser.blogs;
-        //     const latestblogs = allUserblogs.length > 0 ? allUserblogs.sort((a, b) => b.id - a.id) : [];
+        //     const allpublishedBlogs = selectedUser.blogs;
+        //     const latestblogs = allpublishedBlogs.length > 0 ? allpublishedBlogs.sort((a, b) => b.id - a.id) : [];
         //     const allUserComments = selectedUser.comments;
         //     const latestComments = allUserComments.length > 0
         //       ? allUserComments.sort((a, b) => b.id - a.id) : [];
         //     const isAdmin = user.admin_level > 0;
         //     if (isAdmin) {
-        //       setUserBlogs(latestblogs);
+        //       setPublishedBlogs(latestblogs);
         //       setUserComments(latestComments);
         //     }
         //     if (!isAdmin) {
-        //       setUserBlogs(latestblogs.filter(blog => !blog.admin_only_view));
+        //       setPublishedBlogs(latestblogs.filter(blog => !blog.admin_only_view));
         //       setUserComments(latestComments.filter(comment => !comment.admin_only_view));
         //     }
         // }
@@ -189,18 +189,40 @@ const ProfilePage = ({
 
               <div className="mt-6 pb-10 w-full mx-auto flex flex-col items-center justify-center">
                 <div>
-                  <h1 className="text-3xl font-bold pt-8 lg:pt-5 text-center">My Blogs</h1>                  
+                  <h1 className="text-3xl font-bold pt-8 lg:pt-5 text-center">Drafts</h1>                  
                 </div>
                 
                 <div className="mt-4">
-                  {userblogs.length === 0 ? (
+                  {publishedBlogs.length === 0 ? (
                     <h1 className="text-3xl font-bold pt-8 lg:pt-5 text-center">
                       You haven't shared your story yet
                     </h1>
                   ) : 
                    (
                     <BlogsDashboard 
-                      data={userblogs}
+                      data={publishedBlogs}
+                      showBlog={showBlog}
+                      updateBlog={updateBlog}
+                      destroyBlog={destroyBlog}
+                    />
+                  )}                  
+                </div>
+              </div>
+
+              <div className="mt-6 pb-10 w-full mx-auto flex flex-col items-center justify-center">
+                <div>
+                  <h1 className="text-3xl font-bold pt-8 lg:pt-5 text-center">My Blogs</h1>                  
+                </div>
+                
+                <div className="mt-4">
+                  {publishedBlogs.length === 0 ? (
+                    <h1 className="text-3xl font-bold pt-8 lg:pt-5 text-center">
+                      You haven't shared your story yet
+                    </h1>
+                  ) : 
+                   (
+                    <BlogsDashboard 
+                      data={publishedBlogs}
                       showBlog={showBlog}
                       updateBlog={updateBlog}
                       destroyBlog={destroyBlog}

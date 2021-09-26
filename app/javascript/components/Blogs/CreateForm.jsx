@@ -159,7 +159,7 @@ export default function CreateForm(
 
                                 <Button
                                     type="submit"
-                                    buttonText={type === "create" ? "Preview" : "Update Blog"}
+                                    buttonText={type === "create" ? "Preview and Save as Draft" : "Update Blog"}
                                     loading={loading}
                                 />
                                 
