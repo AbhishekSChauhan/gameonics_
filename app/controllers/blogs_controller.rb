@@ -5,34 +5,47 @@ class BlogsController < ApplicationController
 
 
   def index
-    #only current users blogs
-    # @current_user_blogs = Blog.where(user_id: @current_user.id)
-    # @current_user_blogs = @current_user.blogs.all    
 
-    #All users blogs
-    @blogs = Blog.all
-    all_users = User.blogs 
-    render json: { blogs: @blogs, all_users:all_users },status: :ok
+    @blogs = Blog.active
+    # @users = User.all 
+    render json: { blogs: @blogs },status: :ok
   end
 
-  def show
-    comments = @blog.comments.select("comments.*, users.username").joins(:user).by_created_at
-    render status: :ok, json: { blog: @blog, blog_creator: @blog.user, comments: comments }
+  def show   
+      comments = @blog.comments.select("comments.*, users.username").joins(:user).by_created_at
+      render status: :ok, json: { blog: @blog, blog_creator: @blog.user, comments: comments }   
+  end
+
+  def preview
+    blog = Blog.find_by(published:false)
+    render status: :ok, json: { blog: blog }
   end
 
   def create
     # return if suspended(@current_user.can_post_date)
-
     @blog = Blog.new(blog_params.merge(user_id: @current_user.id))
-    
+    upload_image = Cloudinary::Uploader.upload(params[:blog][:image])
+    @blog.update(image: upload_image['url'])
+
     if authorized?
       if @blog.save
         render status: :ok,
-              json: {blog: @blog , notice: "Blog Successfully created"}
+              json: {blog: @blog , notice: "Blog saved as draft"}
       else
         errors = @blog.errors.full_messages.to_sentence
         render status: :unprocessable_entity, json: {error:errors}
       end
+    end
+  end
+
+  def published
+    blog = Blog.find(params[:id])
+    if blog.update_attribute(:published, params[:blog][:published])
+      render json:{blog:@blog,notice:"Blog Published"},
+                  status: :ok
+    else
+      render json:{errors:@blog.errors.full_messages},
+                  status: :unprocessable_entity
     end
   end
 
@@ -88,13 +101,13 @@ class BlogsController < ApplicationController
   # end
 
   private 
-
+  
   def set_blog
     @blog = Blog.find(params[:id])
   end
 
   def blog_params
-    params.require(:blog).permit(:title,:body,:image,:is_pinned, :is_locked)
+    params.require(:blog).permit(:title, :body, :published, :is_pinned, :is_locked, :image)
   end
 
   def suspended(date)
@@ -110,7 +123,7 @@ class BlogsController < ApplicationController
 
   def authorized?
 
-    #  @blog.user == @current_user ||  @current_user.admin_level >= 1
+    # @blog.user == @current_user ||  @current_user.admin_level >= 1
      @blog.user_id == @current_user.id || @current_user.admin_level >= 1
   end
 

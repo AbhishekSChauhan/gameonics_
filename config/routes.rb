@@ -24,13 +24,20 @@ Rails.application.routes.draw do
   ###   Blogs and comments routes  ###
   resources :blogs do
     member do
-      patch :lock_post, to: 'posts#lock_post'
-      patch :pin_post, to: 'posts#pin_post'
+      get :preview, to: 'blogs#preview'
+      patch :lock_post, to: 'blogs#lock_post'
+      patch :pin_post, to: 'blogs#pin_post'
+      patch :published, to: 'blogs#published'
     end
     resources :comments, only: [:create]
-    # member do
-    #   # get :get_comments
-    # end
+  end
+
+  resources :users, only: %i[index show] do
+    member do
+      patch :update_image, to: 'users#update_image'
+      patch :set_admin_level, to: 'users#set_admin_level'
+      patch :suspend_comms, to: 'users#suspend_communication'
+    end
   end
 
   resources :users, only: %i[index show] do

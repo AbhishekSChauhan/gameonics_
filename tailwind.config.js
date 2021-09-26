@@ -5,7 +5,9 @@ module.exports = {
     extend: {},
   },
   variants: {
-    extend: {},
+    extend: {
+      backgroundColor: ['group-focus'],
+    },
   },
   plugins: [
     require('@tailwindcss/typography'),

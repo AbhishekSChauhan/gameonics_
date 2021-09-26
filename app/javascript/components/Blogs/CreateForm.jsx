@@ -1,4 +1,3 @@
-import Trix from "trix";
 import React,{useMemo,useRef} from 'react'
 import Input from '../Input'
 import Button from '../Button'
@@ -6,18 +5,26 @@ import 'react-quill/dist/quill.snow.css'
 import 'react-quill/dist/quill.bubble.css'
 import ReactQuill,{Quill} from "react-quill";
 import ImageResize from 'quill-image-resize-module-react';
-import Editor from "./Editor";
+import ImageUploadModal from '../ProfilePage/ImageUploadModal'
 
 Quill.register('modules/imageResize', ImageResize);
 
 export default function CreateForm(
     {
     type="create",
-    setTitle,setBody,loading,handleSubmit,setImage,
-    handleChange,body
+    loading,handleSubmit,setImage,handleTitleChange,
+    handleBodyChange,body,title,handleCheckFileSize,
     }) {
 
     const editorRef = useRef(null);
+
+    const titlemodules = useMemo(()=>({
+        toolbar:{
+            container: [  
+                [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
+              ]
+        }
+    }));
 
     const modules = useMemo(()=>({
         imageResize: {
@@ -27,12 +34,12 @@ export default function CreateForm(
         toolbar:{
             container: [  
                 [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
-                [{size: []}],
+                // [{size: []}],
                 ['bold', 'italic', 'underline', 'strike', 'blockquote'],
                 [{'list': 'ordered'}, {'list': 'bullet'}, 
                 {'indent': '-1'}, {'indent': '+1'}],
                 ['link', 'image', 'video'],
-                ['clean']  
+                // ['clean']  
               ],
 
               handlers: {
@@ -49,6 +56,10 @@ export default function CreateForm(
         'bold', 'italic', 'underline', 'strike', 'blockquote',
         'list', 'bullet', 'indent',
         'link', 'image', 'video'
+    ]
+
+    const titleformats= [
+        'header', 'font'
     ]
     
     const imageHandler = () => {
@@ -99,31 +110,66 @@ export default function CreateForm(
         editorRef.current.getEditor().insertEmbed(null, "image", url);
     }
 
+
     return (
-        <form className="max-w-full prose" onSubmit={handleSubmit}>
-            <Input
-                label="Title"
-                placeholder="Blog Title (Max 50 Characters Allowed)"
-                onChange={e => setTitle(e.target.value)}
-            />
+        <div className="bg-white">
+            <div className="max-w-6xl mx-auto mt-10">
+                <div className="relative max-w-4xl mx-auto items-center justify-between">
+                    <div className="flex flex-col ">
+                        <div className="w-full ">
+                            <form className="max-w-full" onSubmit={handleSubmit}>
+                                <ReactQuill 
+                                    theme="bubble"
+                                    placeholder="Your amazing title" 
+                                    modules={titlemodules}
+                                    formats={titleformats}
+                                    forwardedRef={editorRef}
+                                    onChange={handleTitleChange}
+                                    value={title}        
+                                />
+
+                                <div className="flex items-center justify-center py-1 overflow-hidden">
+                                    {/* <div>    
+                                        {blogPosted.image && (
+                                            <img className="block shadow-xl mx-auto -mt-24 h-48 w-full bg-cover bg-center"
+                                            src={blogPosted.image} />
+                                        )}          
+                                    </div> */}
+                                    <div className="mt-2">                    
+                                        <input
+                                            type="file"
+                                            id="bannerImage"
+                                            name="banner_image"
+                                            accept="image/png, image/jpeg, image/jpg"
+                                            onChange={handleCheckFileSize}
+                                        />                    
+                                    </div>
+                                </div>
+
+                            
+                                <ReactQuill 
+                                    theme="bubble"
+                                    placeholder="Write your story" 
+                                    modules={modules}
+                                    formats={formats}
+                                    forwardedRef={editorRef}
+                                    onChange={handleBodyChange}
+                                    value={body}        
+                                />
+
+                                <Button
+                                    type="submit"
+                                    buttonText={type === "create" ? "Preview" : "Update Blog"}
+                                    loading={loading}
+                                />
+                                
+                            </form>          
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        </div>
+
         
-            <ReactQuill 
-                theme="bubble"
-                placeholder="Write your story" 
-                modules={modules}
-                formats={formats}
-                forwardedRef={editorRef}
-                onChange={handleChange}
-                value={body}        
-            />
-
-            {/* <Editor body={body} /> */}
-
-            <Button
-                type="submit"
-                buttonText={type === "create" ? "Create Blog" : "Update Blog"}
-                loading={loading}
-            />
-        </form>
     )
 }

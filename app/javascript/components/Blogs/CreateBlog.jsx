@@ -5,55 +5,60 @@ import { ReactTrixRTEInput } from "react-trix-rte";
 import PageLoader from '../PageLoader'
 import CreateForm from './CreateForm'
 import toast from "react-hot-toast";
+import blogsApi from '../apis/blogs';
 
 export default function CreateBlog({history}) {
     const [title, setTitle] = useState("")
     const [body, setBody] = useState("")
     const [loading, setLoading] = useState(false)
-    const [image, setImage] = useState('')
-    const [files, setFiles] = useState('')
+    const [bannerImage, setBannerImage] = useState(null)
+    const [blogPosted, setBlogPosted] = useState({})
 
-    const handleChange = (value)=>{
+
+    const handleBodyChange = (value)=>{
         setBody(value)
+        console.log(value)
+    }
+
+    const handleTitleChange = (value)=>{
+        setTitle(value)
         console.log(value)
     }
 
     const handleCheckFileSize = e => {
         const elem = e.target;
         if (elem.files[0].size > 1048576) {
-        alert('File is too big!', 'blogForm');
-        // setRequest('waiting');
         elem.value = '';
-        } else { setImage(elem.files[0]); }
+        } else { setBannerImage(elem.files[0]); }
     };
 
+    
+    
     const handleSubmit = async (event) => {
         event.preventDefault()
-        // if(!UserDetails.state.isLogggedIn){
-        //     alert('Please log in first!')
-        // }
-
-        // const formData = new FormData();
-        // formData.append('blog[title]',title.trim())
-        // formData.append('blog[body]',body)
-        // formData.append('blog[image]',image)
-        const variables = {
-            title: title,
-            body: body,
-            image: image
-        }
+        setLoading(true)
+        const formData = new FormData();
+        formData.append('blog[title]',title)
+        formData.append('blog[body]',body)
+        formData.append('blog[image]',bannerImage)
         try{
-            const response = await axios.post("/blogs",variables)
+            const response = await axios.post("/blogs",formData)
             setLoading(false)
+            console.log("blog submit response", response)
+            setBlogPosted(response.data.blog)
             if(response){
                 response.success = response.status === 200;
                 if (response.data.notice){
                     toast.success(response.data.notice)                    
                 }
-            }
-            console.log("blog submit response", response)
-            console.log("img",image)
-            history.push("/blogs")
+            }            
+            history.push({
+                pathname: `/blogs/${response.data.blog.id}/preview`,
+                state: {title: title,
+                        body:body,
+                        bannerImage:bannerImage
+                    }
+            });
         } catch(error){
             console.log("blog not saved error",error)
             setLoading(false)
@@ -79,15 +84,16 @@ export default function CreateBlog({history}) {
     return (
         <div>
             <CreateForm 
-                setTitle={setTitle}
-                setBody={setBody}
-                setImage={setImage}
+                title={title}
                 body={body}
+                blogPosted={blogPosted}
+                bannerImage={bannerImage}
                 loading={loading}
-                handleSubmit={handleSubmit}  
-                handleChange={handleChange} 
+                handleSubmit={handleSubmit} 
+                handleTitleChange= {handleTitleChange} 
+                handleBodyChange={handleBodyChange} 
                 handleCheckFileSize={handleCheckFileSize}                        
-            />            
-        </div>
+            /> 
+       </div>
     )
 }

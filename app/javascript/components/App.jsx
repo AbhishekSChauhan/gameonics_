@@ -21,6 +21,10 @@ import authApi from "./apis/auth";
 import GameDetails from "./Games/GameDetails";
 import { Redirect } from "react-router-dom";
 
+import PreviewBlog from "./Blogs/PreviewBlog";
+import Publish from './Blogs/Publish'
+
+
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({logged_in: false})
@@ -114,10 +118,12 @@ const App = () => {
             <Route exact path="/forgot_password" component={ForgotPassword} />
             <Route exact path="/reset_password" component={ResetPassword} />
             <Route exact path="/blogs" component={Blogs} /> 
-            <Route exact path="/blogs/:id/show" component={ShowBlog} />  
+            <Route exact path="/blogs/:id/show" component={ShowBlog} /> 
+            <Route exact path="/blogs/:id/preview" component={PreviewBlog} /> 
             <Route exact path="/blogs/:id/edit" component={EditBlog} />   
             <Route exact path="/blogs/create" component={CreateBlog} />
             <Route exact path="/blogs/:id/comments" component={Comments} />
+            <Route exact path="/blogs/publish" component={Publish} />
             <Route exact path="/users/:id" 
               render={(props)=>(
                 <ProfilePage 

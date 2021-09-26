@@ -1,11 +1,18 @@
 class Blog < ApplicationRecord
   default_scope {order(created_at: :desc)}
+  scope :active, -> { where(published: true) }
+
+  def self.active?
+    published
+  end
+
 
   belongs_to :user
   has_many :comments, dependent: :destroy
 
   validates :title, length: { in: 3..48 }, presence: true
   validates :body, length: { in: 5..100000000 }, presence: true
+  validates :image, presence: true
   scope :pins, -> { where('is_pinned = true')}
   scope :not_pinned, ->{ where('is_pinned = false')}
 

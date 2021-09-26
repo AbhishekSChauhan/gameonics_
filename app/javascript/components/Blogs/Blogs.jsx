@@ -92,7 +92,7 @@ export default function Blogs({history}) {
 
     return (
         <div>
-            <BlogNav />
+            <BlogNav/>
             <div>
             <BlogsDashboard 
                 data={blogs}
