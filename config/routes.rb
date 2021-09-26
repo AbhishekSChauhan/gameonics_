@@ -28,6 +28,7 @@ Rails.application.routes.draw do
       patch :lock_post, to: 'blogs#lock_post'
       patch :pin_post, to: 'blogs#pin_post'
       patch :published, to: 'blogs#published'
+      patch :banner_image, to: 'blogs#banner_image'
     end
     resources :comments, only: [:create]
   end

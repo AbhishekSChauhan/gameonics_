@@ -26,8 +26,8 @@ class BlogsController < ApplicationController
   def create
     # return if suspended(@current_user.can_post_date)
     @blog = Blog.new(blog_params.merge(user_id: @current_user.id))
-    upload_image = Cloudinary::Uploader.upload(params[:blog][:image])
-    @blog.update(image: upload_image['url'])
+    # upload_image = Cloudinary::Uploader.upload(params[:blog][:image])
+    # @blog.update(image: upload_image['url'])
 
     if authorized?
       if @blog.save
@@ -37,6 +37,17 @@ class BlogsController < ApplicationController
         errors = @blog.errors.full_messages.to_sentence
         render status: :unprocessable_entity, json: {error:errors}
       end
+    end
+  end
+
+  def banner_image
+    blog = Blog.find(params[:id])
+    upload_image = Cloudinary::Uploader.upload(params[:blog][:image])
+    if blog.update(image: upload_image['url'])
+      render json: {blog:blog , notice:"Banner Image Added Successfully"}, status: :ok
+    else
+      render json:{errors:blog.errors.full_messages.to_sentence},
+              status: :unprocessable_entity
     end
   end
 

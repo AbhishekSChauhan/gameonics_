@@ -122,7 +122,7 @@ export default function CreateForm(
                 <div className="relative max-w-4xl mx-auto items-center justify-between">
                     <div className="flex flex-col ">
                         <div className="w-full ">
-                            <form className="max-w-full" onSubmit={imageSelected ? handleSubmit : handleImageError}>
+                            <form className="max-w-full" onSubmit={handleSubmit}>
                                 <ReactQuill 
                                     theme="bubble"
                                     placeholder="Your amazing title" 
@@ -133,7 +133,7 @@ export default function CreateForm(
                                     value={title}        
                                 />
 
-                                <div className="flex items-center justify-center py-1 overflow-hidden">
+                                {/* <div className="flex items-center justify-center py-1 overflow-hidden">
 
                                     <div className="mt-2">                    
                                         <input
@@ -144,7 +144,7 @@ export default function CreateForm(
                                             onChange={handleCheckFileSize}
                                         />                    
                                     </div>
-                                </div>
+                                </div> */}
 
                             
                                 <ReactQuill 
@@ -158,7 +158,7 @@ export default function CreateForm(
                                 />
 
                                 <Button
-                                    type={imageSelected ? "submit" : 'botton' }
+                                    type="submit"
                                     buttonText={type === "create" ? "Preview and Save as Draft" : "Update Blog"}
                                     loading={loading}
                                 />

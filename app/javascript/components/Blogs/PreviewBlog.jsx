@@ -6,11 +6,12 @@ import axios from 'axios'
 import parse from 'html-react-parser';
 import {useHistory} from 'react-router-dom'
 import toast from "react-hot-toast";
+import ImageUploadModal from '../ProfilePage/ImageUploadModal'
 
 
 
 export default function PreviewBlog(props) {
-    const {title,body,bannerImage} = (props.location && props.location.state) || {};
+    // const {title,body,bannerImage} = (props.location && props.location.state) || {};
     let history = useHistory()
     const componentMounted = true
     const {id} = useParams()
@@ -19,6 +20,8 @@ export default function PreviewBlog(props) {
     const [blogCreator, setBlogCreator] = useState('')
     const [published, setPublished] = useState(false)
     const [blogPublished, setBlogPublished] = useState({})
+    const [bannerImage, setBannerImage] = useState(null)
+
     const source = axios.CancelToken.source()
 
     const fetchBlogDetails = async()=>{
@@ -82,6 +85,46 @@ export default function PreviewBlog(props) {
     const handleUnpublisherror = () => {
         toast.error('First select Publish then post')
     }
+
+    const handleCheckFileSize = e => {
+        const elem = e.target;
+        if (elem.files[0].size > 1048576) {
+            elem.value = '';
+            toast.error('Size is more than 1 MB')
+        } else 
+        { 
+            setBannerImage(elem.files[0]); 
+        }
+    };
+
+    const handleBannerImageSubmit = async(e) => {
+        e.preventDefault()
+        setLoading(true)
+        const formData = new FormData()
+        formData.append('blog[image]',bannerImage)
+        try{
+          setLoading(true)
+          const response = await axios.patch(`/blogs/${id}/banner_image`,formData)
+          if(response.status === 200){
+            toast.success(response.data.notice)
+          }
+          console.log('image post',response)
+          setLoading(false)
+        }catch(error) {
+          console.log("signup error",error)
+          setLoading(false)
+          if(error){
+              toast.error(
+                  error.response?.data?.notice ||
+                  error.response?.data?.errors ||
+                  error.response?.data?.error ||
+                  error.message ||
+                  error.notice ||
+                  "Something went wrong!"
+              )
+          }
+      }
+    }
     
     useEffect(()=>{
         fetchBlogDetails()
@@ -124,6 +167,12 @@ export default function PreviewBlog(props) {
                                 </div>
                             </div>                       
                             </div> 
+                            <div>
+                                <ImageUploadModal 
+                                handleBannerImageSubmit={handleBannerImageSubmit}
+                                handleCheckFileSize={handleCheckFileSize}
+                                />        
+                            </div>
                             <div className="flex items-center justify-center py-1 overflow-hidden">
                                 <button className="group inline-flex justify-center px-4 py-2 text-sm font-medium
                                         text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:bg-blue-400
