@@ -20,8 +20,10 @@ import ProfilePage from "./ProfilePage/ProfilePage";
 import authApi from "./apis/auth";
 import GameDetails from "./Games/GameDetails";
 import { Redirect } from "react-router-dom";
+
 import PreviewBlog from "./Blogs/PreviewBlog";
 import Publish from './Blogs/Publish'
+
 
 const App = () => {
   const [loading, setLoading] = useState(true);

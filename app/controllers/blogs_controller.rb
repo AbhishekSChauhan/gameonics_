@@ -5,17 +5,15 @@ class BlogsController < ApplicationController
 
 
   def index
+
     @blogs = Blog.active
     # @users = User.all 
     render json: { blogs: @blogs },status: :ok
   end
 
-  def show    
-    # if @blog.published == true
+  def show   
       comments = @blog.comments.select("comments.*, users.username").joins(:user).by_created_at
-      render status: :ok, json: { blog: @blog, blog_creator: @blog.user, comments: comments }
-    
-    # end    
+      render status: :ok, json: { blog: @blog, blog_creator: @blog.user, comments: comments }   
   end
 
   def preview
