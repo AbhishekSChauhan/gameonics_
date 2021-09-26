@@ -6,6 +6,7 @@ import 'react-quill/dist/quill.bubble.css'
 import ReactQuill,{Quill} from "react-quill";
 import ImageResize from 'quill-image-resize-module-react';
 import ImageUploadModal from '../ProfilePage/ImageUploadModal'
+import toast from 'react-hot-toast'
 
 Quill.register('modules/imageResize', ImageResize);
 
@@ -13,7 +14,7 @@ export default function CreateForm(
     {
     type="create",
     loading,handleSubmit,setImage,handleTitleChange,
-    handleBodyChange,body,title,handleCheckFileSize,
+    handleBodyChange,body,title,handleCheckFileSize,imageSelected
     }) {
 
     const editorRef = useRef(null);
@@ -110,6 +111,10 @@ export default function CreateForm(
         editorRef.current.getEditor().insertEmbed(null, "image", url);
     }
 
+    const handleImageError = () => {
+        toast.error('Image not selected')
+    }
+
 
     return (
         <div className="bg-white">
@@ -117,7 +122,7 @@ export default function CreateForm(
                 <div className="relative max-w-4xl mx-auto items-center justify-between">
                     <div className="flex flex-col ">
                         <div className="w-full ">
-                            <form className="max-w-full" onSubmit={handleSubmit}>
+                            <form className="max-w-full" onSubmit={imageSelected ? handleSubmit : handleImageError}>
                                 <ReactQuill 
                                     theme="bubble"
                                     placeholder="Your amazing title" 
@@ -129,12 +134,7 @@ export default function CreateForm(
                                 />
 
                                 <div className="flex items-center justify-center py-1 overflow-hidden">
-                                    {/* <div>    
-                                        {blogPosted.image && (
-                                            <img className="block shadow-xl mx-auto -mt-24 h-48 w-full bg-cover bg-center"
-                                            src={blogPosted.image} />
-                                        )}          
-                                    </div> */}
+
                                     <div className="mt-2">                    
                                         <input
                                             type="file"
@@ -158,7 +158,7 @@ export default function CreateForm(
                                 />
 
                                 <Button
-                                    type="submit"
+                                    type={imageSelected ? "submit" : 'botton' }
                                     buttonText={type === "create" ? "Preview and Save as Draft" : "Update Blog"}
                                     loading={loading}
                                 />

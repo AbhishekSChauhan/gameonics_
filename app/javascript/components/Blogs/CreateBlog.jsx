@@ -12,6 +12,7 @@ export default function CreateBlog({history}) {
     const [body, setBody] = useState("")
     const [loading, setLoading] = useState(false)
     const [bannerImage, setBannerImage] = useState(null)
+    const [imageSelected, setImageSelected] = useState(false)
     const [blogPosted, setBlogPosted] = useState({})
 
 
@@ -28,10 +29,14 @@ export default function CreateBlog({history}) {
     const handleCheckFileSize = e => {
         const elem = e.target;
         if (elem.files[0].size > 1048576) {
-        elem.value = '';
-        } else { setBannerImage(elem.files[0]); }
+            elem.value = '';
+            toast.error('Size is more than 1 MB')
+        } else 
+        { 
+            setBannerImage(elem.files[0]); 
+            setImageSelected(true)
+        }
     };
-
     
     
     const handleSubmit = async (event) => {
@@ -92,7 +97,8 @@ export default function CreateBlog({history}) {
                 handleSubmit={handleSubmit} 
                 handleTitleChange= {handleTitleChange} 
                 handleBodyChange={handleBodyChange} 
-                handleCheckFileSize={handleCheckFileSize}                        
+                handleCheckFileSize={handleCheckFileSize}
+                imageSelected={imageSelected}                        
             /> 
        </div>
     )
