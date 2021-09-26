@@ -14,6 +14,7 @@ export default function CreateBlog({history}) {
     const [bannerImage, setBannerImage] = useState(null)
     const [blogPosted, setBlogPosted] = useState({})
 
+
     const handleBodyChange = (value)=>{
         setBody(value)
         console.log(value)
@@ -43,16 +44,21 @@ export default function CreateBlog({history}) {
         try{
             const response = await axios.post("/blogs",formData)
             setLoading(false)
+            console.log("blog submit response", response)
+            setBlogPosted(response.data.blog)
             if(response){
                 response.success = response.status === 200;
                 if (response.data.notice){
                     toast.success(response.data.notice)                    
                 }
-            }
-            console.log("blog submit response", response)
-            setBlogPosted(response.data.blog)
-            history.push(`/blogs/${response.data.blog.id}/preview`)
-            setLoading(false)
+            }            
+            history.push({
+                pathname: `/blogs/${response.data.blog.id}/preview`,
+                state: {title: title,
+                        body:body,
+                        bannerImage:bannerImage
+                    }
+            });
         } catch(error){
             console.log("blog not saved error",error)
             setLoading(false)

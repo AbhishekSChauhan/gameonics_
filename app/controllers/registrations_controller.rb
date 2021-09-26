@@ -50,7 +50,7 @@ class RegistrationsController < ApplicationController
     end
 
     def forgot_password
-        user. User.find_by(email: params[:email])
+        user = User.find_by(email: params[:email])
         if user
             new_token = generate_token(user.id, 32, true)
             if user.update_attribute(:password_reset_token,new_token)
@@ -106,7 +106,7 @@ class RegistrationsController < ApplicationController
         end
 
         user.destroy
-        render json:{notice:"Account deactivated"}
+        render json:{notice:"Account deleted"}
     end
 
 

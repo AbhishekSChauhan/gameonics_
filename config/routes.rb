@@ -27,7 +27,7 @@ Rails.application.routes.draw do
       get :preview, to: 'blogs#preview'
       patch :lock_post, to: 'blogs#lock_post'
       patch :pin_post, to: 'blogs#pin_post'
-      patch :banner_image, to: 'blogs#banner_image'
+      patch :published, to: 'blogs#published'
     end
     resources :comments, only: [:create]
   end

@@ -29,15 +29,25 @@ class BlogsController < ApplicationController
     upload_image = Cloudinary::Uploader.upload(params[:blog][:image])
     @blog.update(image: upload_image['url'])
 
-
     if authorized?
       if @blog.save
         render status: :ok,
-              json: {blog: @blog , notice: "Blog Successfully created"}
+              json: {blog: @blog , notice: "Blog saved as draft"}
       else
         errors = @blog.errors.full_messages.to_sentence
         render status: :unprocessable_entity, json: {error:errors}
       end
+    end
+  end
+
+  def published
+    blog = Blog.find(params[:id])
+    if blog.update_attribute(:published, params[:blog][:published])
+      render json:{blog:@blog,notice:"Blog Published"},
+                  status: :ok
+    else
+      render json:{errors:@blog.errors.full_messages},
+                  status: :unprocessable_entity
     end
   end
 
