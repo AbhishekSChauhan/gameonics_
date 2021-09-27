@@ -5,11 +5,12 @@ class BlogsController < ApplicationController
 
 
   def index
-    # @blogs = Blog.active
-    # @users = User.all 
-    @blogs =  Blog.active.includes(:user)
-    all_users = User.all
-    render json: { blogs: @blogs, all_users:all_users },status: :ok
+    @blogs =  Blog.active
+    all_blogs = @blogs.as_json(include:{user:{only: :username}})
+    # render json:  @blogs.as_json(include: :user) , status: :ok
+    # render :json => @blogs, :include => {:user => {:only => :username}}
+
+    render json: {blogs: all_blogs} , status: :ok
   end
 
   def show    
@@ -28,9 +29,7 @@ class BlogsController < ApplicationController
   def create
     # return if suspended(@current_user.can_post_date)
     @blog = Blog.new(blog_params.merge(user_id: @current_user.id))
-    # upload_image = Cloudinary::Uploader.upload(params[:blog][:image])
-    # @blog.update(image: upload_image['url'])
-
+    
     if authorized?
       if @blog.save
         render status: :ok,

@@ -24,9 +24,16 @@ class UsersController < ApplicationController
         selected_user = User.find(params[:id])
         published_blogs = Blog.where(user_id: selected_user.id , published:true ).order(created_at: :desc)
         draft_blogs = Blog.where(user_id: selected_user.id , published:false ).order(created_at: :desc)
+        # user_blogs = selected_user.as_json(include: { blogs: {
+        #                                             include: { comments: {only: :content } },
+        #                                             only: :title } })
+        user_blogs = selected_user.as_json(include: :blogs)
+        
         render json:{user: user_with_image(selected_user), 
                     published_blogs: published_blogs,
-                    draft_blogs: draft_blogs }    
+                    draft_blogs: draft_blogs,
+                    user_blogs: user_blogs
+                }    
     end
 
     def update_image

@@ -8,6 +8,7 @@ import { FaUser } from 'react-icons/fa'
 import {useHistory} from 'react-router-dom'
 import ImageUploadModal from './ImageUploadModal';
 import {Link} from 'react-router-dom'
+import MyBlogs from './MyBlogs';
 
 const ProfilePage = ({
     user, handleLogout, handleBlogSelect,
@@ -208,8 +209,9 @@ const ProfilePage = ({
                     <div>
                       <h1 className="text-3xl font-bold pt-4 lg:pt-5 text-center">Drafts</h1>                  
                     </div>
-                    <BlogsDashboard 
+                    <MyBlogs 
                       data={draftBlogs}
+                      user = {user}
                       showBlog={showBlog}
                       updateBlog={updateBlog}
                       destroyBlog={destroyBlog}
@@ -231,8 +233,9 @@ const ProfilePage = ({
                     </h1>
                   ) : 
                    (
-                    <BlogsDashboard 
+                    <MyBlogs 
                       data={publishedBlogs}
+                      user = {user}
                       showBlog={showBlog}
                       updateBlog={updateBlog}
                       destroyBlog={destroyBlog}
