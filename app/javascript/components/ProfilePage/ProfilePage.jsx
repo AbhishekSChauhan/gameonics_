@@ -173,7 +173,7 @@ const ProfilePage = ({
               
               <div>
                 <ImageUploadModal 
-                  handleProfileImageSubmit={handleProfileImageSubmit}
+                  handleImageSubmit={handleProfileImageSubmit}
                   handleCheckFileSize={handleCheckFileSize}
                 />        
               </div>        

@@ -21,7 +21,8 @@ export default function PreviewBlog(props) {
     const [published, setPublished] = useState(false)
     const [blogPublished, setBlogPublished] = useState({})
     const [bannerImage, setBannerImage] = useState(null)
-
+    const [imageSelected, setImageSelected] = useState(false)
+    const [imagePosted, setImagePosted] = useState('')
     const source = axios.CancelToken.source()
 
     const fetchBlogDetails = async()=>{
@@ -83,7 +84,13 @@ export default function PreviewBlog(props) {
     }
 
     const handleUnpublisherror = () => {
-        toast.error('First select Publish then post')
+        if(published === false )
+        {
+            toast.error('First select Publish then post')
+        }
+        if(imageSelected === false){
+            toast.error('Please upload Banner image')
+        }
     }
 
     const handleCheckFileSize = e => {
@@ -109,6 +116,8 @@ export default function PreviewBlog(props) {
             toast.success(response.data.notice)
           }
           console.log('image post',response)
+          setImageSelected(true)
+          setImagePosted(response.data.image)
           setLoading(false)
         }catch(error) {
           console.log("signup error",error)
@@ -145,10 +154,14 @@ export default function PreviewBlog(props) {
                     <div className="relative max-w-4xl mx-auto items-center justify-between">
                         <div className="flex flex-col ">
                             <div className="w-full">
-                            <div className="mt-20">
-                                <img className="block rounded-full shadow-xl mx-auto -mt-24 h-48 w-48 bg-cover bg-center"
-                                src={blogDetails?.image}
-                                />                                         
+                            <div className="mt-5">
+                                {imageSelected ? (
+                                    <img className="block shadow-xl mx-auto h-56 w-full bg-cover bg-center"
+                                    src={imagePosted}
+                                    /> 
+                                ):(
+                                    <div></div>
+                                )}                                                                        
                             </div>
 
                             <div className="flex items-center justify-center py-1 overflow-hidden">
@@ -160,16 +173,14 @@ export default function PreviewBlog(props) {
 
 
                             <div className="flex items-center justify-center py-1 overflow-hidden">
-                                <div 
-                                    // dangerouslySetInnerHTML={{ __html: blogDetails.body }}
-                                    className="prose-lg">
-                                        {parse(blogDetails?.body)}
+                                <div className="prose-lg">
+                                    {parse(blogDetails?.body)}
                                 </div>
                             </div>                       
                             </div> 
-                            <div>
+                            <div className="flex items-center justify-center py-1 overflow-hidden">
                                 <ImageUploadModal 
-                                handleBannerImageSubmit={handleBannerImageSubmit}
+                                handleImageSubmit={handleBannerImageSubmit}
                                 handleCheckFileSize={handleCheckFileSize}
                                 />        
                             </div>
@@ -186,7 +197,7 @@ export default function PreviewBlog(props) {
                                 <button className="inline-flex justify-center px-4 py-2 text-sm font-medium
                                         text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200
                                         focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500" 
-                                        onClick={published ? handlePublishedSubmit : handleUnpublisherror}          
+                                        onClick={(published && imageSelected) ? handlePublishedSubmit : handleUnpublisherror}          
                                     >
                                     Post your blog
                                 </button>

@@ -5,9 +5,11 @@ class BlogsController < ApplicationController
 
 
   def index
-    @blogs = Blog.active
+    # @blogs = Blog.active
     # @users = User.all 
-    render json: { blogs: @blogs },status: :ok
+    @blogs =  Blog.active.includes(:user)
+    all_users = User.all
+    render json: { blogs: @blogs, all_users:all_users },status: :ok
   end
 
   def show    
@@ -44,7 +46,7 @@ class BlogsController < ApplicationController
     blog = Blog.find(params[:id])
     upload_image = Cloudinary::Uploader.upload(params[:blog][:image])
     if blog.update(image: upload_image['url'])
-      render json: {blog:blog , notice:"Banner Image Added Successfully"}, status: :ok
+      render json: {image:blog.image , notice:"Banner Image Added Successfully"}, status: :ok
     else
       render json:{errors:blog.errors.full_messages.to_sentence},
               status: :unprocessable_entity
@@ -54,10 +56,10 @@ class BlogsController < ApplicationController
   def published
     blog = Blog.find(params[:id])
     if blog.update_attribute(:published, params[:blog][:published])
-      render json:{blog:@blog,notice:"Blog Published"},
+      render json:{blog:blog,notice:"Blog Published"},
                   status: :ok
     else
-      render json:{errors:@blog.errors.full_messages},
+      render json:{errors:blog.errors.full_messages},
                   status: :unprocessable_entity
     end
   end
