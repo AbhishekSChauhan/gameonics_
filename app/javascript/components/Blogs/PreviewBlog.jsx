@@ -6,11 +6,12 @@ import axios from 'axios'
 import parse from 'html-react-parser';
 import {useHistory} from 'react-router-dom'
 import toast from "react-hot-toast";
+import ImageUploadModal from '../ProfilePage/ImageUploadModal'
 
 
 
 export default function PreviewBlog(props) {
-    const {title,body,bannerImage} = (props.location && props.location.state) || {};
+    // const {title,body,bannerImage} = (props.location && props.location.state) || {};
     let history = useHistory()
     const componentMounted = true
     const {id} = useParams()
@@ -19,6 +20,9 @@ export default function PreviewBlog(props) {
     const [blogCreator, setBlogCreator] = useState('')
     const [published, setPublished] = useState(false)
     const [blogPublished, setBlogPublished] = useState({})
+    const [bannerImage, setBannerImage] = useState(null)
+    const [imageSelected, setImageSelected] = useState(false)
+    const [imagePosted, setImagePosted] = useState('')
     const source = axios.CancelToken.source()
 
     const fetchBlogDetails = async()=>{
@@ -78,6 +82,58 @@ export default function PreviewBlog(props) {
     const handlePublish = () => {
         setPublished(true)
     }
+
+    const handleUnpublisherror = () => {
+        if(published === false )
+        {
+            toast.error('First select Publish then post')
+        }
+        if(imageSelected === false){
+            toast.error('Please upload Banner image')
+        }
+    }
+
+    const handleCheckFileSize = e => {
+        const elem = e.target;
+        if (elem.files[0].size > 1048576) {
+            elem.value = '';
+            toast.error('Size is more than 1 MB')
+        } else 
+        { 
+            setBannerImage(elem.files[0]); 
+        }
+    };
+
+    const handleBannerImageSubmit = async(e) => {
+        e.preventDefault()
+        setLoading(true)
+        const formData = new FormData()
+        formData.append('blog[image]',bannerImage)
+        try{
+          setLoading(true)
+          const response = await axios.patch(`/blogs/${id}/banner_image`,formData)
+          if(response.status === 200){
+            toast.success(response.data.notice)
+          }
+          console.log('image post',response)
+          setImageSelected(true)
+          setImagePosted(response.data.image)
+          setLoading(false)
+        }catch(error) {
+          console.log("signup error",error)
+          setLoading(false)
+          if(error){
+              toast.error(
+                  error.response?.data?.notice ||
+                  error.response?.data?.errors ||
+                  error.response?.data?.error ||
+                  error.message ||
+                  error.notice ||
+                  "Something went wrong!"
+              )
+          }
+      }
+    }
     
     useEffect(()=>{
         fetchBlogDetails()
@@ -98,10 +154,14 @@ export default function PreviewBlog(props) {
                     <div className="relative max-w-4xl mx-auto items-center justify-between">
                         <div className="flex flex-col ">
                             <div className="w-full">
-                            <div className="mt-20">
-                                <img className="block rounded-full shadow-xl mx-auto -mt-24 h-48 w-48 bg-cover bg-center"
-                                src={blogDetails?.image}
-                                />                                         
+                            <div className="mt-5">
+                                {imageSelected ? (
+                                    <img className="block shadow-xl mx-auto h-56 w-full bg-cover bg-center"
+                                    src={imagePosted}
+                                    /> 
+                                ):(
+                                    <div></div>
+                                )}                                                                        
                             </div>
 
                             <div className="flex items-center justify-center py-1 overflow-hidden">
@@ -113,13 +173,17 @@ export default function PreviewBlog(props) {
 
 
                             <div className="flex items-center justify-center py-1 overflow-hidden">
-                                <div 
-                                    // dangerouslySetInnerHTML={{ __html: blogDetails.body }}
-                                    className="prose-lg">
-                                        {parse(blogDetails?.body)}
+                                <div className="prose-lg">
+                                    {parse(blogDetails?.body)}
                                 </div>
                             </div>                       
                             </div> 
+                            <div className="flex items-center justify-center py-1 overflow-hidden">
+                                <ImageUploadModal 
+                                handleImageSubmit={handleBannerImageSubmit}
+                                handleCheckFileSize={handleCheckFileSize}
+                                />        
+                            </div>
                             <div className="flex items-center justify-center py-1 overflow-hidden">
                                 <button className="group inline-flex justify-center px-4 py-2 text-sm font-medium
                                         text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:bg-blue-400
@@ -133,7 +197,7 @@ export default function PreviewBlog(props) {
                                 <button className="inline-flex justify-center px-4 py-2 text-sm font-medium
                                         text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200
                                         focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500" 
-                                        onClick={handlePublishedSubmit}          
+                                        onClick={(published && imageSelected) ? handlePublishedSubmit : handleUnpublisherror}          
                                     >
                                     Post your blog
                                 </button>

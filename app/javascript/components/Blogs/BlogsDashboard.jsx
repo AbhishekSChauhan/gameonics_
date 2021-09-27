@@ -3,9 +3,9 @@ import axios from 'axios'
 import { MdDelete,MdEdit } from "react-icons/md";
 import parse from 'html-react-parser';
 
-export default function BlogsDashboard({data,showBlog,updateBlog,destroyBlog}) {
+export default function BlogsDashboard({data,users,showBlog,updateBlog,destroyBlog}) {
 
-
+    
     
     return (
       <div className="p-10 grid grid-cols-1 sm:grid-cols-1 sm:justify-center md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -129,7 +129,7 @@ export default function BlogsDashboard({data,showBlog,updateBlog,destroyBlog}) {
                   />
                   <div className="flex flex-col mx- cursor-pointer">
                     <a href="" className="font-semibold text-gray-700 hover:underline">
-                      Written by {blog.user_id}
+                      Written by {blog.user.username}
                     </a>
                     <span className="mx-1 text-xs text-gray-600">{blog.created_at}</span>
                   </div>

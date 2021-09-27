@@ -1,7 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react'
 import React, { useState, useEffect,Fragment } from 'react'
 
-const ImageUploadModal = ({handleCheckFileSize,handleProfileImageSubmit}) => {
+const ImageUploadModal = ({handleCheckFileSize,handleImageSubmit}) => {
     const [isOpen, setIsOpen] = useState(false)
 
     function closeModal() {
@@ -56,7 +56,7 @@ const ImageUploadModal = ({handleCheckFileSize,handleProfileImageSubmit}) => {
               leaveTo="opacity-0 scale-95"
             >
               <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
-                <form onSubmit={handleProfileImageSubmit} encType="multipart/form-data">
+                <form onSubmit={handleImageSubmit} encType="multipart/form-data">
                 <Dialog.Title
                   as="h3"
                   className="text-lg font-medium leading-6 text-gray-900"
@@ -67,7 +67,7 @@ const ImageUploadModal = ({handleCheckFileSize,handleProfileImageSubmit}) => {
                       <input
                         type="file"
                         id="profileImage"
-                        name="profile_image"
+                        name="image"
                         accept="image/png, image/jpeg, image/jpg"
                         onChange={handleCheckFileSize}
                       />                    

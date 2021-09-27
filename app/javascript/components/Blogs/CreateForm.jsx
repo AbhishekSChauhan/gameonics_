@@ -6,6 +6,7 @@ import 'react-quill/dist/quill.bubble.css'
 import ReactQuill,{Quill} from "react-quill";
 import ImageResize from 'quill-image-resize-module-react';
 import ImageUploadModal from '../ProfilePage/ImageUploadModal'
+import toast from 'react-hot-toast'
 
 Quill.register('modules/imageResize', ImageResize);
 
@@ -13,7 +14,7 @@ export default function CreateForm(
     {
     type="create",
     loading,handleSubmit,setImage,handleTitleChange,
-    handleBodyChange,body,title,handleCheckFileSize,
+    handleBodyChange,body,title,handleCheckFileSize,imageSelected
     }) {
 
     const editorRef = useRef(null);
@@ -110,6 +111,10 @@ export default function CreateForm(
         editorRef.current.getEditor().insertEmbed(null, "image", url);
     }
 
+    const handleImageError = () => {
+        toast.error('Image not selected')
+    }
+
 
     return (
         <div className="bg-white">
@@ -128,13 +133,8 @@ export default function CreateForm(
                                     value={title}        
                                 />
 
-                                <div className="flex items-center justify-center py-1 overflow-hidden">
-                                    {/* <div>    
-                                        {blogPosted.image && (
-                                            <img className="block shadow-xl mx-auto -mt-24 h-48 w-full bg-cover bg-center"
-                                            src={blogPosted.image} />
-                                        )}          
-                                    </div> */}
+                                {/* <div className="flex items-center justify-center py-1 overflow-hidden">
+
                                     <div className="mt-2">                    
                                         <input
                                             type="file"
@@ -144,7 +144,7 @@ export default function CreateForm(
                                             onChange={handleCheckFileSize}
                                         />                    
                                     </div>
-                                </div>
+                                </div> */}
 
                             
                                 <ReactQuill 
@@ -159,7 +159,7 @@ export default function CreateForm(
 
                                 <Button
                                     type="submit"
-                                    buttonText={type === "create" ? "Preview" : "Update Blog"}
+                                    buttonText={type === "create" ? "Preview and Save as Draft" : "Update Blog"}
                                     loading={loading}
                                 />
                                 

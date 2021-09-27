@@ -5,10 +5,12 @@ class BlogsController < ApplicationController
 
 
   def index
+    @blogs =  Blog.active
+    all_blogs = @blogs.as_json(include:{user:{only: :username}})
+    # render json:  @blogs.as_json(include: :user) , status: :ok
+    # render :json => @blogs, :include => {:user => {:only => :username}}
 
-    @blogs = Blog.active
-    # @users = User.all 
-    render json: { blogs: @blogs },status: :ok
+    render json: {blogs: all_blogs} , status: :ok
   end
 
   def show   
@@ -24,9 +26,7 @@ class BlogsController < ApplicationController
   def create
     # return if suspended(@current_user.can_post_date)
     @blog = Blog.new(blog_params.merge(user_id: @current_user.id))
-    upload_image = Cloudinary::Uploader.upload(params[:blog][:image])
-    @blog.update(image: upload_image['url'])
-
+    
     if authorized?
       if @blog.save
         render status: :ok,
@@ -38,13 +38,24 @@ class BlogsController < ApplicationController
     end
   end
 
+  def banner_image
+    blog = Blog.find(params[:id])
+    upload_image = Cloudinary::Uploader.upload(params[:blog][:image])
+    if blog.update(image: upload_image['url'])
+      render json: {image:blog.image , notice:"Banner Image Added Successfully"}, status: :ok
+    else
+      render json:{errors:blog.errors.full_messages.to_sentence},
+              status: :unprocessable_entity
+    end
+  end
+
   def published
     blog = Blog.find(params[:id])
     if blog.update_attribute(:published, params[:blog][:published])
-      render json:{blog:@blog,notice:"Blog Published"},
+      render json:{blog:blog,notice:"Blog Published"},
                   status: :ok
     else
-      render json:{errors:@blog.errors.full_messages},
+      render json:{errors:blog.errors.full_messages},
                   status: :unprocessable_entity
     end
   end
