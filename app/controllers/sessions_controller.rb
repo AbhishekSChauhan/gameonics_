@@ -89,6 +89,7 @@ class SessionsController < ApplicationController
                                         is_activated token admin_level can_post_date
                                         can_comment_date])
         user_with_status['logged_in'] = true
+        user_with_status['profile_image'] = nil
         # user_with_status['can_post'] = DateTime.now > user.can_post_date
         # user_with_status['can_comment'] = DateTime.now > user.can_comment_date
         unless user.profile_image_attachment.nil?
@@ -96,6 +97,7 @@ class SessionsController < ApplicationController
         end
 
         user_with_status
+
     end
 
     
