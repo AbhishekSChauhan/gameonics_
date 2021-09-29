@@ -155,10 +155,13 @@ export default function PreviewBlog(props) {
                             <div className="w-full">
                             <div className="flex items-center justify-center py-1 overflow-hidden mt-5">
                                 {(()=>{
-                                    if(blogDetails.image !== "null"){
+                                    if((imagePosted && blogDetails.image !== "null")){
+                                        return <img className="block shadow-xl mx-auto h-96 w-full bg-cover bg-center"
+                                        src={imagePosted}/>
+                                    }else if(blogDetails.image !== "null"){
                                         return <img className="block shadow-xl mx-auto h-96 w-full bg-cover bg-center"
                                         src={blogDetails.image}/>
-                                    } else if(imagePosted){
+                                    } else if(imagePosted ){
                                         return <img className="block shadow-xl mx-auto h-96 w-full bg-cover bg-center"
                                         src={imagePosted}/>
                                     }else {
