@@ -10,9 +10,20 @@ export default function EditBlog({history}) {
     const [title, setTitle] = useState("")
     const [body, setBody] = useState("")
     const [loading, setLoading] = useState(false)
+    const [isPublished, setIsPublished] = useState(false)
+    const handleBodyChange = (value)=>{
+        setBody(value)
+        console.log(value)
+    }
+
+    const handleTitleChange = (value)=>{
+        setTitle(value)
+        console.log(value)
+    }
 
     const handleSubmit = async (event) => {
         event.preventDefault()
+        setLoading(true)
         try{
             const response = await axios.put(`/blogs/${id}`,{
                 blog:{
@@ -27,7 +38,18 @@ export default function EditBlog({history}) {
                     toast.success(response.data.notice)                    
                 }
             }
-            history.push("/blogs")
+            console.log('edit submit response',response)
+            // if(isPublished){
+            //     history.push('/blogs')
+            // } else {
+                history.push({
+                    pathname: `/blogs/${id}/preview`,
+                    // state: {title: title,
+                    //         body:body,
+                    //         bannerImage:bannerImage
+                    //     }
+                });
+            // }            
         } catch(error){
             console.log("blog not saved error",error)
             setLoading(false)
@@ -47,10 +69,17 @@ export default function EditBlog({history}) {
     }
 
     const fetchBlogDetails = async () => {
+        setLoading(true)
         try {
           const response = await axios.get(`/blogs/${id}`)
           setTitle(response.data.blog.title);
           setBody(response.data.blog.body)
+          if(response.data.blog.published === true){
+              setIsPublished(true)
+          }
+          console.log('edit fetch response',response)
+
+          setLoading(false)
         } catch (error) {
           console.log('fetchBlog Error',error)
         }
@@ -73,11 +102,13 @@ export default function EditBlog({history}) {
         <div>
             <CreateForm 
                 type="update"
-                setTitle={setTitle}
-                setBody={setBody}
+                title={title}
+                body={body}
                 loading={loading}
-                handleSubmit={handleSubmit}            
-            />            
+                handleSubmit={handleSubmit} 
+                handleTitleChange = {handleTitleChange} 
+                handleBodyChange = {handleBodyChange} 
+            />           
         </div>
     )
 }

@@ -22,7 +22,6 @@ import GameDetails from "./Games/GameDetails";
 import { Redirect } from "react-router-dom";
 
 import PreviewBlog from "./Blogs/PreviewBlog";
-import Publish from './Blogs/Publish'
 
 
 const App = () => {
@@ -123,7 +122,6 @@ const App = () => {
             <Route exact path="/blogs/:id/edit" component={EditBlog} />   
             <Route exact path="/blogs/create" component={CreateBlog} />
             <Route exact path="/blogs/:id/comments" component={Comments} />
-            <Route exact path="/blogs/publish" component={Publish} />
             <Route exact path="/users/:id" 
               render={(props)=>(
                 <ProfilePage 

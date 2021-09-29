@@ -19,10 +19,10 @@ export default function BlogsDashboard({data,users,showBlog,updateBlog,destroyBl
           >
             
             <div className="md:flex-shrink-0 relative">
-              <div className="z-10 mt-1 flex flex row text-gray-200 text-2xl absolute cursor-pointer right-0 top-0">
+              {/* <div className="z-10 mt-1 flex flex row text-gray-200 text-2xl absolute cursor-pointer right-0 top-0">
                   <MdDelete onClick={()=>destroyBlog(blog.id)} />
                   <MdEdit onClick={()=>updateBlog(blog.id)}/>
-              </div>
+              </div> */}
               <img onClick={()=>showBlog(blog.id)}
                 src={blog.image}
                 alt="Blog Cover"

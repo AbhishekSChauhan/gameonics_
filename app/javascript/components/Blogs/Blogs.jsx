@@ -39,30 +39,33 @@ export default function Blogs({history}) {
     }
 
     const destroyBlog = async(id) => {
-        try {
-            const response = await axios.delete(`/blogs/${id}`);
-            if(response){
-                response.success = response.status === 200;
-                if (response.data.notice){
-                    toast.success(response.data.notice)                  
+        if (window.confirm(`Are you sure want to delete this blog`)){
+            try {
+                const response = await axios.delete(`/blogs/${id}`);
+                if(response){
+                    response.success = response.status === 200;
+                    if (response.data.notice){
+                        toast.success(response.data.notice)                  
+                    }
                 }
+                await fetchBlogs();
+            }catch(error){
+                if(error){
+                    toast.error(
+                        error.response?.data?.notice ||
+                        error.response?.data?.error ||
+                        error.message ||
+                        error.notice ||
+                        "Something went wrong!"
+                    )
+                }
+                if (error.response?.status === 423) {
+                    window.location.href = "/";
+                }
+                console.log(error)
             }
-            await fetchBlogs();
-        }catch(error){
-            if(error){
-                toast.error(
-                    error.response?.data?.notice ||
-                    error.response?.data?.error ||
-                    error.message ||
-                    error.notice ||
-                    "Something went wrong!"
-                )
-            }
-            if (error.response?.status === 423) {
-                window.location.href = "/";
-            }
-            console.log(error)
         }
+        
     }
 
     useEffect(()=>{

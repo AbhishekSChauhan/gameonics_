@@ -17,18 +17,36 @@ export default function MyBlogs({data,user,showBlog,updateBlog,destroyBlog}) {
           <div
             className="flex flex-col items-stretch min-h-full pb-4 mb-6 transition-all duration-150 bg-white rounded-lg shadow-lg hover:shadow-2xl"
           >
-            
-            <div className="md:flex-shrink-0 relative">
-              <div className="z-10 mt-1 flex flex row text-gray-200 text-2xl absolute cursor-pointer right-0 top-0">
-                  <MdDelete onClick={()=>destroyBlog(blog.id)} />
-                  <MdEdit onClick={()=>updateBlog(blog.id)}/>
+            <div>
+            {blog.published? (
+              <div className="md:flex-shrink-0 relative">
+                <div className="z-10 mt-1 flex flex row text-gray-200 text-2xl absolute cursor-pointer right-0 top-0">
+                    <MdDelete onClick={()=>destroyBlog(blog.id)} />
+                    <MdEdit onClick={()=>updateBlog(blog.id)}/>
+                </div>
+                <img onClick={()=>showBlog(blog.id)}
+                  src={blog.image}
+                  alt="Blog Cover"
+                  className="object-fill w-full cursor-pointer rounded-lg rounded-b-none md:h-56"
+                />
               </div>
-              <img onClick={()=>showBlog(blog.id)}
-                src={blog.image}
-                alt="Blog Cover"
-                className="object-fill w-full cursor-pointer rounded-lg rounded-b-none md:h-56"
-              />
+
+            ) : (
+              <div className="md:flex-shrink-0 relative">
+                <div className="z-10 mt-1 flex flex row text-gray-200 text-2xl absolute cursor-pointer right-0 top-0">
+                    <MdDelete onClick={()=>destroyBlog(blog.id)} />
+                    {/* <MdEdit onClick={()=>updateBlog(blog.id)}/> */}
+                </div>
+                <img onClick={()=>updateBlog(blog.id)}
+                  src={blog.image}
+                  alt="Blog Cover"
+                  className="object-fill w-full cursor-pointer rounded-lg rounded-b-none md:h-56"
+                />
+              </div>
+            )}
             </div>
+            
+            
             <div className="flex items-center justify-between px-4 py-2 overflow-hidden">
             
               <span className="text-xs font-medium text-blue-600 uppercase">
