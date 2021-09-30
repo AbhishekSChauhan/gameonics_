@@ -10,7 +10,7 @@ class Blog < ApplicationRecord
   belongs_to :user
   has_many :comments, dependent: :destroy
 
-  validates :title, length: { in: 4..48 }, presence: true
+  validates :title, length: { in: 4..1000 }, presence: true
   validates :body, length: { in: 5..100000000 }, presence: true
   validates :image, presence: true
   scope :pins, -> { where('is_pinned = true')}

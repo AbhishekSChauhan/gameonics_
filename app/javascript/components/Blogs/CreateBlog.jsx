@@ -12,7 +12,6 @@ export default function CreateBlog({history}) {
     const [body, setBody] = useState("")
     const [loading, setLoading] = useState(false)
     const [bannerImage, setBannerImage] = useState(null)
-    const [imageSelected, setImageSelected] = useState(false)
     const [blogPosted, setBlogPosted] = useState({})
 
 
@@ -34,7 +33,6 @@ export default function CreateBlog({history}) {
         } else 
         { 
             setBannerImage(elem.files[0]); 
-            setImageSelected(true)
         }
     };
     
@@ -48,15 +46,17 @@ export default function CreateBlog({history}) {
         formData.append('blog[image]',bannerImage)
         try{
             const response = await axios.post("/blogs",formData)
-            setLoading(false)
+            
             console.log("blog submit response", response)
             setBlogPosted(response.data.blog)
+            setLoading(false) 
             if(response){
                 response.success = response.status === 200;
                 if (response.data.notice){
                     toast.success(response.data.notice)                    
                 }
-            }            
+            } 
+                      
             history.push({
                 pathname: `/blogs/${response.data.blog.id}/preview`,
                 state: {title: title,
@@ -98,7 +98,6 @@ export default function CreateBlog({history}) {
                 handleTitleChange= {handleTitleChange} 
                 handleBodyChange={handleBodyChange} 
                 handleCheckFileSize={handleCheckFileSize}
-                imageSelected={imageSelected}                        
             /> 
        </div>
     )

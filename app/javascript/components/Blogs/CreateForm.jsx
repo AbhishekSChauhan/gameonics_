@@ -5,16 +5,14 @@ import 'react-quill/dist/quill.snow.css'
 import 'react-quill/dist/quill.bubble.css'
 import ReactQuill,{Quill} from "react-quill";
 import ImageResize from 'quill-image-resize-module-react';
-import ImageUploadModal from '../ProfilePage/ImageUploadModal'
 import toast from 'react-hot-toast'
 
 Quill.register('modules/imageResize', ImageResize);
 
 export default function CreateForm(
     {
-    type="create",
-    loading,handleSubmit,setImage,handleTitleChange,
-    handleBodyChange,body,title,handleCheckFileSize,imageSelected
+    type="create",loading,handleSubmit,setImage,
+    handleTitleChange,handleBodyChange,body,title
     }) {
 
     const editorRef = useRef(null);
@@ -111,11 +109,6 @@ export default function CreateForm(
         editorRef.current.getEditor().insertEmbed(null, "image", url);
     }
 
-    const handleImageError = () => {
-        toast.error('Image not selected')
-    }
-
-
     return (
         <div className="bg-white">
             <div className="max-w-6xl mx-auto mt-10">
@@ -132,20 +125,6 @@ export default function CreateForm(
                                     onChange={handleTitleChange}
                                     value={title}        
                                 />
-
-                                {/* <div className="flex items-center justify-center py-1 overflow-hidden">
-
-                                    <div className="mt-2">                    
-                                        <input
-                                            type="file"
-                                            id="bannerImage"
-                                            name="banner_image"
-                                            accept="image/png, image/jpeg, image/jpg"
-                                            onChange={handleCheckFileSize}
-                                        />                    
-                                    </div>
-                                </div> */}
-
                             
                                 <ReactQuill 
                                     theme="bubble"
@@ -159,7 +138,7 @@ export default function CreateForm(
 
                                 <Button
                                     type="submit"
-                                    buttonText={type === "create" ? "Preview and Save as Draft" : "Update Blog"}
+                                    buttonText={type === "create" ? "Preview and Save as Draft" : "Update and Preview"}
                                     loading={loading}
                                 />
                                 

@@ -7,6 +7,7 @@ import parse from 'html-react-parser';
 import {useHistory} from 'react-router-dom'
 import toast from "react-hot-toast";
 import ImageUploadModal from '../ProfilePage/ImageUploadModal'
+import ShowBlog from './ShowBlog'
 
 
 
@@ -15,21 +16,23 @@ export default function PreviewBlog(props) {
     let history = useHistory()
     const componentMounted = true
     const {id} = useParams()
-    const [blogDetails, setBlogDetails] = useState([])
+    const [blogDetails, setBlogDetails] = useState()
     const [loading, setLoading] = useState(true)
-    const [blogCreator, setBlogCreator] = useState('')
+    const [bannerImage,setBannerImage] = useState()
     const [published, setPublished] = useState(false)
     const [blogPublished, setBlogPublished] = useState({})
-    const [bannerImage, setBannerImage] = useState(null)
     const [imageSelected, setImageSelected] = useState(false)
-    const [imagePosted, setImagePosted] = useState('')
+    const [imagePosted, setImagePosted] = useState()
+
     const source = axios.CancelToken.source()
 
     const fetchBlogDetails = async()=>{
         try{
             const response = await axios.get(`/blogs/${id}/preview`, {cancelToken:source.token})
             setBlogDetails(response.data.blog)
-            setBlogCreator(response.data.blog_creator)
+            if(response.data.blog.image !== "null"){
+                setImageSelected(true)
+            }
             setLoading(false)
             console.log("Preview Blog details",response)
         } catch(error){
@@ -48,9 +51,6 @@ export default function PreviewBlog(props) {
         event.preventDefault()
         setLoading(true)
         const formData = new FormData();
-        // formData.append('blog[title]',title)
-        // formData.append('blog[body]',body)
-        // formData.append('blog[image]',bannerImage)
         formData.append('blog[published]',published)
         try{
             const response = await axios.patch(`/blogs/${id}/published`,formData)
@@ -116,8 +116,8 @@ export default function PreviewBlog(props) {
             toast.success(response.data.notice)
           }
           console.log('image post',response)
-          setImageSelected(true)
           setImagePosted(response.data.image)
+          setImageSelected(true)
           setLoading(false)
         }catch(error) {
           console.log("signup error",error)
@@ -148,27 +148,33 @@ export default function PreviewBlog(props) {
 
 
     return (
-        <div className="bg-white">
-                
+        <div className="bg-white">                
                 <div className="max-w-6xl mx-auto mt-10 col-span-2">
                     <div className="relative max-w-4xl mx-auto items-center justify-between">
                         <div className="flex flex-col ">
                             <div className="w-full">
-                            <div className="mt-5">
-                                {imageSelected ? (
-                                    <img className="block shadow-xl mx-auto h-56 w-full bg-cover bg-center"
-                                    src={imagePosted}
-                                    /> 
-                                ):(
-                                    <div></div>
-                                )}                                                                        
+                            <div className="flex items-center justify-center py-1 overflow-hidden mt-5">
+                                {(()=>{
+                                    if((imagePosted && blogDetails.image !== "null")){
+                                        return <img className="block shadow-xl mx-auto h-96 w-full bg-cover bg-center"
+                                        src={imagePosted}/>
+                                    }else if(blogDetails.image !== "null"){
+                                        return <img className="block shadow-xl mx-auto h-96 w-full bg-cover bg-center"
+                                        src={blogDetails.image}/>
+                                    } else if(imagePosted ){
+                                        return <img className="block shadow-xl mx-auto h-96 w-full bg-cover bg-center"
+                                        src={imagePosted}/>
+                                    }else {
+                                        return <div></div>
+                                    }
+                                })()}                                     
                             </div>
-
+                           
                             <div className="flex items-center justify-center py-1 overflow-hidden">
                                 <h2 className="text-gray-700 text-xl font-bold ">
                                     {parse(blogDetails?.title)}
                                 </h2>
-                                {/* by <span className="text-gray-700 pl-2 text-lg font-bold">{blogCreator?.username}</span> */}
+                                {/* by <span className="text-gray-700 pl-2 text-lg font-bold">{BannerIsetBannerImage?.username}</span> */}
                             </div>
 
 
@@ -178,27 +184,28 @@ export default function PreviewBlog(props) {
                                 </div>
                             </div>                       
                             </div> 
+
                             <div className="flex items-center justify-center py-1 overflow-hidden">
-                                <ImageUploadModal 
-                                handleImageSubmit={handleBannerImageSubmit}
-                                handleCheckFileSize={handleCheckFileSize}
-                                />        
+                                    <ImageUploadModal 
+                                    handleImageSubmit={handleBannerImageSubmit}
+                                    handleCheckFileSize={handleCheckFileSize}
+                                    />                                                                                                    
                             </div>
                             <div className="flex items-center justify-center py-1 overflow-hidden">
                                 <button className="group inline-flex justify-center px-4 py-2 text-sm font-medium
-                                        text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:bg-blue-400
-                                        focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500" 
-                                        onClick={handlePublish}          
-                                    >
+                                    text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:bg-blue-400
+                                    focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500" 
+                                    onClick={handlePublish}          
+                                >
                                     Publish
                                 </button>
                             </div>
                             <div className="flex items-center justify-center py-1 overflow-hidden">
                                 <button className="inline-flex justify-center px-4 py-2 text-sm font-medium
-                                        text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200
-                                        focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500" 
-                                        onClick={(published && imageSelected) ? handlePublishedSubmit : handleUnpublisherror}          
-                                    >
+                                    text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200
+                                    focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500" 
+                                    onClick={(published && imageSelected) ? handlePublishedSubmit : handleUnpublisherror}          
+                                >
                                     Post your blog
                                 </button>
                             </div>  

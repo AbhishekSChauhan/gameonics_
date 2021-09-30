@@ -19,7 +19,7 @@ class BlogsController < ApplicationController
   end
 
   def preview
-    blog = Blog.find_by(published:false)
+    blog = Blog.find(params[:id])
     render status: :ok, json: { blog: blog }
   end
 
@@ -41,7 +41,7 @@ class BlogsController < ApplicationController
   def banner_image
     blog = Blog.find(params[:id])
     upload_image = Cloudinary::Uploader.upload(params[:blog][:image])
-    if blog.update(image: upload_image['url'])
+    if blog.update_attribute(:image, upload_image['url'])
       render json: {image:blog.image , notice:"Banner Image Added Successfully"}, status: :ok
     else
       render json:{errors:blog.errors.full_messages.to_sentence},
