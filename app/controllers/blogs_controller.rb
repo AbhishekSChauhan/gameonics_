@@ -15,7 +15,8 @@ class BlogsController < ApplicationController
 
   def show   
       comments = @blog.comments.select("comments.*, users.username").joins(:user).by_created_at
-      render status: :ok, json: { blog: @blog, blog_creator: @blog.user, comments: comments }   
+      blog = @blog.as_json(include: :likes)
+      render status: :ok, json: { blog: blog, blog_creator: @blog.user, comments: comments }   
   end
 
   def preview
