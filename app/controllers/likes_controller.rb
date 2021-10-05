@@ -1,5 +1,6 @@
 class LikesController < ApplicationController
     before_action :authorized_user?
+    
     def create
         @like = Like.new(like_params.merge(user_id: current_user.id))
         if @like.save

@@ -1,24 +1,26 @@
 import React, {useEffect, useState} from 'react'
 import axios from 'axios'
-import Comment from './Comment'
+import Comment from './CommentView'
 import CommentsForm from './CommentsForm'
 import { useParams } from 'react-router-dom'
 import toast from "react-hot-toast";
 
-export const Comments = ({blogId}) => {
+export const Comments = ({blogId,user}) => {
     const {id} = useParams()
     const [comments, setComments] = useState([])
     const [updateComments, setUpdateComments] = useState(0)
     const [newComment, setNewComment] = useState("")
     const [loading, setLoading] = useState(false)
+    const [updateLikes, setUpdateLikes] = useState(0)
 
     const source = axios.CancelToken.source()
 
     const fetchCommentDetails = async() => {
         try{
-            const response = await axios.get(`/blogs/${id}`,{cancelToken:source.token})
+            const response = await axios.get(`/blogs/${blogId}/comments`,{cancelToken:source.token})
             setComments(response.data.comments)
-            console.log("Comments data",response.data.comments)
+
+            console.log("Comments data",response)
             setLoading(true)
         }catch(error){
             if(axios.isCancel(error)){
@@ -35,9 +37,7 @@ export const Comments = ({blogId}) => {
         return () => {
             source.cancel()
         }
-    }, [updateComments])
-
-    
+    }, [updateComments, updateLikes])    
 
     const handleSubmit = (event) => {
         event.preventDefault()
@@ -50,7 +50,7 @@ export const Comments = ({blogId}) => {
             setUpdateComments(updateComments + 1)
             if(response){
                 response.success = response.status === 200;
-                if (response.data.notice){
+                if(response.data.notice){
                     toast.success(response.data.notice)                    
                 }
             }
@@ -73,7 +73,14 @@ export const Comments = ({blogId}) => {
     }
 
     const commentsComp = comments.map((comment)=>{
-        return <Comment comment={comment} key={comment.id} />
+        return <Comment 
+                    comment={comment} 
+                    key={comment.id}
+                    user = {user}
+                    setUpdateLikes = {setUpdateLikes}
+                    updateLikes = {updateLikes}
+                    
+                />
     })
 
     return (

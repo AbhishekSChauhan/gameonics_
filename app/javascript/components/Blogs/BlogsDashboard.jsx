@@ -3,7 +3,7 @@ import axios from 'axios'
 import { MdDelete,MdEdit } from "react-icons/md";
 import parse from 'html-react-parser';
 
-export default function BlogsDashboard({data,users,showBlog,updateBlog,destroyBlog}) {
+export default function BlogsDashboard({data,showBlog,updateBlog,destroyBlog}) {
 
     
     

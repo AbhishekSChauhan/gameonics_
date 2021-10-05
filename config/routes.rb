@@ -30,8 +30,10 @@ Rails.application.routes.draw do
       patch :published, to: 'blogs#published'
       patch :banner_image, to: 'blogs#banner_image'
     end
-    resources :comments, only: [:create]
+    resources :comments
   end
+
+  resources :likes, only: [:create, :destroy]
 
   resources :users, only: %i[index show] do
     member do
