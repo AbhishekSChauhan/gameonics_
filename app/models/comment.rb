@@ -4,7 +4,7 @@ class Comment < ApplicationRecord
 
   belongs_to :comment, optional: true
   has_many :comments, dependent: :destroy
-
+  has_many :likes, as: :likeable
   validates :content, length: { in: 2..500 }, presence: true
 
   # def comment_json

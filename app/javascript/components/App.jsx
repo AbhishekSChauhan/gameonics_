@@ -117,7 +117,13 @@ const App = () => {
             <Route exact path="/forgot_password" component={ForgotPassword} />
             <Route exact path="/reset_password" component={ResetPassword} />
             <Route exact path="/blogs" component={Blogs} /> 
-            <Route exact path="/blogs/:id/show" component={ShowBlog} /> 
+            <Route exact path="/blogs/:id/show" 
+              render={(props)=>(
+                <ShowBlog 
+                  user = {user} 
+                />
+              )}
+            /> 
             <Route exact path="/blogs/:id/preview" component={PreviewBlog} /> 
             <Route exact path="/blogs/:id/edit" component={EditBlog} />   
             <Route exact path="/blogs/create" component={CreateBlog} />

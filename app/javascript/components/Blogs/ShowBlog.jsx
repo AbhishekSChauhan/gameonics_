@@ -5,14 +5,16 @@ import PageLoader from '../PageLoader'
 import axios from 'axios'
 import { Comments } from '../Comments/Comments'
 import parse from 'html-react-parser';
+import Likes from '../Likes/Likes'
 
 
-export default function ShowBlog() {
+export default function ShowBlog({user}) {
     const componentMounted = true
     const {id} = useParams()
     const [blogDetails, setBlogDetails] = useState([])
     const [loading, setLoading] = useState(true)
     const [blogCreator, setBlogCreator] = useState('')
+    const [allLikes, setAllLikes] = useState([])
 
     const source = axios.CancelToken.source()
 
@@ -21,6 +23,7 @@ export default function ShowBlog() {
             const response = await axios.get(`/blogs/${id}`, {cancelToken:source.token})
             setBlogDetails(response.data.blog)
             setBlogCreator(response.data.blog_creator)
+            setAllLikes(response.data.blog.likes)
             setLoading(false)
             console.log("Show Blog details",response)
         } catch(error){
@@ -75,8 +78,13 @@ export default function ShowBlog() {
                                     {parse(blogDetails.body)}
                                 </div>
                             </div>
-                            <div className="flex ">
-                                 
+                            <div className="flex ">    
+                                <Likes 
+                                    blog={blogDetails}
+                                    user={user} 
+                                    allLikes={allLikes}
+                                    setAllLikes={setAllLikes}
+                                />
                             </div>
                             
                             
@@ -85,7 +93,9 @@ export default function ShowBlog() {
                     {/* Card code block end */}
                     {/* Comments Block */}
                     <div className="mx-auto py-2 my-10">
-                        <Comments blogId={blogDetails?.id} /> 
+                        <Comments blogId={blogDetails?.id} 
+                                user={user} 
+                        /> 
                     </div>
                 </div>
             </div>
