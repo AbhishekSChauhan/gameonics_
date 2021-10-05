@@ -9,8 +9,10 @@ class BlogsController < ApplicationController
     all_blogs = @blogs.as_json(include:{user:{only: :username}})
     # render json:  @blogs.as_json(include: :user) , status: :ok
     # render :json => @blogs, :include => {:user => {:only => :username}}
+    data = @blogs.map {|blog| blog.attributes.except('updated_at', 'user_id').merge({comments: blog.comments}, {user: blog.user.attributes.except('password_digest', 'created_at', 'email', 'updated_at', 'birthday'), likes: blog.likes.map {|like| like.attributes.except('updated_at')} })}
 
-    render json: {blogs: all_blogs} , status: :ok
+
+    render json: {blogs: all_blogs, data: data} , status: :ok
   end
 
   def show   
