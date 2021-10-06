@@ -13,7 +13,7 @@ class Blog < ApplicationRecord
 
 
   validates :title, length: { in: 4..1000 }, presence: true
-  validates :body, length: { in: 5..100000000 }, presence: true
+  validates :body, length: { in: 100..100000000 }, presence: true
   validates :image, presence: true
   scope :pins, -> { where('is_pinned = true')}
   scope :not_pinned, ->{ where('is_pinned = false')}

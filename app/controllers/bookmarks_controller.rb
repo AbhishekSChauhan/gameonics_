@@ -1,5 +1,9 @@
 class BookmarksController < ApplicationController
     before_action :authorized_user?
+
+    def show
+        render json: {bookmarked_blog: @bookmark.blog}
+    end
     
     def create
         @bookmark = Bookmark.new(bookmark_params.merge(user_id: current_user.id))

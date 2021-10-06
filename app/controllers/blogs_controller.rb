@@ -12,7 +12,7 @@ class BlogsController < ApplicationController
     data = @blogs.map {|blog| blog.attributes.except('updated_at', 'user_id')
                         .merge( {comments: blog.comments}, 
                                 {user: blog.user.attributes.except('password_digest', 'created_at', 'email', 'updated_at', 'birthday'), 
-                                  likes: blog.likes.map {|like| like.attributes.except('updated_at')} 
+                                likes: blog.likes.map {|like| like.attributes.except('updated_at')} 
                                 }
                               )
                       }
@@ -23,7 +23,7 @@ class BlogsController < ApplicationController
 
   def show   
       # comments = @blog.comments.select("comments.*, users.username").joins(:user).by_created_at
-      render status: :ok, json: { blog: @blog, blog_creator: @blog.user, bookmark: @blog.bookmarks, likes: @blog.likes }   
+      render status: :ok, json: { blog: @blog, blog_creator: @blog.user.username, bookmark: @blog.bookmarks, likes: @blog.likes }   
   end
 
   def preview

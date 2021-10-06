@@ -77,7 +77,7 @@ export default function ShowBlog({user}) {
                             </div>
 
                             <div>
-                                by {blogCreator?.username}
+                                by {blogCreator}
                             </div>
 
                             <div className="flex items-center justify-center py-1 overflow-hidden">

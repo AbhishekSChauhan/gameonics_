@@ -9,6 +9,7 @@ import {useHistory} from 'react-router-dom'
 import ImageUploadModal from './ImageUploadModal';
 import {Link} from 'react-router-dom'
 import MyBlogs from './MyBlogs';
+import BookmarkedView from './BookmarkedView';
 
 const ProfilePage = ({
     user, handleLogout, handleBlogSelect,
@@ -17,7 +18,9 @@ const ProfilePage = ({
     const [selectedUser, setSelectedUser] = useState({})
     const [publishedBlogs, setPublishedBlogs] = useState([])
     const [draftBlogs, setDraftBlogs] = useState([])
+    const [bookmarkedBlogs, setBookmarkedBlogs] = useState([])
     const [profileImage, setProfileImage] = useState()
+
     const [loading, setLoading] = useState(false)
 
     const handleSelectedUser = user => {
@@ -69,6 +72,7 @@ const ProfilePage = ({
         setSelectedUser(response.data.user)
         setPublishedBlogs(response.data.published_blogs)
         setDraftBlogs(response.data.draft_blogs)
+        setBookmarkedBlogs(response.data.bookmarked)
         setLoading(false)
         console.log('user details',response)
       }catch(error){
@@ -198,6 +202,24 @@ const ProfilePage = ({
                   Write a blog
                   </button>
                 </Link>
+              </div>
+
+
+              <div className="mt-2">
+                {bookmarkedBlogs.length === 0 ? (
+                  <div></div>
+                ) : 
+                  (
+                  <div className="mt-2 pb-10 w-full mx-auto flex flex-col items-center justify-center">
+                    <div>
+                      <h1 className="text-3xl font-bold pt-4 lg:pt-5 text-center">Bookmarks</h1>                  
+                    </div>
+                    <BookmarkedView 
+                      data={bookmarkedBlogs}
+                      showBlog={showBlog}
+                    />
+                  </div>
+                )}                  
               </div> 
 
               <div className="mt-2">
