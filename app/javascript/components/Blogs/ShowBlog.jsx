@@ -6,6 +6,7 @@ import axios from 'axios'
 import { Comments } from '../Comments/Comments'
 import parse from 'html-react-parser';
 import Likes from '../Likes/Likes'
+import Bookmarks from '../Bookmarks/Bookmarks'
 
 
 export default function ShowBlog({user}) {
@@ -15,6 +16,7 @@ export default function ShowBlog({user}) {
     const [loading, setLoading] = useState(true)
     const [blogCreator, setBlogCreator] = useState('')
     const [allLikes, setAllLikes] = useState([])
+    const [bookmark, setBookmark] = useState([])
 
     const source = axios.CancelToken.source()
 
@@ -23,7 +25,8 @@ export default function ShowBlog({user}) {
             const response = await axios.get(`/blogs/${id}`, {cancelToken:source.token})
             setBlogDetails(response.data.blog)
             setBlogCreator(response.data.blog_creator)
-            setAllLikes(response.data.blog.likes)
+            setAllLikes(response.data.likes)
+            setBookmark(response.data.bookmark)
             setLoading(false)
             console.log("Show Blog details",response)
         } catch(error){
@@ -63,8 +66,18 @@ export default function ShowBlog({user}) {
                                     {parse(blogDetails?.title)}
                                 </div>
                                 <div>
-                                    by {blogCreator?.username}
+                                    <Bookmarks 
+                                        blog={blogDetails}
+                                        user={user} 
+                                        bookmark={bookmark}
+                                        setBookmark={setBookmark}
+                                    />
                                 </div>
+                                
+                            </div>
+
+                            <div>
+                                by {blogCreator?.username}
                             </div>
 
                             <div className="flex items-center justify-center py-1 overflow-hidden">

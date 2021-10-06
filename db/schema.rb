@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_04_154933) do
+ActiveRecord::Schema.define(version: 2021_10_06_101713) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,6 +67,15 @@ ActiveRecord::Schema.define(version: 2021_10_04_154933) do
     t.index ["user_id"], name: "index_blogs_on_user_id"
   end
 
+  create_table "bookmarks", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "blog_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["blog_id"], name: "index_bookmarks_on_blog_id"
+    t.index ["user_id"], name: "index_bookmarks_on_user_id"
+  end
+
   create_table "comments", force: :cascade do |t|
     t.text "content"
     t.bigint "blog_id", null: false
@@ -109,6 +118,8 @@ ActiveRecord::Schema.define(version: 2021_10_04_154933) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "blogs", "users"
+  add_foreign_key "bookmarks", "blogs"
+  add_foreign_key "bookmarks", "users"
   add_foreign_key "comments", "blogs"
   add_foreign_key "comments", "comments"
   add_foreign_key "comments", "users"

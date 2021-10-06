@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   end
 
   resources :likes, only: [:create, :destroy]
+  resources :bookmarks, only: [:create, :destroy]
 
   resources :users, only: %i[index show] do
     member do

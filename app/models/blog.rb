@@ -6,10 +6,11 @@ class Blog < ApplicationRecord
     published
   end
 
-
   belongs_to :user
   has_many :comments, dependent: :destroy
   has_many :likes, as: :likeable, dependent: :destroy
+  has_many :bookmarks, dependent: :destroy
+
 
   validates :title, length: { in: 4..1000 }, presence: true
   validates :body, length: { in: 5..100000000 }, presence: true

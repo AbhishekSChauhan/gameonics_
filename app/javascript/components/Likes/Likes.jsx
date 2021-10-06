@@ -19,7 +19,7 @@ const Likes = ({blog,user,allLikes,setAllLikes}) => {
         // fetchLikes()
         blogsLiked()
         setLikesDisabled(false)
-    },[blog?.likes, allLikes, user?.id, blog?.id])
+    },[allLikes, user?.id, blog?.id])
 
     const blogsLiked = () => {
         const likeFound = allLikes.find((like)=> {
