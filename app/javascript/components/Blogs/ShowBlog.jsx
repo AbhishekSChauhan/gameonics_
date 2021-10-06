@@ -7,7 +7,7 @@ import { Comments } from '../Comments/Comments'
 import parse from 'html-react-parser';
 import Likes from '../Likes/Likes'
 import Bookmarks from '../Bookmarks/Bookmarks'
-
+import { useLocation } from "react-router-dom";
 
 export default function ShowBlog({user}) {
     const componentMounted = true
@@ -17,6 +17,7 @@ export default function ShowBlog({user}) {
     const [blogCreator, setBlogCreator] = useState('')
     const [allLikes, setAllLikes] = useState([])
     const [bookmark, setBookmark] = useState([])
+    const { pathname } = useLocation();
 
     const source = axios.CancelToken.source()
 
@@ -43,10 +44,16 @@ export default function ShowBlog({user}) {
     
     useEffect(()=>{
         fetchBlogDetails()
+        // window.scrollTo(0,0)
+        window.scrollTo({
+            top:0,
+            behavior:"smooth"
+        })
         return () => {
             source.cancel()
         }
-    }, [])
+
+    }, [pathname])
 
     if(loading){
         return <PageLoader />
