@@ -18,6 +18,8 @@ class Blog < ApplicationRecord
   scope :pins, -> { where('is_pinned = true')}
   scope :not_pinned, ->{ where('is_pinned = false')}
 
+  is_impressionable
+  
   def blog_json
     new_blog = attributes
     new_blog['author'] = user.username
