@@ -18,7 +18,7 @@ class Blog < ApplicationRecord
   scope :pins, -> { where('is_pinned = true')}
   scope :not_pinned, ->{ where('is_pinned = false')}
 
-  is_impressionable
+  is_impressionable :counter_cache => true, :column_name => :views_count, :unique => :session_hash
   
   def blog_json
     new_blog = attributes

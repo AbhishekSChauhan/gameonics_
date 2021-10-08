@@ -2,7 +2,7 @@ class BlogsController < ApplicationController
   before_action :set_blog, only: [:show, :update, :destroy, :lock_blog, :pin_blog]
   before_action :authorized_user?, except: [:index, :show, :lock_blog, :pin_blog]
   before_action :authorized_admin?, only: [:lock_blog,:pin_blog]
-  impressionist actions: [:show], unique: [:session_hash]
+  # impressionist actions: [:show], unique: [:session_hash]
 
   def index
     @blogs =  Blog.active
@@ -11,7 +11,7 @@ class BlogsController < ApplicationController
     # render :json => @blogs, :include => {:user => {:only => :username}}
     data = @blogs.map {|blog| blog.attributes.except('updated_at', 'user_id')
                         .merge( {comments: blog.comments}, 
-                                {views: blog.impressionist_count },
+                                # {views: blog.impressionist_count(:filter=>:session_hash)},
                                 {user: blog.user.attributes.except('password_digest', 'created_at', 'email', 'updated_at', 'birthday'), 
                                 likes: blog.likes.map {|like| like.attributes.except('updated_at')} 
                                 }
@@ -25,12 +25,12 @@ class BlogsController < ApplicationController
   def show   
       # comments = @blog.comments.select("comments.*, users.username").joins(:user).by_created_at
       impressionist(@blog)
-      views = @blog.impressionist_count 
+      # views = @blog.impressionist_count(:filter=>:session_hash) 
       render json: { blog: @blog,
                      blog_creator: @blog.user.username, 
                      bookmark: @blog.bookmarks, 
                      likes: @blog.likes,
-                     views: views
+                    #  views: views
                     }, 
                     status: :ok
   end

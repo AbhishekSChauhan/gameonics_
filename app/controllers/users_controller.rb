@@ -28,7 +28,7 @@ class UsersController < ApplicationController
         bookmarks = current_user.bookmarks
         bookmarked = bookmarks.map{|bookmark| bookmark.attributes.except('updated_at','created_at')
                             .merge({blogs: bookmark.blog},
-                            {views: bookmark.blog.impressionist_count},
+                            # {views: bookmark.blog.impressionist_count},
                             {blog_creator: bookmark.blog.user.username},
                             {likes: bookmark.blog.likes},
                             {comments: bookmark.blog.comments}                             
