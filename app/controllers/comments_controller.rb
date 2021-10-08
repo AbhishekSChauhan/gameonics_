@@ -9,6 +9,9 @@ class CommentsController < ApplicationController
         all_comments = Comment.all
         comments = all_comments.where(blog_id: params[:blog_id]).order(created_at: :desc)
         like_comments = comments.as_json(include: :likes)
+        # like_comments = comments.map{|comment| comment.attributes.except('updated_at','created_at')
+        #                             .merge({likes: comment.likes})
+        #                             }
         render json:{comments: like_comments}
     end
 

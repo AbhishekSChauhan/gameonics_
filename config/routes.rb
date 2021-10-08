@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   end
 
   resources :likes, only: [:create, :destroy]
+  resources :bookmarks, only: [:create, :destroy, :index, :show]
 
   resources :users, only: %i[index show] do
     member do
@@ -42,16 +43,5 @@ Rails.application.routes.draw do
       patch :suspend_comms, to: 'users#suspend_communication'
     end
   end
-
-  resources :users, only: %i[index show] do
-    member do
-      patch :update_image, to: 'users#update_image'
-      patch :set_admin_level, to: 'users#set_admin_level'
-      patch :suspend_comms, to: 'users#suspend_communication'
-    end
-  end
-
-  
-  
 
 end

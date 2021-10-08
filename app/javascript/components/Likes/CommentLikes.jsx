@@ -46,7 +46,7 @@ const CommentLikes = ({comment,user,setUpdateLikes,updateLikes}) => {
                 setLikesDisabled(false)
             }                        
         } else {
-            toast.error('Login to like this article')
+            toast.error('Login to like this comment')
         }        
     }
 
@@ -69,7 +69,7 @@ const CommentLikes = ({comment,user,setUpdateLikes,updateLikes}) => {
             }
             setLikesDisabled(false)          
         }else{
-            toast.error('Login to like this article')
+            toast.error('Login to like this comment')
         }        
     }
 

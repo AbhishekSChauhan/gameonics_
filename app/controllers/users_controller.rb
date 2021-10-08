@@ -21,18 +21,26 @@ class UsersController < ApplicationController
 
 
     def show
-        selected_user = User.find(params[:id])
-        published_blogs = Blog.where(user_id: selected_user.id , published:true ).order(created_at: :desc)
-        draft_blogs = Blog.where(user_id: selected_user.id , published:false ).order(created_at: :desc)
-        # user_blogs = selected_user.as_json(include: { blogs: {
-        #                                             include: { comments: {only: :content } },
-        #                                             only: :title } })
-        user_blogs = selected_user.as_json(include: :blogs)
+        # selected_user = User.find(params[:id])
+        published_blogs = Blog.where(user_id: current_user.id , published:true ).order(created_at: :desc)
+        draft_blogs = Blog.where(user_id: current_user.id , published:false ).order(created_at: :desc)
+   
+        bookmarks = current_user.bookmarks
+        bookmarked = bookmarks.map{|bookmark| bookmark.attributes.except('updated_at','created_at')
+                            .merge({blogs: bookmark.blog},
+                            # {views: bookmark.blog.impressionist_count},
+                            {blog_creator: bookmark.blog.user.username},
+                            {likes: bookmark.blog.likes},
+                            {comments: bookmark.blog.comments}                             
+                            )}
+        # data = bookmarks.as_json(include: :blog)
         
-        render json:{user: user_with_image(selected_user), 
+        render json:{user: user_with_image(current_user), 
                     published_blogs: published_blogs,
                     draft_blogs: draft_blogs,
-                    user_blogs: user_blogs
+                    user_blogs: current_user.blogs,
+                    likes: current_user.likes,
+                    bookmarked: bookmarked                    
                 }    
     end
 

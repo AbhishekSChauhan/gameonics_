@@ -3,6 +3,7 @@ class User < ApplicationRecord
     has_many :blogs, dependent: :destroy
     has_many :comments, dependent: :destroy
     has_many :likes, dependent: :destroy
+    has_many :bookmarks, dependent: :destroy
 
     validates :username, length: {in: 4..32 }, presence: true,
                         uniqueness: {case_sensitive: false}

@@ -1,34 +1,27 @@
-import React, { useEffect, useState} from 'react'
-import axios from 'axios'
-import { MdDelete,MdEdit } from "react-icons/md";
+import React from 'react'
 import parse from 'html-react-parser';
 
-export default function BlogsDashboard({data,showBlog,updateBlog,destroyBlog}) {
-
-    
-    
+const BookmarkedView = ({data,showBlog}) => {
     return (
-      <div className="p-10 grid grid-cols-1 sm:grid-cols-1 sm:justify-center md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="p-10 grid grid-cols-1 sm:grid-cols-1 sm:justify-center md:grid-cols-2 lg:grid-cols-3 gap-8">
         {data.map((blog)=>(
-          <div key={blog.id}
+          <div key={blog.blogs.id}
           className="transition-all duration-150 flex w-full"
-        >
-         
+        >         
           <div
             className="flex flex-col items-stretch min-h-full pb-4 mb-6 transition-all duration-150 bg-white rounded-lg shadow-lg hover:shadow-2xl"
           >
-            
-            <div className="md:flex-shrink-0 relative">
-              {/* <div className="z-10 mt-1 flex flex row text-gray-200 text-2xl absolute cursor-pointer right-0 top-0">
-                  <MdDelete onClick={()=>destroyBlog(blog.id)} />
-                  <MdEdit onClick={()=>updateBlog(blog.id)}/>
-              </div> */}
-              <img onClick={()=>showBlog(blog.id)}
-                src={blog.image}
-                alt="Blog Cover"
-                className="object-fill w-full cursor-pointer rounded-lg rounded-b-none md:h-56"
-              />
+            <div>            
+              <div className="md:flex-shrink-0 relative">
+                <img onClick={()=>showBlog(blog.blog_id)}
+                  src={blog.blogs.image}
+                  alt="Blog Cover"
+                  className="object-fill w-full cursor-pointer rounded-lg rounded-b-none md:h-56"
+                />
+              </div>        
             </div>
+            
+            
             <div className="flex items-center justify-between px-4 py-2 overflow-hidden">
             
               <span className="text-xs font-medium text-blue-600 uppercase">
@@ -58,7 +51,7 @@ export default function BlogsDashboard({data,showBlog,updateBlog,destroyBlog}) {
                       d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                     ></path>
                   </svg>
-                  <span>{blog.views_count}</span>
+                  <span>{blog.blogs.views_count}</span>
                 </div>
 
                 <div
@@ -104,9 +97,9 @@ export default function BlogsDashboard({data,showBlog,updateBlog,destroyBlog}) {
             </div>
             <hr className="border-gray-300" />
             <div className="flex flex-wrap items-center flex-1 px-4 py-1 text-center mx-auto">
-              <a onClick={()=>showBlog(blog.id)} className="hover:underline">
+              <a onClick={()=>showBlog(blog.blog_id)} className="hover:underline">
                 <h2 className="text-2xl font-bold tracking-normal text-gray-800 cursor-pointer">
-                  {parse(blog.title)}
+                  {parse(blog.blogs.title)}
                 </h2>
               </a>
             </div>
@@ -129,9 +122,9 @@ export default function BlogsDashboard({data,showBlog,updateBlog,destroyBlog}) {
                   />
                   <div className="flex flex-col mx- cursor-pointer">
                     <a href="" className="font-semibold text-gray-700 hover:underline">
-                      Written by {blog.user.username}
+                      Written by {blog.blog_creator}
                     </a>
-                    <span className="mx-1 text-xs text-gray-600">{blog.created_at}</span>
+                    <span className="mx-1 text-xs text-gray-600">{blog.blogs.created_at}</span>
                   </div>
                 </div>
                 <p className="mt-1 text-xs text-gray-600">5 minutes read</p>
@@ -144,3 +137,5 @@ export default function BlogsDashboard({data,showBlog,updateBlog,destroyBlog}) {
       </div>
     )
 }
+
+export default BookmarkedView

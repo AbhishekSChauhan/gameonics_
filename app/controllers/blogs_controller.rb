@@ -2,23 +2,37 @@ class BlogsController < ApplicationController
   before_action :set_blog, only: [:show, :update, :destroy, :lock_blog, :pin_blog]
   before_action :authorized_user?, except: [:index, :show, :lock_blog, :pin_blog]
   before_action :authorized_admin?, only: [:lock_blog,:pin_blog]
-
+  # impressionist actions: [:show], unique: [:session_hash]
 
   def index
     @blogs =  Blog.active
-    all_blogs = @blogs.as_json(include:{user:{only: :username}})
+    # all_blogs = @blogs.as_json(include:{user:{only: :username}})
     # render json:  @blogs.as_json(include: :user) , status: :ok
     # render :json => @blogs, :include => {:user => {:only => :username}}
-    data = @blogs.map {|blog| blog.attributes.except('updated_at', 'user_id').merge({comments: blog.comments}, {user: blog.user.attributes.except('password_digest', 'created_at', 'email', 'updated_at', 'birthday'), likes: blog.likes.map {|like| like.attributes.except('updated_at')} })}
+    data = @blogs.map {|blog| blog.attributes.except('updated_at', 'user_id')
+                        .merge( {comments: blog.comments}, 
+                                # {views: blog.impressionist_count(:filter=>:session_hash)},
+                                {user: blog.user.attributes.except('password_digest', 'created_at', 'email', 'updated_at', 'birthday'), 
+                                likes: blog.likes.map {|like| like.attributes.except('updated_at')} 
+                                }
+                              )
+                      }
 
 
-    render json: {blogs: all_blogs, data: data} , status: :ok
+    render json: { blogs: data} , status: :ok
   end
 
   def show   
       # comments = @blog.comments.select("comments.*, users.username").joins(:user).by_created_at
-      blog = @blog.as_json(include: :likes)
-      render status: :ok, json: { blog: blog, blog_creator: @blog.user }   
+      impressionist(@blog)
+      # views = @blog.impressionist_count(:filter=>:session_hash) 
+      render json: { blog: @blog,
+                     blog_creator: @blog.user.username, 
+                     bookmark: @blog.bookmarks, 
+                     likes: @blog.likes,
+                    #  views: views
+                    }, 
+                    status: :ok
   end
 
   def preview

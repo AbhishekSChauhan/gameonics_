@@ -6,17 +6,20 @@ class Blog < ApplicationRecord
     published
   end
 
-
   belongs_to :user
   has_many :comments, dependent: :destroy
   has_many :likes, as: :likeable, dependent: :destroy
+  has_many :bookmarks, dependent: :destroy
+
 
   validates :title, length: { in: 4..1000 }, presence: true
-  validates :body, length: { in: 5..100000000 }, presence: true
+  validates :body, length: { in: 100..100000000 }, presence: true
   validates :image, presence: true
   scope :pins, -> { where('is_pinned = true')}
   scope :not_pinned, ->{ where('is_pinned = false')}
 
+  is_impressionable :counter_cache => true, :column_name => :views_count, :unique => :session_hash
+  
   def blog_json
     new_blog = attributes
     new_blog['author'] = user.username
