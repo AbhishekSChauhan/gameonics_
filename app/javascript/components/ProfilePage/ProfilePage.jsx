@@ -10,6 +10,7 @@ import ImageUploadModal from './ImageUploadModal';
 import {Link} from 'react-router-dom'
 import MyBlogs from './MyBlogs';
 import BookmarkedView from './BookmarkedView';
+import Tabs from './Tabs';
 
 const ProfilePage = ({
     user, handleLogout, handleBlogSelect,
@@ -204,8 +205,20 @@ const ProfilePage = ({
                 </Link>
               </div>
 
+              <div>
+                <Tabs 
+                  bookmarkedBlogs={bookmarkedBlogs}
+                  draftBlogs={draftBlogs}
+                  publishedBlogs={publishedBlogs}
+                  user = {user}
+                  showBlog={showBlog}
+                  updateBlog={updateBlog}
+                  destroyBlog={destroyBlog}
+                />
+              </div>
 
-              <div className="mt-2">
+
+              {/* <div className="mt-2">
                 {bookmarkedBlogs.length === 0 ? (
                   <div></div>
                 ) : 
@@ -220,9 +233,9 @@ const ProfilePage = ({
                     />
                   </div>
                 )}                  
-              </div> 
+              </div>  */}
 
-              <div className="mt-2">
+              {/* <div className="mt-2">
                 {draftBlogs.length === 0 ? (
                   <div></div>
                 ) : 
@@ -240,10 +253,10 @@ const ProfilePage = ({
                     />
                   </div>
                 )}                  
-              </div>
+              </div> */}
               
 
-              <div className="mt-2 pb-10 w-full mx-auto flex flex-col items-center justify-center">
+              {/* <div className="mt-2 pb-10 w-full mx-auto flex flex-col items-center justify-center">
                 <div>
                   <h1 className="text-3xl font-bold pt-4 lg:pt-5 text-center">My Blogs</h1>                  
                 </div>
@@ -264,7 +277,7 @@ const ProfilePage = ({
                     />
                   )}                  
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

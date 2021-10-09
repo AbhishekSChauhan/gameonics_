@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_08_075923) do
+ActiveRecord::Schema.define(version: 2021_10_09_062101) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,6 +65,9 @@ ActiveRecord::Schema.define(version: 2021_10_08_075923) do
     t.datetime "published_at"
     t.string "image"
     t.integer "views_count"
+    t.integer "comments_count"
+    t.integer "likeable_count"
+    t.integer "bookmarks_count"
     t.index ["user_id"], name: "index_blogs_on_user_id"
   end
 
@@ -84,6 +87,7 @@ ActiveRecord::Schema.define(version: 2021_10_08_075923) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id", null: false
     t.bigint "comment_id"
+    t.integer "likeable_count"
     t.index ["blog_id"], name: "index_comments_on_blog_id"
     t.index ["comment_id"], name: "index_comments_on_comment_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
@@ -140,6 +144,10 @@ ActiveRecord::Schema.define(version: 2021_10_08_075923) do
     t.datetime "password_reset_date"
     t.datetime "can_post_date", default: "2021-09-15 18:05:06"
     t.datetime "can_comment_date", default: "2021-09-15 18:05:07"
+    t.integer "likeable_count"
+    t.integer "blogs_count"
+    t.integer "comments_count"
+    t.integer "bookmarks_count"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
