@@ -27,6 +27,8 @@ gem 'cloudinary'
 gem 'sendgrid-actionmailer'
 gem 'figaro'
 gem 'impressionist'
+gem 'hirb'
+gem 'awesome_print'
 
 # Use Active Storage variant
 gem 'image_processing', '~> 1.2'

@@ -5,18 +5,19 @@ class BlogsController < ApplicationController
   # impressionist actions: [:show], unique: [:session_hash]
 
   def index
-    @blogs =  Blog.active
+    @blogs =  Blog.published
     # all_blogs = @blogs.as_json(include:{user:{only: :username}})
     # render json:  @blogs.as_json(include: :user) , status: :ok
     # render :json => @blogs, :include => {:user => {:only => :username}}
-    data = @blogs.map {|blog| blog.attributes.except('updated_at', 'user_id')
-                        .merge( {comments: blog.comments}, 
-                                # {views: blog.impressionist_count(:filter=>:session_hash)},
-                                {user: blog.user.attributes.except('password_digest', 'created_at', 'email', 'updated_at', 'birthday'), 
-                                likes: blog.likes.map {|like| like.attributes.except('updated_at')} 
-                                }
-                              )
-                      }
+    # data = @blogs.map {|blog| blog.attributes.except('updated_at', 'user_id')
+    #                     .merge( {comments: blog.comments}, 
+    #                             # {views: blog.impressionist_count(:filter=>:session_hash)},
+    #                             {user: blog.user.attributes.except('password_digest', 'created_at', 'email', 'updated_at', 'birthday'), 
+    #                             likes: blog.likes.map {|like| like.attributes.except('updated_at')} 
+    #                             }
+    #                           )
+    #                   }
+    data = @blogs.as_json(include: {user: {only: :username}})
 
 
     render json: { blogs: data} , status: :ok

@@ -1,16 +1,18 @@
 class Blog < ApplicationRecord
   default_scope {order(created_at: :desc)}
-  scope :active, -> { where(published: true) }
 
-  def self.active?
-    published
+  scope :published, -> do
+    where(published: true)
   end
 
-  belongs_to :user
+  scope :most_recently_published, -> do
+    where(published_at: :desc)
+  end
+
+  belongs_to :user, counter_cache: true
   has_many :comments, dependent: :destroy
   has_many :likes, as: :likeable, dependent: :destroy
   has_many :bookmarks, dependent: :destroy
-
 
   validates :title, length: { in: 4..1000 }, presence: true
   validates :body, length: { in: 100..100000000 }, presence: true
@@ -20,42 +22,13 @@ class Blog < ApplicationRecord
 
   is_impressionable :counter_cache => true, :column_name => :views_count, :unique => :session_hash
   
-  def blog_json
-    new_blog = attributes
-    new_blog['author'] = user.username
-  end
-
-  # def self.author_blogs_json(blogs_array)
-  #   returned_blogs = []
-  #   blogs_array.each do |blog|
-  #     new_blog['title'] = blog.title.slice(0..30)
-  #     new_blog['body'] = blog.body.slice(0..32)
-  #     new_blog['author'] = blog.user.username
-  #   end
-  # end
-
-  # def self.author_comments_json(comments_array)
-  #   returned_comments=[]
-  #   comments_array.each do |comment|
-  #     new_comment = comment.as_json
-  #     new_comment['author'] = comment.user.username
-  #     new_comment['server_date'] = DateTime.now
-  #     returned_comments.push(new_comment)
-  #   end
-  #   returned_comments
-  # end
-
-  # def self.pins_json
-  #   results = []
-  #   all_pins = Blog.pins
-  #   all_pins.each do |p|
-  #     new_blog = p.blog_json
-  #   end
-  #   results
-  # end
-  
   def created_at
     time = attributes['created_at']
+    time.strftime('%a, %-d %b %Y')
+  end
+
+  def updated_at
+    time = attributes['updated_at']
     time.strftime('%a, %-d %b %Y')
   end
 
