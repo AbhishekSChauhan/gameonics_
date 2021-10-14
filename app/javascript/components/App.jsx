@@ -22,6 +22,7 @@ import GameDetails from "./Games/GameDetails";
 import { Redirect } from "react-router-dom";
 
 import PreviewBlog from "./Blogs/PreviewBlog";
+import TaggedBlogs from "./Tags/TaggedBlogs";
 
 
 const App = () => {
@@ -116,7 +117,14 @@ const App = () => {
             <Route exact path="/signup"  component={Signup} />
             <Route exact path="/forgot_password" component={ForgotPassword} />
             <Route exact path="/reset_password" component={ResetPassword} />
-            <Route exact path="/blogs" component={Blogs} /> 
+            <Route exact path="/blogs" 
+            // component={Blogs} 
+              render={(props)=>(
+                <Blogs 
+                  user = {user} 
+                />
+              )}
+            /> 
             <Route exact path="/blogs/:id/show" 
               render={(props)=>(
                 <ShowBlog 
@@ -126,7 +134,7 @@ const App = () => {
             /> 
             <Route exact path="/blogs/:id/preview" component={PreviewBlog} /> 
             <Route exact path="/blogs/:id/edit" component={EditBlog} />   
-            <Route exact path="/blogs/create" component={CreateBlog} />
+            <Route exact path="/blogs/create" component={CreateBlog}/>
             <Route exact path="/blogs/:id/comments" component={Comments} />
             <Route exact path="/users/:id" 
               render={(props)=>(
@@ -142,6 +150,8 @@ const App = () => {
                 />
               )}
             />
+            <Route exact path="/tags/:tag" component={TaggedBlogs} />
+
 
           </Switch>
           {/* <Footer /> */}

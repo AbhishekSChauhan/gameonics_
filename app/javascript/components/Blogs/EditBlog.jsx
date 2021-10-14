@@ -11,6 +11,10 @@ export default function EditBlog({history}) {
     const [body, setBody] = useState("")
     const [loading, setLoading] = useState(false)
     const [isPublished, setIsPublished] = useState(false)
+    const [tags, setTags] = useState([])
+    const [input, setInput] = useState('')
+    const [isKeyReleased, setIsKeyReleased] = useState(false);
+    
     const handleBodyChange = (value)=>{
         setBody(value)
         console.log(value)
@@ -108,6 +112,12 @@ export default function EditBlog({history}) {
                 handleSubmit={handleSubmit} 
                 handleTitleChange = {handleTitleChange} 
                 handleBodyChange = {handleBodyChange} 
+                tags={tags}
+                setTags={setTags}
+                isKeyReleased={isKeyReleased}
+                setIsKeyReleased={setIsKeyReleased}
+                input={input}
+                setInput={setInput}
             />           
         </div>
     )

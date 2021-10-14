@@ -6,13 +6,14 @@ import 'react-quill/dist/quill.bubble.css'
 import ReactQuill,{Quill} from "react-quill";
 import ImageResize from 'quill-image-resize-module-react';
 import toast from 'react-hot-toast'
+import Tags from '../Tags/Tags'
 
 Quill.register('modules/imageResize', ImageResize);
 
 export default function CreateForm(
     {
-    type="create",loading,handleSubmit,setImage,
-    handleTitleChange,handleBodyChange,body,title
+    type="create",loading,handleSubmit,setImage,tags,setTags,
+    handleTitleChange,handleBodyChange,body,title,input,setInput,setIsKeyReleased,isKeyReleased
     }) {
 
     const editorRef = useRef(null);
@@ -134,6 +135,15 @@ export default function CreateForm(
                                     forwardedRef={editorRef}
                                     onChange={handleBodyChange}
                                     value={body}        
+                                />
+
+                                <Tags 
+                                    tags={tags}
+                                    setTags={setTags}
+                                    isKeyReleased={isKeyReleased}
+                                    setIsKeyReleased={setIsKeyReleased}
+                                    input={input}
+                                    setInput={setInput}
                                 />
 
                                 <Button
