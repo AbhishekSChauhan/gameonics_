@@ -5,11 +5,14 @@ import BlogNav from './BlogNav';
 import BlogsDashboard from './BlogsDashboard';
 import axios from 'axios'
 import toast, { Toaster } from "react-hot-toast";
+import {useHistory} from 'react-router-dom'
 
-export default function Blogs({history}) {
+
+export default function Blogs({user}) {
     const [blogs, setBlogs] = useState([]);
     const [loading, setLoading] = useState(true)
     const source = axios.CancelToken.source()
+    let history = useHistory()
 
     const fetchBlogs = async () => {
         try {
@@ -93,7 +96,7 @@ export default function Blogs({history}) {
 
     return (
         <div>
-            <BlogNav/>
+            <BlogNav user={user} />
             <div>
             <BlogsDashboard 
                 data={blogs}

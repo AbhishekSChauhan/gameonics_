@@ -18,6 +18,7 @@ export default function ShowBlog({user}) {
     const [allLikes, setAllLikes] = useState([])
     const [bookmark, setBookmark] = useState([])
     const [views, setViews] = useState(0)
+    const [tags, setTags] = useState([])
     const { pathname } = useLocation();
 
     const source = axios.CancelToken.source()
@@ -30,6 +31,7 @@ export default function ShowBlog({user}) {
             setAllLikes(response.data.likes)
             setBookmark(response.data.bookmark)
             setViews(response.data.views)
+            setTags(response.data.tags)
             setLoading(false)
             console.log("Show Blog details",response)
         } catch(error){
@@ -107,6 +109,12 @@ export default function ShowBlog({user}) {
                                 ></path>
                             </svg>
                             <span>{blogDetails?.views_count}</span>
+                            </div>
+
+                            <div>
+                                {tags.map((tag)=>(
+                                    <span className="pl-2 mt-2 mb-2">{tag.name}</span>
+                                ))}
                             </div>
 
                             <div>

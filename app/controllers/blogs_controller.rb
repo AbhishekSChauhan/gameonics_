@@ -18,9 +18,15 @@ class BlogsController < ApplicationController
     #                           )
     #                   }
     data = @blogs.as_json(include: {user: {only: :username}})
+    if params[:tag]
+      tagged_blog = Blog.tagged_with(params[:tag])
+      render json: { blogs: tagged_blog} , status: :ok
+    else
+      render json: { blogs: data} , status: :ok
+    end
 
 
-    render json: { blogs: data} , status: :ok
+    # render json: { blogs: data} , status: :ok
   end
 
   def show   
@@ -28,6 +34,7 @@ class BlogsController < ApplicationController
       impressionist(@blog)
       # views = @blog.impressionist_count(:filter=>:session_hash) 
       render json: { blog: @blog,
+                     tags: @blog.tags,
                      blog_creator: @blog.user.username, 
                      bookmark: @blog.bookmarks, 
                      likes: @blog.likes,
@@ -37,18 +44,20 @@ class BlogsController < ApplicationController
   end
 
   def preview
-    blog = Blog.find(params[:id])
-    render status: :ok, json: { blog: blog }
+    # if authorized?
+      blog = Blog.find(params[:id])
+      render status: :ok, json: { blog: blog }
+    # end    
   end
 
   def create
     # return if suspended(@current_user.can_post_date)
+  
     @blog = Blog.new(blog_params.merge(user_id: @current_user.id))
-    
-    if authorized?
+    if authorized? 
       if @blog.save
         render status: :ok,
-              json: {blog: @blog , notice: "Blog saved as draft"}
+              json: {blog: @blog, tags: @blog.tags , notice: "Blog saved as draft"}
       else
         errors = @blog.errors.full_messages.to_sentence
         render status: :unprocessable_entity, json: {error:errors}
@@ -136,7 +145,7 @@ class BlogsController < ApplicationController
   end
 
   def blog_params
-    params.require(:blog).permit(:title, :body, :published, :is_pinned, :is_locked, :image)
+    params.require(:blog).permit(:title, :body, :published, :is_pinned, :is_locked, :image, :tag_list)
   end
 
   def suspended(date)

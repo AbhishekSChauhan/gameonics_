@@ -11,7 +11,7 @@ import ShowBlog from './ShowBlog'
 
 
 
-export default function PreviewBlog(props) {
+export default function PreviewBlog() {
     // const {title,body,bannerImage} = (props.location && props.location.state) || {};
     let history = useHistory()
     const componentMounted = true

@@ -36,6 +36,9 @@ Rails.application.routes.draw do
   resources :likes, only: [:create, :destroy]
   resources :bookmarks, only: [:create, :destroy, :index, :show]
 
+  get 'tags/:tag', to: 'blogs#index', as: 'tag'
+  
+  ### Users ###
   resources :users, only: %i[index show] do
     member do
       patch :update_image, to: 'users#update_image'

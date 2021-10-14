@@ -13,6 +13,8 @@ class Blog < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_many :likes, as: :likeable, dependent: :destroy
   has_many :bookmarks, dependent: :destroy
+  has_many :taggings
+  has_many :tags, through: :taggings, dependent: :destroy
 
   validates :title, length: { in: 4..1000 }, presence: true
   validates :body, length: { in: 100..100000000 }, presence: true
@@ -30,6 +32,24 @@ class Blog < ApplicationRecord
   def updated_at
     time = attributes['updated_at']
     time.strftime('%a, %-d %b %Y')
+  end
+
+  def self.tagged_with(name)
+    Tag.find_by!(name: name).blogs
+  end
+
+  def self.tag_counts
+    Tag.select('tags.*, count(taggings.tag_id) as count').joins(:taggings).group('taggings.tag_id')
+  end
+
+  def tag_list
+    tags.map(&:name).join(', ')
+  end
+
+  def tag_list=(names)
+    self.tags = names.split(',').map do |n|
+      Tag.where(name: n.strip).first_or_create!
+    end
   end
 
 end
