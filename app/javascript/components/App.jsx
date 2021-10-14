@@ -22,6 +22,7 @@ import GameDetails from "./Games/GameDetails";
 import { Redirect } from "react-router-dom";
 
 import PreviewBlog from "./Blogs/PreviewBlog";
+import TaggedBlogs from "./Tags/TaggedBlogs";
 
 
 const App = () => {
@@ -149,6 +150,8 @@ const App = () => {
                 />
               )}
             />
+            <Route exact path="/tags/:tag" component={TaggedBlogs} />
+
 
           </Switch>
           {/* <Footer /> */}

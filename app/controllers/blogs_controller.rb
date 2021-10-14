@@ -19,10 +19,12 @@ class BlogsController < ApplicationController
     #                   }
     data = @blogs.as_json(include: {user: {only: :username}})
     if params[:tag]
-      tagged_blog = Blog.tagged_with(params[:tag])
-      render json: { blogs: tagged_blog} , status: :ok
+      tagged_blogs = Blog.tagged_with(params[:tag])
+      pub_tagged_blogs = tagged_blogs.where(published:true)
+      data = pub_tagged_blogs.as_json(include: {user: {only: :username}})
+      render json: { blogs: data, tagged_blogs:tagged_blogs} , status: :ok
     else
-      render json: { blogs: data} , status: :ok
+      render json: { blogs: data } , status: :ok
     end
 
 
