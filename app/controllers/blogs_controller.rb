@@ -22,7 +22,7 @@ class BlogsController < ApplicationController
       tagged_blogs = Blog.tagged_with(params[:tag])
       pub_tagged_blogs = tagged_blogs.where(published:true)
       data = pub_tagged_blogs.as_json(include: {user: {only: :username}})
-      render json: { blogs: data, tagged_blogs:tagged_blogs} , status: :ok
+      render json: { blogs: data, tag_count: data.length} , status: :ok
     else
       render json: { blogs: data } , status: :ok
     end
@@ -47,7 +47,7 @@ class BlogsController < ApplicationController
 
   def preview
     # if authorized?
-      blog = Blog.find(params[:id])
+      blog = Blog.find_by(slug: params[:slug])
       render status: :ok, json: { blog: blog }
     # end    
   end
@@ -68,7 +68,7 @@ class BlogsController < ApplicationController
   end
 
   def banner_image
-    blog = Blog.find(params[:id])
+    blog = Blog.find_by(slug: params[:slug])
     upload_image = Cloudinary::Uploader.upload(params[:blog][:image])
     if blog.update_attribute(:image, upload_image['url'])
       render json: {image:blog.image , notice:"Banner Image Added Successfully"}, status: :ok
@@ -79,7 +79,7 @@ class BlogsController < ApplicationController
   end
 
   def published
-    blog = Blog.find(params[:id])
+    blog = Blog.find_by(slug: params[:slug])
     if blog.update_attribute(:published, params[:blog][:published])
       render json:{blog:blog,notice:"Blog Published"},
                   status: :ok
@@ -143,7 +143,7 @@ class BlogsController < ApplicationController
   private 
   
   def set_blog
-    @blog = Blog.find(params[:id])
+    @blog = Blog.find_by(slug: params[:slug])
   end
 
   def blog_params

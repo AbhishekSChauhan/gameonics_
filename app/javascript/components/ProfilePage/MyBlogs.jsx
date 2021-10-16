@@ -21,10 +21,10 @@ export default function MyBlogs({data,user,showBlog,updateBlog,destroyBlog}) {
             {blog.published? (
               <div className="md:flex-shrink-0 relative">
                 <div className="z-10 mt-1 flex flex row text-gray-200 text-2xl absolute cursor-pointer right-0 top-0">
-                    <MdDelete onClick={()=>destroyBlog(blog.id)} />
-                    <MdEdit onClick={()=>updateBlog(blog.id)}/>
+                    <MdDelete onClick={()=>destroyBlog(blog.slug)} />
+                    <MdEdit onClick={()=>updateBlog(blog.slug)}/>
                 </div>
-                <img onClick={()=>showBlog(blog.id)}
+                <img onClick={()=>showBlog(blog.slug)}
                   src={blog.image}
                   alt="Blog Cover"
                   className="object-fill w-full cursor-pointer rounded-lg rounded-b-none md:h-56"
@@ -34,10 +34,10 @@ export default function MyBlogs({data,user,showBlog,updateBlog,destroyBlog}) {
             ) : (
               <div className="md:flex-shrink-0 relative">
                 <div className="z-10 mt-1 flex flex row text-gray-200 text-2xl absolute cursor-pointer right-0 top-0">
-                    <MdDelete onClick={()=>destroyBlog(blog.id)} />
-                    {/* <MdEdit onClick={()=>updateBlog(blog.id)}/> */}
+                    <MdDelete onClick={()=>destroyBlog(blog.slug)} />
+                    {/* <MdEdit onClick={()=>updateBlog(blog.slug)}/> */}
                 </div>
-                <img onClick={()=>updateBlog(blog.id)}
+                <img onClick={()=>updateBlog(blog.slug)}
                   src={blog.image}
                   alt="Blog Cover"
                   className="object-fill w-full cursor-pointer rounded-lg rounded-b-none md:h-56"
@@ -122,7 +122,7 @@ export default function MyBlogs({data,user,showBlog,updateBlog,destroyBlog}) {
             </div>
             <hr className="border-gray-300" />
             <div className="flex flex-wrap items-center flex-1 px-4 py-1 text-center mx-auto">
-              <a onClick={()=>showBlog(blog.id)} className="hover:underline">
+              <a onClick={()=>showBlog(blog.slug)} className="hover:underline">
                 <h2 className="text-2xl font-bold tracking-normal text-gray-800 cursor-pointer">
                   {parse(blog.title)}
                 </h2>

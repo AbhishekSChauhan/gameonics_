@@ -17,8 +17,6 @@ export default function CreateBlog({history}) {
     const [tags, setTags] = useState([])
     const [input, setInput] = useState('')
     const [isKeyReleased, setIsKeyReleased] = useState(false);
-
-
     
 
     const handleBodyChange = (value)=>{
@@ -52,8 +50,7 @@ export default function CreateBlog({history}) {
         formData.append('blog[image]',bannerImage)
         formData.append('blog[tag_list]',tags)
         try{
-            const response = await axios.post("/blogs",formData)
-            
+            const response = await axios.post("/blogs",formData)            
             console.log("blog submit response", response)
             setBlogPosted(response.data.blog)
             setLoading(false) 
@@ -65,10 +62,8 @@ export default function CreateBlog({history}) {
             } 
                     
             history.push({
-                pathname: `/blogs/${response.data.blog.id}/preview`,
-                state: {title: title,
-                        body:body,
-                        bannerImage:bannerImage
+                pathname: `/blogs/${response.data.blog.slug}/preview`,
+                state: {slug: response.data.blog.slug
                     }
             });
         } catch(error){
@@ -98,6 +93,7 @@ export default function CreateBlog({history}) {
             <CreateForm 
                 title={title}
                 body={body}
+                setTitle={setTitle}
                 blogPosted={blogPosted}
                 bannerImage={bannerImage}
                 loading={loading}

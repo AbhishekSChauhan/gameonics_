@@ -12,7 +12,7 @@ import {useHistory} from 'react-router-dom'
 
 export default function ShowBlog({user}) {
     const componentMounted = true
-    const {id} = useParams()
+    const {slug} = useParams()
     const [blogDetails, setBlogDetails] = useState([])
     const [loading, setLoading] = useState(true)
     const [blogCreator, setBlogCreator] = useState('')
@@ -28,7 +28,7 @@ export default function ShowBlog({user}) {
 
     const fetchBlogDetails = async()=>{
         try{
-            const response = await axios.get(`/blogs/${id}`, {cancelToken:source.token})
+            const response = await axios.get(`/blogs/${slug}`, {cancelToken:source.token})
             setBlogDetails(response.data.blog)
             setBlogCreator(response.data.blog_creator)
             setAllLikes(response.data.likes)
@@ -156,7 +156,7 @@ export default function ShowBlog({user}) {
                     {/* Card code block end */}
                     {/* Comments Block */}
                     <div className="mx-auto py-2 my-10">
-                        <Comments blogId={blogDetails?.id} 
+                        <Comments blog={blogDetails} 
                                 user={user} 
                         /> 
                     </div>

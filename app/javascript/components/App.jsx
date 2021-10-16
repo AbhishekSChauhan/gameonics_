@@ -125,17 +125,17 @@ const App = () => {
                 />
               )}
             /> 
-            <Route exact path="/blogs/:id/show" 
+            <Route exact path="/blogs/:slug/show" 
               render={(props)=>(
                 <ShowBlog 
                   user = {user} 
                 />
               )}
             /> 
-            <Route exact path="/blogs/:id/preview" component={PreviewBlog} /> 
-            <Route exact path="/blogs/:id/edit" component={EditBlog} />   
+            <Route exact path="/blogs/:slug/preview" component={PreviewBlog} /> 
+            <Route exact path="/blogs/:slug/edit" component={EditBlog} />   
             <Route exact path="/blogs/create" component={CreateBlog}/>
-            <Route exact path="/blogs/:id/comments" component={Comments} />
+            <Route exact path="/blogs/:id/comments" component={Comments} />          
             <Route exact path="/users/:id" 
               render={(props)=>(
                 <ProfilePage 

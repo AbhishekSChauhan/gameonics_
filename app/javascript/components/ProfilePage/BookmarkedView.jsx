@@ -13,7 +13,7 @@ const BookmarkedView = ({data,showBlog}) => {
           >
             <div>            
               <div className="md:flex-shrink-0 relative">
-                <img onClick={()=>showBlog(blog.blog_id)}
+                <img onClick={()=>showBlog(blog.blogs.slug)}
                   src={blog.blogs.image}
                   alt="Blog Cover"
                   className="object-fill w-full cursor-pointer rounded-lg rounded-b-none md:h-56"

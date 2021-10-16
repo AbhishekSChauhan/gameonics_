@@ -1,6 +1,8 @@
 class Blog < ApplicationRecord
   default_scope {order(created_at: :desc)}
 
+  after_validation :set_slug, only: [:create, :update]
+
   scope :published, -> do
     where(published: true)
   end
@@ -17,8 +19,10 @@ class Blog < ApplicationRecord
   has_many :tags, through: :taggings, dependent: :destroy
 
   validates :title, length: { in: 4..1000 }, presence: true
+  # validates :slug, uniqueness: true
   validates :body, length: { in: 100..100000000 }, presence: true
   validates :image, presence: true
+
   scope :pins, -> { where('is_pinned = true')}
   scope :not_pinned, ->{ where('is_pinned = false')}
 
@@ -51,5 +55,13 @@ class Blog < ApplicationRecord
       Tag.where(name: n.strip).first_or_create!
     end
   end
+
+  def to_param
+    "#{id}-#{slug}"
+  end
+
+  def set_slug
+    self.slug = title.to_s.parameterize
+  end 
 
 end

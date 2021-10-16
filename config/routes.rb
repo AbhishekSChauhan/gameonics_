@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   patch :change_password_with_token, to: 'registrations#change_password_with_token' 
 
   ###   Blogs and comments routes  ###
-  resources :blogs do
+  resources :blogs, param: :slug do
     member do
       get :preview, to: 'blogs#preview'
       patch :lock_post, to: 'blogs#lock_post'
@@ -30,6 +30,9 @@ Rails.application.routes.draw do
       patch :published, to: 'blogs#published'
       patch :banner_image, to: 'blogs#banner_image'
     end
+  end
+
+  resources :blogs, only: [:index] do
     resources :comments
   end
 

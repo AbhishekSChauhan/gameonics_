@@ -13,7 +13,7 @@ Quill.register('modules/imageResize', ImageResize);
 export default function CreateForm(
     {
     type="create",loading,handleSubmit,setImage,tags,setTags,
-    handleTitleChange,handleBodyChange,body,title,input,setInput,setIsKeyReleased,isKeyReleased
+    handleTitleChange,handleBodyChange,body,title,setTitle,input,setInput,setIsKeyReleased,isKeyReleased
     }) {
 
     const editorRef = useRef(null);
@@ -117,7 +117,7 @@ export default function CreateForm(
                     <div className="flex flex-col ">
                         <div className="w-full ">
                             <form className="max-w-full" onSubmit={handleSubmit}>
-                                <ReactQuill 
+                                {/* <ReactQuill 
                                     theme="bubble"
                                     placeholder="Your amazing title" 
                                     modules={titlemodules}
@@ -125,6 +125,21 @@ export default function CreateForm(
                                     forwardedRef={editorRef}
                                     onChange={handleTitleChange}
                                     value={title}        
+                                /> */}
+
+                                <input
+                                    required={true}
+                                    value={title}
+                                    // onKeyDown={onKeyDown}
+                                    // onKeyUp={onKeyUp}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                    // onChange={(e) => setInput(e.target.value)}
+                                    placeholder="Enter Title"
+                                    className="block w-full px-3 py-2 placeholder-gray-400
+                                    transition duration-150 ease-in-out border
+                                    border-gray-300 rounded-md appearance-none
+                                    focus:outline-none focus:shadow-outline-blue
+                                    focus:border-blue-300 sm:text-sm sm:leading-5"
                                 />
                             
                                 <ReactQuill 

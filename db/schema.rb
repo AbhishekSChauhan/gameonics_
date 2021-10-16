@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_12_183838) do
+ActiveRecord::Schema.define(version: 2021_10_16_131136) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(version: 2021_10_12_183838) do
     t.integer "comments_count"
     t.integer "likeable_count"
     t.integer "bookmarks_count"
+    t.string "slug"
     t.index ["user_id"], name: "index_blogs_on_user_id"
   end
 

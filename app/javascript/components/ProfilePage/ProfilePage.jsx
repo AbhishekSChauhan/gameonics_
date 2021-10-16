@@ -127,17 +127,17 @@ const ProfilePage = ({
       );
     }
 
-    const showBlog = (id) => {
-      history.push(`/blogs/${id}/show`)
+    const showBlog = (slug) => {
+      history.push(`/blogs/${slug}/show`)
     }
 
-    const updateBlog = (id) => {
-      history.push(`/blogs/${id}/edit`)
+    const updateBlog = (slug) => {
+      history.push(`/blogs/${slug}/edit`)
     }
 
-    const destroyBlog = async(id) => {
+    const destroyBlog = async(slug) => {
         try {
-            const response = await axios.delete(`/blogs/${id}`);
+            const response = await axios.delete(`/blogs/${slug}`);
             if(response){
                 response.success = response.status === 200;
                 if (response.data.notice){
