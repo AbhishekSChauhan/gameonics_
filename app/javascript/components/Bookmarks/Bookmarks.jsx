@@ -34,7 +34,7 @@ const Bookmarks = ({blog,user,bookmark,setBookmark}) => {
     console.log('bookmark',bookmark)
     // console.log('likes',likes)
 
-    const handleLike = async() => {
+    const bookmarkAdded = async() => {
         if(user?.logged_in){
             if(!bookmarkDisabled){
                 setBookmarked(true)
@@ -42,6 +42,9 @@ const Bookmarks = ({blog,user,bookmark,setBookmark}) => {
                 const response = await axios.post(`/bookmarks`,{
                     blog_id: blog?.id
                 })
+                if (response.data.notice){
+                    toast.success(response.data.notice)                    
+                }
                 console.log('bookmark clicked',response)
                 // bookmark.push(response.data.like)
                 setBookmark((prevState)=>[...prevState,response.data.bookmark])
@@ -53,7 +56,7 @@ const Bookmarks = ({blog,user,bookmark,setBookmark}) => {
         }        
     }
 
-    const handleUnlike = async() => {
+    const bookmarkRemoved = async() => {
         if(user?.logged_in){
             if(!bookmarkDisabled){
                 setBookmarked(false)
@@ -64,6 +67,9 @@ const Bookmarks = ({blog,user,bookmark,setBookmark}) => {
                     }                    
                 }) 
                 const response = await axios.delete(`/bookmarks/${unmark?.id}`)
+                if (response.data.notice){
+                    toast.error(response.data.notice)                    
+                }
                 console.log('remove bookmark clicked',response)
                 // setbookmark(response.data.bookmark)
                 setBookmark((prevState)=>
@@ -81,7 +87,7 @@ const Bookmarks = ({blog,user,bookmark,setBookmark}) => {
         <div>
             {bookmarked ? (
                 <div>
-                    <FaBookmark onClick={handleUnlike} 
+                    <FaBookmark onClick={bookmarkRemoved} 
                     style={bookmarkDisabled 
                         ? {pointerEvents:'none'}
                         : {pointerEvents:'inherit'}
@@ -94,7 +100,7 @@ const Bookmarks = ({blog,user,bookmark,setBookmark}) => {
                 
             ) : (
                 <div>
-                <FaRegBookmark onClick={handleLike}
+                <FaRegBookmark onClick={bookmarkAdded}
                     style={bookmarkDisabled 
                         ? {pointerEvents:'none',backgroundColor:'transparent'}
                         : {pointerEvents:'inherit'}

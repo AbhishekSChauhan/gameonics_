@@ -6,7 +6,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useParams } from 'react-router-dom'
 
 export default function EditBlog({history}) {
-    const {id} = useParams()
+    const {slug} = useParams()
     const [title, setTitle] = useState("")
     const [body, setBody] = useState("")
     const [loading, setLoading] = useState(false)
@@ -29,7 +29,7 @@ export default function EditBlog({history}) {
         event.preventDefault()
         setLoading(true)
         try{
-            const response = await axios.put(`/blogs/${id}`,{
+            const response = await axios.put(`/blogs/${slug}`,{
                 blog:{
                     title,
                     body,
@@ -47,11 +47,9 @@ export default function EditBlog({history}) {
             //     history.push('/blogs')
             // } else {
                 history.push({
-                    pathname: `/blogs/${id}/preview`,
-                    // state: {title: title,
-                    //         body:body,
-                    //         bannerImage:bannerImage
-                    //     }
+                    pathname: `/blogs/${response.data.blog.slug}/preview`,
+                    state: {slug: response.data.blog.slug
+                        }
                 });
             // }            
         } catch(error){
@@ -75,7 +73,7 @@ export default function EditBlog({history}) {
     const fetchBlogDetails = async () => {
         setLoading(true)
         try {
-          const response = await axios.get(`/blogs/${id}`)
+          const response = await axios.get(`/blogs/${slug}`)
           setTitle(response.data.blog.title);
           setBody(response.data.blog.body)
           if(response.data.blog.published === true){
@@ -108,6 +106,7 @@ export default function EditBlog({history}) {
                 type="update"
                 title={title}
                 body={body}
+                setTitle={setTitle}
                 loading={loading}
                 handleSubmit={handleSubmit} 
                 handleTitleChange = {handleTitleChange} 

@@ -4,8 +4,9 @@ import Comment from './CommentView'
 import CommentsForm from './CommentsForm'
 import { useParams } from 'react-router-dom'
 import toast from "react-hot-toast";
+import {Link} from 'react-router-dom'
 
-export const Comments = ({blogId,user}) => {
+export const Comments = ({blog,user}) => {
     const {id} = useParams()
     const [comments, setComments] = useState([])
     const [updateComments, setUpdateComments] = useState(0)
@@ -17,7 +18,7 @@ export const Comments = ({blogId,user}) => {
 
     const fetchCommentDetails = async() => {
         try{
-            const response = await axios.get(`/blogs/${blogId}/comments`,{cancelToken:source.token})
+            const response = await axios.get(`/blogs/${blog?.id}/comments`,{cancelToken:source.token})
             setComments(response.data.comments)
 
             console.log("Comments data",response)
@@ -41,7 +42,7 @@ export const Comments = ({blogId,user}) => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        axios.post(`/blogs/${blogId}/comments`,{
+        axios.post(`/blogs/${blog?.id}/comments`,{
             newComment,
         })
         .then((response)=>{
@@ -78,27 +79,33 @@ export const Comments = ({blogId,user}) => {
                     key={comment.id}
                     user = {user}
                     setUpdateLikes = {setUpdateLikes}
-                    updateLikes = {updateLikes}
-                    
+                    updateLikes = {updateLikes}                    
                 />
     })
 
     return (
-        <div className="max-w-2xl mx-auto mt-20 mb-20">  
-            <CommentsForm 
+        <div className="max-w-2xl mx-auto mt-20 mb-20">
+            {user.logged_in ? ( 
+                <CommentsForm 
                     handleSubmit={handleSubmit}
                     setNewComment={setNewComment}
-                    blogId={blogId}
-                />              
-                <div className="text-lg my-5">
-                    {comments.length === 0 ? 
-                        <p>Be the first one to comment</p> :
-                        <span>Comments({comments.length})</span>
-                    }
-                </div>
-                <div>
-                    {loading ? commentsComp : <p>Loading</p>}
-                </div>
+                    blogId={blog?.id}
+                /> 
+            ):( 
+                <Link to="/login">
+                    Login to share your views on this article.
+                </Link>
+            )}  
+                         
+            <div className="text-lg my-5">
+                {comments.length === 0 ? 
+                    <p>Be the first one to comment</p> :
+                    <span>Comments({comments.length})</span>
+                }
+            </div>
+            <div>
+                {loading ? commentsComp : <p>Loading</p>}
+            </div>
         </div>
    
     )

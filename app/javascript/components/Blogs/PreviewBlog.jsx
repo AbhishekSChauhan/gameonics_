@@ -11,11 +11,11 @@ import ShowBlog from './ShowBlog'
 
 
 
-export default function PreviewBlog() {
-    // const {title,body,bannerImage} = (props.location && props.location.state) || {};
+export default function PreviewBlog(props) {
+    const {slug} = (props.location && props.location.state) || {};
     let history = useHistory()
     const componentMounted = true
-    const {id} = useParams()
+    // const {slug} = useParams()
     const [blogDetails, setBlogDetails] = useState()
     const [loading, setLoading] = useState(true)
     const [bannerImage,setBannerImage] = useState()
@@ -28,7 +28,7 @@ export default function PreviewBlog() {
 
     const fetchBlogDetails = async()=>{
         try{
-            const response = await axios.get(`/blogs/${id}/preview`, {cancelToken:source.token})
+            const response = await axios.get(`/blogs/${slug}/preview`, {cancelToken:source.token})
             setBlogDetails(response.data.blog)
             if(response.data.blog.image !== "null"){
                 setImageSelected(true)
@@ -53,7 +53,7 @@ export default function PreviewBlog() {
         const formData = new FormData();
         formData.append('blog[published]',published)
         try{
-            const response = await axios.patch(`/blogs/${id}/published`,formData)
+            const response = await axios.patch(`/blogs/${slug}/published`,formData)
             setLoading(false)
             console.log("blog publish response", response)
             setBlogPublished(response.data.blog)
@@ -111,7 +111,7 @@ export default function PreviewBlog() {
         formData.append('blog[image]',bannerImage)
         try{
           setLoading(true)
-          const response = await axios.patch(`/blogs/${id}/banner_image`,formData)
+          const response = await axios.patch(`/blogs/${slug}/banner_image`,formData)
           if(response.status === 200){
             toast.success(response.data.notice)
           }
@@ -158,9 +158,9 @@ export default function PreviewBlog() {
                                     if((imagePosted && blogDetails.image !== "null")){
                                         return <img className="block shadow-xl mx-auto h-96 w-full bg-cover bg-center"
                                         src={imagePosted}/>
-                                    }else if(blogDetails.image !== "null"){
+                                    }else if(blogDetails?.image !== "null"){
                                         return <img className="block shadow-xl mx-auto h-96 w-full bg-cover bg-center"
-                                        src={blogDetails.image}/>
+                                        src={blogDetails?.image}/>
                                     } else if(imagePosted ){
                                         return <img className="block shadow-xl mx-auto h-96 w-full bg-cover bg-center"
                                         src={imagePosted}/>
