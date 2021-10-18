@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-
+ 
   root to: "home#index"
   # get '*path', to: 'home#index', via: :all
 
@@ -49,5 +49,8 @@ Rails.application.routes.draw do
       patch :suspend_comms, to: 'users#suspend_communication'
     end
   end
+
+  ActiveAdmin.routes(self)
+
 
 end

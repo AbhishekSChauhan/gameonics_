@@ -29,6 +29,9 @@ gem 'figaro'
 gem 'impressionist'
 gem 'hirb'
 gem 'awesome_print'
+gem 'activeadmin'
+gem 'arctic_admin'
+gem 'cancan'
 
 # Use Active Storage variant
 gem 'image_processing', '~> 1.2'
