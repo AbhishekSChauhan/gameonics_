@@ -215,6 +215,8 @@ export default function PreviewBlog(props) {
                                     <ImageUploadModal 
                                     handleImageSubmit={handleBannerImageSubmit}
                                     handleCheckFileSize={handleCheckFileSize}
+                                    uploadLoading={uploadLoading}
+                                    value="banner image"
                                     />                                                                                                    
                             </div>
                             <div className="flex items-center justify-center py-1 overflow-hidden">

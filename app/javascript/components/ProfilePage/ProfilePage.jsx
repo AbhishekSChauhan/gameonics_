@@ -205,6 +205,8 @@ const ProfilePage = ({
                 <ImageUploadModal 
                   handleImageSubmit={handleProfileImageSubmit}
                   handleCheckFileSize={handleCheckFileSize}
+                  uploadLoading={uploadLoading}
+                  value="profile image"
                 />        
               </div>        
 
