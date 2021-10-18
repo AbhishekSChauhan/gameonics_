@@ -103,7 +103,7 @@ const App = () => {
       <Router>
         <div>
           <Toaster position="top-right" reverseOrder={false}/>          
-          <NavBar handleLogout={handleLogout} user={user} />
+          <NavBar handleLogout={handleLogout} user={user} setUser={setUser} />
           <ScrollToTop />
           <Switch>
             <Route exact path="/" component={Home}/>

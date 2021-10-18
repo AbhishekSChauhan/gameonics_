@@ -11,6 +11,7 @@ import {Link} from 'react-router-dom'
 import MyBlogs from './MyBlogs';
 import BookmarkedView from './BookmarkedView';
 import Tabs from './Tabs';
+import Loader from '../Auth/Loader';
 
 const ProfilePage = ({
     user, handleLogout, handleBlogSelect,
@@ -23,7 +24,8 @@ const ProfilePage = ({
     const [profileImage, setProfileImage] = useState()
 
     const [loading, setLoading] = useState(false)
-
+    const [uploadLoading, setUploadLoading] = useState(false)
+    const [showLoader, setShowLoader] = useState(false)
     const handleSelectedUser = user => {
         setSelectedUser(user)
     }
@@ -37,21 +39,21 @@ const ProfilePage = ({
 
     const handleProfileImageSubmit = async(e) => {
         e.preventDefault()
-        setLoading(true)
+        setUploadLoading(true)
         const formData = new FormData()
         formData.append('user[profile_image]',profileImage)
         try{
-          setLoading(true)
+          setUploadLoading(true)
           const response = await usersApi.userImage(selectedUser.id,formData)
           if(response.status === 200){
             toast.success(response.data.notice)
           }
           console.log('image post',response)
           setSelectedUser(response.data.user)
-          setLoading(false)
+          setUploadLoading(false)
         }catch(error) {
           console.log("signup error",error)
-          setLoading(false)
+          setUploadLoading(false)
           if(error){
               toast.error(
                   error.response?.data?.notice ||
@@ -98,6 +100,20 @@ const ProfilePage = ({
 
     useEffect(()=>{
         loadData();
+
+        if(uploadLoading){
+          setShowLoader(true)
+        }
+
+        if(!uploadLoading && showLoader){
+          const timeout = setTimeout(()=> {
+            setShowLoader(false)
+          },600)
+
+          return () => {
+            clearTimeout(timeout)
+          }
+        }        
 
         // if (Object.keys(selectedUser).length > 0) {
         //     const allpublishedBlogs = selectedUser.blogs;
@@ -168,13 +184,21 @@ const ProfilePage = ({
           <div className="w-full rounded-lg shadow-2xl bg-white mx-6 lg:mx-0">
             <div className="p-4 md:p-14 text-center">
               <div>
-                {!selectedUser.profile_image && (
-                  <FaUser className="block rounded-full shadow-xl mx-auto h-48 w-48 bg-cover bg-center" />
-                )}
-                {selectedUser.profile_image && (
-                  <img className="block rounded-full shadow-xl mx-auto h-48 w-48 bg-cover bg-center"
-                  src={selectedUser.profile_image} />
-                )}          
+                {uploadLoading ? (
+                  <div>
+                    <Loader />
+                  </div>
+                ):(
+                  <div>
+                    {!selectedUser.profile_image && (
+                      <FaUser className="block rounded-full shadow-xl mx-auto h-48 w-48 bg-cover bg-center" />
+                    )}
+                    {selectedUser.profile_image && (
+                      <img className="block rounded-full shadow-xl mx-auto h-48 w-48 bg-cover bg-center"
+                      src={selectedUser.profile_image} />
+                    )} 
+                  </div>
+                )}                         
               </div>
               
               <div>

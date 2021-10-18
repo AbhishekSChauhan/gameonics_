@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { VscAccount } from "react-icons/vsc";
 import { MdLockOutline } from "react-icons/md";
+import Loader from "./Loader";
 
 
 const LoginForm = ({ handleSubmit, setCredential, setPassword, loading }) => {
@@ -65,8 +66,16 @@ const LoginForm = ({ handleSubmit, setCredential, setPassword, loading }) => {
           </Link>
         </div>
 
-        <button type="submit" className="w-full block bg-indigo-500 hover:bg-indigo-400 focus:bg-indigo-400 text-white font-semibold rounded-lg
-              px-4 py-3 mt-6">Log In
+        <button type="submit" 
+            className="w-full block bg-indigo-500 hover:bg-indigo-400 focus:bg-indigo-400 text-white
+               font-semibold rounded-lg px-4 py-3 mt-6">
+                 {loading ? (
+                   <div>
+                     <Loader />
+                   </div>
+                 ) : (
+                   <span>Log In</span>
+                 )}
         </button>
       </form>
 
