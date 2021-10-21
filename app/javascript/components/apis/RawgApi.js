@@ -42,6 +42,13 @@ const getCurrentMonth = () => {
   
   export const gamesScreenshotsURL = (game_id) =>
     `${baseURL}games/${game_id}/screenshots?key=${key}`;
+
+  export const gamesSuggestedURL = (game_id) =>
+    `${baseURL}games/${game_id}/suggested?key=${key}`;
+
   
-  export const searchGameURL = (game_name) =>
-    `${baseURL}games?${key}&search=${game_name}&page_size=20`;
+  
+  export const searchedGamesURL = (game_name) =>
+    `${baseURL}games?key=${key}&search=${game_name}&page_size=20`;
+    export const searchGameURL = (game_name) =>
+    `${baseURL}videogameAutocomplete?key=${key}?q=${game_name}`

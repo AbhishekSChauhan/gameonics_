@@ -23,6 +23,8 @@ import { Redirect } from "react-router-dom";
 
 import PreviewBlog from "./Blogs/PreviewBlog";
 import TaggedBlogs from "./Tags/TaggedBlogs";
+import ProtectedRoute from "./ProtectedRoute";
+import Unauthorized from './Unauthorized'
 
 
 const App = () => {
@@ -151,6 +153,14 @@ const App = () => {
               )}
             />
             <Route exact path="/tags/:tag" component={TaggedBlogs} />
+
+            <ProtectedRoute
+              path="/admin"
+              redirectRoute="/login"
+              user={user}
+              component={Home}
+            />
+            <Route exact path='/unauthorized' component={Unauthorized} />
 
 
           </Switch>
