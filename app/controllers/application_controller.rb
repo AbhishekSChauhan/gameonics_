@@ -20,6 +20,12 @@ class ApplicationController < ActionController::Base
         render json: { errors: 'Insufficient Administrative Rights' }, status: 401 unless current_user.admin_level.positive?
     end
 
+    def logged_in
+       
+        !current_user.nil?
+        
+    end
+
     private
 
     def current_user        

@@ -73,7 +73,7 @@ const SearchGames = () => {
             <div className="p-10 grid grid-cols-1 sm:grid-cols-1 
               md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-5">
                 {data?.map((game)=>(              
-              <div className="rounded overflow-hidden shadow-lg">
+              <div className="rounded overflow-hidden shadow-lg w-72">
                 
                 <img className="h-52 w-72 object-fill cursor-pointer rounded-lg 
                   transition duration-300 transform shadow-md rounded border-2

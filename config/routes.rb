@@ -42,7 +42,7 @@ Rails.application.routes.draw do
   get 'tags/:tag', to: 'blogs#index', as: 'tag'
   
   ### Users ###
-  resources :users, only: %i[index show] do
+  resources :users, param: :username do
     member do
       patch :update_image, to: 'users#update_image'
       patch :set_admin_level, to: 'users#set_admin_level'

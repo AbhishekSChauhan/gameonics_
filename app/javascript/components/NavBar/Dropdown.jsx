@@ -13,6 +13,11 @@ export default function Dropdown({user,setUser}) {
   const [loading, setLoading] = useState(false)
   let history = useHistory()
 
+  // useEffect(() => {
+    
+    
+  // }, [user?.username])
+
 
   const handleLogout = async() => {
     try{
@@ -39,6 +44,10 @@ export default function Dropdown({user,setUser}) {
         )
       }
     }            
+  }
+
+  const showProfile = () => {
+    history.push(`/users/${user.username}`)
   }
 
   return (
@@ -80,11 +89,16 @@ export default function Dropdown({user,setUser}) {
               <div className="px-1 py-1 text-gray-500">
                 <Menu.Item>
                 {({ active }) => (
-                    <Link to={`/users/${user.username}`}
-                    className={`${active && 'text-gray-700'}`}
+                    // <Link to={`/users/${user.username}`}
+                    // className={`${active && 'text-gray-700'}`}
+                    // >
+                    // My Profile
+                    // </Link>
+                    <button className={`${active && 'text-gray-700'}`}
+                      onClick={showProfile}
                     >
-                    My Profile
-                    </Link>
+                      My Profile
+                    </button>
                 )}
                 </Menu.Item>
               </div>

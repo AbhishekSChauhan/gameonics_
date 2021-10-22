@@ -7,10 +7,11 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function Tabs({publishedBlogs,draftBlogs,bookmarkedBlogs,user,showBlog,updateBlog,destroyBlog}) {
+export default function Tabs({publishedBlogs,draftBlogs,bookmarkedBlogs,user , username,showBlog,updateBlog,destroyBlog}) {
   return (
     <Tab.Group>
       <Tab.List className="flex p-1 space-x-1 bg-blue-900/20 rounded-xl">
+        <div className="w-full">
         <Tab
             className={({ selected }) =>
             classNames(
@@ -22,10 +23,13 @@ export default function Tabs({publishedBlogs,draftBlogs,bookmarkedBlogs,user,sho
                 )  
             }
         >
-          My Blogs
+          Blogs
         </Tab>
+        </div>
 
-        <Tab
+        {(user.username === username) ? (
+          <div className="w-full flex flex row">
+          <Tab
             className={({ selected }) =>
             classNames(
                 'w-full py-2.5 text-sm leading-5 font-medium text-blue-700 rounded-lg',
@@ -51,7 +55,14 @@ export default function Tabs({publishedBlogs,draftBlogs,bookmarkedBlogs,user,sho
             }
         >
           Drafts
-        </Tab>      
+        </Tab>
+      </div>
+
+        ):(
+          null
+        )}
+
+              
       </Tab.List>
 
 
@@ -73,6 +84,7 @@ export default function Tabs({publishedBlogs,draftBlogs,bookmarkedBlogs,user,sho
             <MyBlogs 
               data={publishedBlogs}
               user = {user}
+              username = {username}
               showBlog={showBlog}
               updateBlog={updateBlog}
               destroyBlog={destroyBlog}
@@ -116,7 +128,7 @@ export default function Tabs({publishedBlogs,draftBlogs,bookmarkedBlogs,user,sho
               <div className="mt-2 pb-10 w-full mx-auto flex flex-col items-center justify-center">
                 <MyBlogs 
                   data={draftBlogs}
-                  user = {user}
+                  username = {username}
                   showBlog={showBlog}
                   updateBlog={updateBlog}
                   destroyBlog={destroyBlog}

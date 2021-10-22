@@ -1,5 +1,6 @@
 import React from 'react'
 import parse from 'html-react-parser';
+import {Link} from 'react-router-dom'
 
 const BookmarkedView = ({data,showBlog}) => {
     return (
@@ -121,9 +122,10 @@ const BookmarkedView = ({data,showBlog}) => {
                     alt="Avatar"
                   />
                   <div className="flex flex-col mx- cursor-pointer">
-                    <a href="" className="font-semibold text-gray-700 hover:underline">
+                    <Link to={`/users/${blog.blog_creator}`}
+                     className="font-semibold text-gray-700 hover:underline">
                       Written by {blog.blog_creator}
-                    </a>
+                    </Link>
                     <span className="mx-1 text-xs text-gray-600">{blog.blogs.created_at}</span>
                   </div>
                 </div>

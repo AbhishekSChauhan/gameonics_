@@ -8,7 +8,7 @@ import parse from 'html-react-parser';
 import Likes from '../Likes/Likes'
 import Bookmarks from '../Bookmarks/Bookmarks'
 import { useLocation } from "react-router-dom";
-import {useHistory} from 'react-router-dom'
+import {useHistory,Link} from 'react-router-dom'
 
 export default function ShowBlog({user}) {
     const componentMounted = true
@@ -125,10 +125,14 @@ export default function ShowBlog({user}) {
                                     </button>
                                 ))}
                             </div>
-
+                            
                             <div>
-                                by {blogCreator}
-                            </div>
+                                by
+                                <Link to={`/users/${blogCreator}`}>
+                                    {blogCreator}
+                                </Link>
+
+                            </div>                            
 
                             <div className="flex items-center justify-center py-1 overflow-hidden">
                                 <img className="block shadow-xl mx-auto h-96 w-full bg-cover bg-center"

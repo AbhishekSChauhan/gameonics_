@@ -32,6 +32,7 @@ gem 'awesome_print'
 gem 'activeadmin'
 gem 'arctic_admin'
 gem 'cancan'
+gem "bullet"
 
 # Use Active Storage variant
 gem 'image_processing', '~> 1.2'

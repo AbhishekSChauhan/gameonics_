@@ -17,7 +17,7 @@ class BlogsController < ApplicationController
     #                             }
     #                           )
     #                   }
-    data = @blogs.as_json(include: {user: {only: :username}})
+    data = @blogs.as_json(include: {user: {only: [:username,:id]}})
     if params[:tag]
       tagged_blogs = Blog.tagged_with(params[:tag])
       pub_tagged_blogs = tagged_blogs.where(published:true)
@@ -55,7 +55,7 @@ class BlogsController < ApplicationController
   def create
     # return if suspended(@current_user.can_post_date)
   
-    @blog = Blog.new(blog_params.merge(user_id: @current_user.id))
+    @blog = Blog.new(blog_params.merge(user_id: current_user.id))
     if authorized? 
       if @blog.save
         render status: :ok,
@@ -103,8 +103,7 @@ class BlogsController < ApplicationController
     end 
   end
 
-  def destroy 
-
+  def destroy
     if authorized?
       if @blog.destroy
         render status: :ok, 
@@ -162,9 +161,8 @@ class BlogsController < ApplicationController
   # Only allow the owner of the post or an administrator to destroy/update the post
 
   def authorized?
-
     # @blog.user == @current_user ||  @current_user.admin_level >= 1
-     @blog.user_id == @current_user.id || @current_user.admin_level >= 1
+     @blog.user_id == current_user.id || current_user.admin_level >= 1
   end
 
   def handle_unauthorized
