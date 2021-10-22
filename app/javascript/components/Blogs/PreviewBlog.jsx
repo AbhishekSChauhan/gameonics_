@@ -8,6 +8,7 @@ import {useHistory} from 'react-router-dom'
 import toast from "react-hot-toast";
 import ImageUploadModal from '../ProfilePage/ImageUploadModal'
 import ShowBlog from './ShowBlog'
+import Loader from '../Auth/Loader'
 
 
 
@@ -23,6 +24,8 @@ export default function PreviewBlog(props) {
     const [blogPublished, setBlogPublished] = useState({})
     const [imageSelected, setImageSelected] = useState(false)
     const [imagePosted, setImagePosted] = useState()
+    const [uploadLoading, setUploadLoading] = useState(false)
+    const [showLoader, setShowLoader] = useState(false)
 
     const source = axios.CancelToken.source()
 
@@ -106,11 +109,11 @@ export default function PreviewBlog(props) {
 
     const handleBannerImageSubmit = async(e) => {
         e.preventDefault()
-        setLoading(true)
+        setUploadLoading(true)
         const formData = new FormData()
         formData.append('blog[image]',bannerImage)
         try{
-          setLoading(true)
+          setUploadLoading(true)
           const response = await axios.patch(`/blogs/${slug}/banner_image`,formData)
           if(response.status === 200){
             toast.success(response.data.notice)
@@ -118,10 +121,10 @@ export default function PreviewBlog(props) {
           console.log('image post',response)
           setImagePosted(response.data.image)
           setImageSelected(true)
-          setLoading(false)
+          setUploadLoading(false)
         }catch(error) {
           console.log("signup error",error)
-          setLoading(false)
+          setUploadLoading(false)
           if(error){
               toast.error(
                   error.response?.data?.notice ||
@@ -137,6 +140,21 @@ export default function PreviewBlog(props) {
     
     useEffect(()=>{
         fetchBlogDetails()
+
+        if(uploadLoading){
+            setShowLoader(true)
+        }
+  
+        if(!uploadLoading && showLoader){
+            const timeout = setTimeout(()=> {
+                setShowLoader(false)
+            },600)
+
+            return () => {
+                clearTimeout(timeout)
+            }
+        }
+
         return () => {
             source.cancel()
         }
@@ -152,22 +170,30 @@ export default function PreviewBlog(props) {
                 <div className="max-w-6xl mx-auto mt-10 col-span-2">
                     <div className="relative max-w-4xl mx-auto items-center justify-between">
                         <div className="flex flex-col ">
-                            <div className="w-full">
-                            <div className="flex items-center justify-center py-1 overflow-hidden mt-5">
-                                {(()=>{
-                                    if((imagePosted && blogDetails.image !== "null")){
-                                        return <img className="block shadow-xl mx-auto h-96 w-full bg-cover bg-center"
-                                        src={imagePosted}/>
-                                    }else if(blogDetails?.image !== "null"){
-                                        return <img className="block shadow-xl mx-auto h-96 w-full bg-cover bg-center"
-                                        src={blogDetails?.image}/>
-                                    } else if(imagePosted ){
-                                        return <img className="block shadow-xl mx-auto h-96 w-full bg-cover bg-center"
-                                        src={imagePosted}/>
-                                    }else {
-                                        return <div></div>
-                                    }
-                                })()}                                     
+                          <div className="w-full">
+                            <div>
+                                {uploadLoading ? (
+                                <div>
+                                    <Loader />
+                                </div>
+                                ):(
+                                <div className="flex items-center justify-center py-1 overflow-hidden mt-5">
+                                    {(()=>{
+                                        if((imagePosted && blogDetails.image !== "null")){
+                                            return <img className="block shadow-xl mx-auto h-96 w-full bg-cover bg-center"
+                                            src={imagePosted}/>
+                                        }else if(blogDetails?.image !== "null"){
+                                            return <img className="block shadow-xl mx-auto h-96 w-full bg-cover bg-center"
+                                            src={blogDetails?.image}/>
+                                        } else if(imagePosted ){
+                                            return <img className="block shadow-xl mx-auto h-96 w-full bg-cover bg-center"
+                                            src={imagePosted}/>
+                                        }else {
+                                            return <div></div>
+                                        }
+                                    })()} 
+                                </div>
+                                )}                         
                             </div>
                            
                             <div className="flex items-center justify-center py-1 overflow-hidden">
