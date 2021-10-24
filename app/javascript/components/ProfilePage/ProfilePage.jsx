@@ -12,6 +12,7 @@ import MyBlogs from './MyBlogs';
 import BookmarkedView from './BookmarkedView';
 import Tabs from './Tabs';
 import Loader from '../Auth/Loader';
+import Follow from '../Follow/Follow';
 
 const ProfilePage = ({
     user, handleLogout, handleBlogSelect,
@@ -24,12 +25,47 @@ const ProfilePage = ({
     const [draftBlogs, setDraftBlogs] = useState([])
     const [bookmarkedBlogs, setBookmarkedBlogs] = useState([])
     const [profileImage, setProfileImage] = useState()
+    const [receivedFollows, setReceivedFollows] = useState([])
+    const [givenFollows, setGivenFollows] = useState([])
+    const [followingCount, setFollowingCount] = useState(0)
+    const [followerCount, setFollowerCount] = useState(0)
 
     const [loading, setLoading] = useState(false)
     const [uploadLoading, setUploadLoading] = useState(false)
     const [showLoader, setShowLoader] = useState(false)
     const handleSelectedUser = user => {
         setSelectedUser(user)
+    }
+
+    const fetchUserDetails = async() =>{
+      setLoading(true)
+      const userID = user.id
+      try{
+        const response = await usersApi.fetchUser(username)
+        setSelectedUser(response.data.user)
+        setPublishedBlogs(response.data.published_blogs)
+        setDraftBlogs(response.data.draft_blogs)
+        setBookmarkedBlogs(response.data.bookmarked)
+        setReceivedFollows(response.data.received_follows)
+        setGivenFollows(response.data.given_follows)
+        setFollowingCount(response.data.followinG)
+        setFollowerCount(response.data.followerS)
+        setLoading(false)
+        console.log('user details',response)
+      }catch(error){
+          if(error){
+            toast.error(
+                error.response?.data?.notice ||
+                error.response?.data?.error ||
+                error.response?.data?.errors ||
+                error.message ||
+                error.notice ||
+                "Something went wrong!"
+            )
+          }
+          console.log("login error", error)
+          setLoading(false)
+      }
     }
 
     const handleCheckFileSize = e => {
@@ -69,32 +105,7 @@ const ProfilePage = ({
       }
     }
 
-    const fetchUserDetails = async() =>{
-      setLoading(true)
-      const userID = user.id
-      try{
-        const response = await usersApi.fetchUser(username)
-        setSelectedUser(response.data.user)
-        setPublishedBlogs(response.data.published_blogs)
-        setDraftBlogs(response.data.draft_blogs)
-        setBookmarkedBlogs(response.data.bookmarked)
-        setLoading(false)
-        console.log('user details',response)
-      }catch(error){
-          if(error){
-            toast.error(
-                error.response?.data?.notice ||
-                error.response?.data?.error ||
-                error.response?.data?.errors ||
-                error.message ||
-                error.notice ||
-                "Something went wrong!"
-            )
-          }
-          console.log("login error", error)
-          setLoading(false)
-      }
-    }
+    
 
     const loadData = () => {
       fetchUserDetails();
@@ -223,7 +234,24 @@ const ProfilePage = ({
 
               <div>
                 <h1 className="text-3xl font-bold pt-8 lg:pt-5 text-center">{selectedUser.username}</h1>     
-              </div>	
+              </div>
+
+
+              <div>
+                  <Follow
+                  user={user}
+                  username={username}
+                  selectedUser={selectedUser} 
+                  receivedFollows={receivedFollows}
+                  setReceivedFollows={setReceivedFollows}
+                  givenFollows={givenFollows}
+                  followingCount = {followingCount}
+                  followerCount = {followerCount}
+                />                
+              </div>
+
+              
+
 
               <div className="mt-3 pb-16 lg:pb-0 w-4/5 lg:w-full mx-auto flex flex-wrap items-center justify-center">
                 <a className="link" href="#" data-tippy-content="@facebook_handle"><svg className="h-6 fill-current text-gray-600 hover:text-blue-700 pr-4" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Facebook</title><path d="M22.676 0H1.324C.593 0 0 .593 0 1.324v21.352C0 23.408.593 24 1.324 24h11.494v-9.294H9.689v-3.621h3.129V8.41c0-3.099 1.894-4.785 4.659-4.785 1.325 0 2.464.097 2.796.141v3.24h-1.921c-1.5 0-1.792.721-1.792 1.771v2.311h3.584l-.465 3.63H16.56V24h6.115c.733 0 1.325-.592 1.325-1.324V1.324C24 .593 23.408 0 22.676 0"/></svg></a>
