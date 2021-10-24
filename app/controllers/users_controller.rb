@@ -21,11 +21,11 @@ class UsersController < ApplicationController
 
 
     def show
-        # selected_user = User.find(params[:id])
-        published_blogs = Blog.where(user_id: current_user.id , published:true ).order(created_at: :desc)
-        draft_blogs = Blog.where(user_id: current_user.id , published:false ).order(created_at: :desc)
+        selected_user = User.find_by(username: params[:username])
+        published_blogs = Blog.where(user_id: selected_user.id , published:true ).order(created_at: :desc)
+        draft_blogs = Blog.where(user_id: selected_user.id , published:false ).order(created_at: :desc)
    
-        bookmarks = current_user.bookmarks
+        bookmarks = selected_user.bookmarks
         bookmarked = bookmarks.map{|bookmark| bookmark.attributes.except('updated_at','created_at')
                             .merge({blogs: bookmark.blog},
                             # {views: bookmark.blog.impressionist_count},
@@ -35,11 +35,11 @@ class UsersController < ApplicationController
                             )}
         # data = bookmarks.as_json(include: :blog)
         
-        render json:{user: user_with_image(current_user), 
+        render json:{user: user_with_image(selected_user), 
                     published_blogs: published_blogs,
                     draft_blogs: draft_blogs,
-                    user_blogs: current_user.blogs,
-                    likes: current_user.likes,
+                    user_blogs: selected_user.blogs,
+                    likes: selected_user.likes,
                     bookmarked: bookmarked                    
                 }    
     end
@@ -88,7 +88,7 @@ class UsersController < ApplicationController
     private
 
     def set_user
-        @user = User.find(params[:id])
+        @user = User.find_by(username: params[:username])
     end
 
     def suspend_comms(user, comms, attr)

@@ -66,6 +66,7 @@ class SessionsController < ApplicationController
         #         # logged_in: true,
         #         user: user_status(@current_user)
         #     }
+        !current_user.nil?
         if @current_user
             render json:{
                 logged_in: true,

@@ -1,7 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react'
 import React, { useState, useEffect,Fragment } from 'react'
 
-const ImageUploadModal = ({handleCheckFileSize,handleImageSubmit}) => {
+const ImageUploadModal = ({handleCheckFileSize,handleImageSubmit,uploadLoading, value}) => {
     const [isOpen, setIsOpen] = useState(false)
 
     function closeModal() {
@@ -17,7 +17,7 @@ const ImageUploadModal = ({handleCheckFileSize,handleImageSubmit}) => {
             <div>
           <button onClick={openModal}
             className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
-            Change Profile Image
+            Change {value}
           </button>
         </div>
         <Transition appear show={isOpen} as={Fragment}>
@@ -61,7 +61,7 @@ const ImageUploadModal = ({handleCheckFileSize,handleImageSubmit}) => {
                   as="h3"
                   className="text-lg font-medium leading-6 text-gray-900"
                 >
-                  Upload Profile Image
+                  Upload {value}
                 </Dialog.Title>
                   <div className="mt-2">                    
                       <input
@@ -76,6 +76,7 @@ const ImageUploadModal = ({handleCheckFileSize,handleImageSubmit}) => {
                   <div className="mt-4">
                     <button
                       type="submit"
+                      disabled={uploadLoading}
                       className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                       onClick={closeModal}
                     >

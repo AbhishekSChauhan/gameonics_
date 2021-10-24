@@ -1,15 +1,19 @@
 import React,{useState,useEffect} from 'react'
 import { useParams } from 'react-router-dom'
-import { gamesDetailsURL, gamesScreenshotsURL } from '../apis/RawgApi'
+import { gamesDetailsURL, gamesScreenshotsURL, gamesSuggestedURL } from '../apis/RawgApi'
 import PageLoader from '../PageLoader'
 import axios from 'axios'
 import SliderWithThumbs from './SliderWithThumbs'
+import {Link} from 'react-router-dom'
+
 
 const GameDetails = () => {
     const {slug} = useParams()
     const [loading, setLoading] = useState(true)
     const [gameDetail, setGameDetail] = useState([])
     const [screenshot, setScreenshot] = useState([])
+    const [suggested, setSuggested] = useState([])
+
     const settings = {
         speed:500,
         infinite: true,
@@ -81,6 +85,24 @@ const GameDetails = () => {
         }
     }
 
+    const getSuggestedGames = async()=>{
+        try{
+            const response = await axios.get(gamesSuggestedURL(slug));
+            setSuggested(response.data.results)
+            setLoading(false)
+            console.log("Show suggested games",response)
+        } catch(error){
+            // if(axios.isCancel(error)){
+            //     console.log('cancelled')
+            // }else{
+            //     throw error
+            // }
+            console.log(error)
+        } finally {
+            setLoading(false)
+        }
+    }
+
     // const getScreenShots = () => {
     //     setLoading(true)
     //     if((popularGameData.id) === (gameDetail.id)){
@@ -92,7 +114,12 @@ const GameDetails = () => {
     useEffect(()=>{
         fetchGameDetails()
         getScreenShots()
-
+        // window.scrollTo(0,0)
+        window.scrollTo({
+            top:0,
+            behavior:"smooth"
+        })
+        // getSuggestedGames()
         // return () => {
         //     source.cancel()
         // }
@@ -155,7 +182,11 @@ const GameDetails = () => {
                         
                         <div>
                             <SliderWithThumbs screenshot={screenshot} />
-                        </div>  
+                        </div>
+
+                        <a href={gameDetail.website}>
+                            {gameDetail.website}
+                        </a>  
                     </div>  
                 </div>
             </div>

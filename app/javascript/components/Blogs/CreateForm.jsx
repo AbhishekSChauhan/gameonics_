@@ -162,7 +162,7 @@ export default function CreateForm(
                                 />
 
                                 <Button
-                                    type="submit"
+                                    type="submit" disabled={loading}
                                     buttonText={type === "create" ? "Preview and Save as Draft" : "Update and Preview"}
                                     loading={loading}
                                 />

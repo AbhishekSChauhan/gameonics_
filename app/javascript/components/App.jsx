@@ -23,6 +23,8 @@ import { Redirect } from "react-router-dom";
 
 import PreviewBlog from "./Blogs/PreviewBlog";
 import TaggedBlogs from "./Tags/TaggedBlogs";
+import ProtectedRoute from "./ProtectedRoute";
+import Unauthorized from './Unauthorized'
 
 
 const App = () => {
@@ -136,14 +138,16 @@ const App = () => {
             <Route exact path="/blogs/:slug/edit" component={EditBlog} />   
             <Route exact path="/blogs/create" component={CreateBlog}/>
             <Route exact path="/blogs/:id/comments" component={Comments} />          
-            <Route exact path="/users/:id" 
+            <Route exact path="/users/:username" 
               render={(props)=>(
                 <ProfilePage 
                   user = {user} 
                   handleLogout={handleLogout} 
                   handleBlogSelect={handleBlogSelect}
                 />
-              )} />
+              )} 
+            />
+
             <Route path="/games/:slug" 
               render={(props)=>(
                 <GameDetails 
@@ -151,6 +155,14 @@ const App = () => {
               )}
             />
             <Route exact path="/tags/:tag" component={TaggedBlogs} />
+
+            <ProtectedRoute
+              path="/admin"
+              redirectRoute="/login"
+              user={user}
+              component={Home}
+            />
+            <Route exact path='/unauthorized' component={Unauthorized} />
 
 
           </Switch>

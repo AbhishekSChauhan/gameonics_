@@ -2,8 +2,9 @@ import React, { useEffect, useState} from 'react'
 import axios from 'axios'
 import { MdDelete,MdEdit } from "react-icons/md";
 import parse from 'html-react-parser';
+import {Link} from 'react-router-dom'
 
-export default function MyBlogs({data,user,showBlog,updateBlog,destroyBlog}) {
+export default function MyBlogs({data,user,username,showBlog,updateBlog,destroyBlog}) {
 
     
     
@@ -21,8 +22,14 @@ export default function MyBlogs({data,user,showBlog,updateBlog,destroyBlog}) {
             {blog.published? (
               <div className="md:flex-shrink-0 relative">
                 <div className="z-10 mt-1 flex flex row text-gray-200 text-2xl absolute cursor-pointer right-0 top-0">
-                    <MdDelete onClick={()=>destroyBlog(blog.slug)} />
-                    <MdEdit onClick={()=>updateBlog(blog.slug)}/>
+                  {(user.username === username) ? (
+                    <div className="flex flex row">
+                      <MdDelete onClick={()=>destroyBlog(blog.slug)} />
+                      <MdEdit onClick={()=>updateBlog(blog.slug)}/>
+                    </div>                    
+                  ):(
+                    null
+                  )}                    
                 </div>
                 <img onClick={()=>showBlog(blog.slug)}
                   src={blog.image}
@@ -146,9 +153,10 @@ export default function MyBlogs({data,user,showBlog,updateBlog,destroyBlog}) {
                     alt="Avatar"
                   />
                   <div className="flex flex-col mx- cursor-pointer">
-                    <a href="" className="font-semibold text-gray-700 hover:underline">
-                      Written by {user.username}
-                    </a>
+                      <Link to={`/users/${username}`}
+                        className="font-semibold text-gray-700 hover:underline">
+                        Written by {username}
+                      </Link>
                     <span className="mx-1 text-xs text-gray-600">{blog.created_at}</span>
                   </div>
                 </div>

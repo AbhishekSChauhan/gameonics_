@@ -1,7 +1,7 @@
 import React from 'react'
 import SlickSlider from './SlickSlider'
 import Viewers from './Viewers'
-import Games from './Games'
+import Games from '../Games/Games'
 const Home = (props) => {
     return (
         <div>      

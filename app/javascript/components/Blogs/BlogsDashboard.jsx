@@ -2,6 +2,7 @@ import React, { useEffect, useState} from 'react'
 import axios from 'axios'
 import { MdDelete,MdEdit } from "react-icons/md";
 import parse from 'html-react-parser';
+import {Link} from 'react-router-dom'
 
 export default function BlogsDashboard({data,showBlog,updateBlog,destroyBlog}) {
     
@@ -126,9 +127,10 @@ export default function BlogsDashboard({data,showBlog,updateBlog,destroyBlog}) {
                     alt="Avatar"
                   />
                   <div className="flex flex-col mx- cursor-pointer">
-                    <a href="" className="font-semibold text-gray-700 hover:underline">
+                    <Link to={`/users/${blog.user.username}`} 
+                      className="font-semibold text-gray-700 hover:underline">
                       Written by {blog.user.username}
-                    </a>
+                    </Link>
                     <span className="mx-1 text-xs text-gray-600">{blog.created_at}</span>
                   </div>
                 </div>
