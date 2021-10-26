@@ -2,15 +2,13 @@ import axios from 'axios';
 import React,{useEffect, useState} from 'react'
 import toast from 'react-hot-toast';
 import { FaHeart,FaRegHeart } from "react-icons/fa";
-import { useParams, Link, useHistory,useLocation } from 'react-router-dom'
+import { useParams, Link, useHistory } from 'react-router-dom'
 
 
-const Follow = ({user,receivedFollows,selectedUser,setReceivedFollows,fromFollowersPage,username}) => {
+const FollowFromFollower = ({user,receivedFollows,selectedUser,setReceivedFollows,givenFollows,username}) => {
     const [followed, setFollowed] = useState(false)
     const [followDisabled, setFollowDisabled] = useState(true)
     let history = useHistory()
-    const location = useLocation();
-
 
     // const fetchLikes = () => {
     //     setReceivedFollows(blog?.likes)
@@ -24,12 +22,11 @@ const Follow = ({user,receivedFollows,selectedUser,setReceivedFollows,fromFollow
         // fetchLikes()
         userFollowed()
         setFollowDisabled(false)
-    },[receivedFollows,location])
+    },[receivedFollows])
 
     const userFollowed = () => {
         const followFound = receivedFollows.find((follow)=> {
-            if((follow.follower_id === selectedUser?.id && follow.followed_id === user?.id) || 
-            (follow.followed_id === selectedUser?.id && follow.follower_id === user?.id)){
+            if(follow.followed_id === selectedUser?.id && follow.follower_id === user?.id){
                 return true
             }                    
         })        
@@ -69,13 +66,8 @@ const Follow = ({user,receivedFollows,selectedUser,setReceivedFollows,fromFollow
                 // }) 
                 const response = await axios.post(`/users/${selectedUser.username}/unfollow`)
                 // const response = await axios.delete(`/likes/${likeToDelete?.id}`)
-                if(fromFollowersPage){
-                    setReceivedFollows(response.data.given_fol)
-                }else{
-                    setReceivedFollows(response.data.fol)
-                }
                 console.log('unfollow clicked',response)
-                
+                setReceivedFollows(response.data.fol)
                 // setReceivedFollows((prevState)=>
                 //     prevState.filter((like) => like.id !== likeToDelete?.id)
                 // )
@@ -102,7 +94,7 @@ const Follow = ({user,receivedFollows,selectedUser,setReceivedFollows,fromFollow
                                     ? {pointerEvents:'none'}
                                     : {pointerEvents:'inherit'}
                                 }
-                                className="inline-flex justify-center w-24 px-4 py-2 text-sm font-medium
+                                className="inline-flex justify-center px-4 py-2 text-sm font-medium
                                     text-green-900 bg-green-100 border border-transparent rounded-md hover:bg-green-200
                                     focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-green-500"
                             >
@@ -117,7 +109,7 @@ const Follow = ({user,receivedFollows,selectedUser,setReceivedFollows,fromFollow
                                 ? {pointerEvents:'none',backgroundColor:'transparent'}
                                 : {pointerEvents:'inherit'}
                             }
-                            className="inline-flex justify-center w-24 px-4 py-2 text-sm font-medium
+                            className="inline-flex justify-center px-4 py-2 text-sm font-medium
                                     text-black bg-white border border-black rounded-md hover:bg-green-400
                                     focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-green-600"
                         >
@@ -126,7 +118,7 @@ const Follow = ({user,receivedFollows,selectedUser,setReceivedFollows,fromFollow
                         </div>
                     )}                    
                 </div>                    
-             )}
+            )}
             
             {/* &nbsp;
             <div className="mt-3 pb-16 lg:pb-0 w-4/5 lg:w-full mx-auto flex flex-wrap items-center justify-center">
@@ -144,4 +136,4 @@ const Follow = ({user,receivedFollows,selectedUser,setReceivedFollows,fromFollow
     )
 }
 
-export default Follow
+export default FollowFromFollower

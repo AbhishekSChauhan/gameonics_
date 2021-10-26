@@ -37,6 +37,29 @@ const ProfilePage = ({
         setSelectedUser(user)
     }
 
+    const showAllUsers = async() => {
+      setLoading(true)
+      try{
+        const response = await axios.get('/users')
+        setLoading(false)
+        console.log('All user details',response)
+      }catch(error){
+          if(error){
+            toast.error(
+                error.response?.data?.notice ||
+                error.response?.data?.error ||
+                error.response?.data?.errors ||
+                error.message ||
+                error.notice ||
+                "Something went wrong!"
+            )
+          }
+          console.log("login error", error)
+          setLoading(false)
+      }
+
+    }
+
     const fetchUserDetails = async() =>{
       setLoading(true)
       const userID = user.id
@@ -103,9 +126,7 @@ const ProfilePage = ({
               )
           }
       }
-    }
-
-    
+    }    
 
     const loadData = () => {
       fetchUserDetails();
@@ -196,6 +217,22 @@ const ProfilePage = ({
         }
     }
 
+    const showFollowers = () =>{
+      history.push(`/users/${username}/followers`)
+      // history.push({
+      //   pathname: `/users/${username}/followers`,          
+      //   state: { user:user,
+      //           selectedUser:selectedUser ,
+      //           receivedFollows:receivedFollows,
+      //           // setReceivedFollows:setReceivedFollows,                
+      //         }
+      // })
+    }
+
+    const showFollowing = () =>{
+      history.push(`/users/${username}/following`)
+    }
+
     return (
       <div>
         <div className="max-w-6xl flex items-center h-auto flex-wrap mx-auto my-4 lg:my-4">
@@ -209,7 +246,7 @@ const ProfilePage = ({
                 ):(
                   <div>
                     {!selectedUser.profile_image && (
-                      <FaUser className="block rounded-full shadow-xl mx-auto h-48 w-48 bg-cover bg-center" />
+                      <FaUser className="block rounded-full shadow-xl mx-auto h-48 w-48 gray-500 bg-cover bg-center" />
                     )}
                     {selectedUser.profile_image && (
                       <img className="block rounded-full shadow-xl mx-auto h-48 w-48 bg-cover bg-center"
@@ -244,13 +281,26 @@ const ProfilePage = ({
                   selectedUser={selectedUser} 
                   receivedFollows={receivedFollows}
                   setReceivedFollows={setReceivedFollows}
-                  givenFollows={givenFollows}
-                  followingCount = {followingCount}
-                  followerCount = {followerCount}
+                 
                 />                
               </div>
 
-              
+              <div className="mt-3 pb-16 lg:pb-0 w-4/5 lg:w-full mx-auto flex flex-wrap items-center justify-center cursor-pointer">
+                <div onClick={showFollowers} className="flex flex-col pr-5">
+                  <div>Followers</div>
+                  <h2>{receivedFollows?.length}</h2>                  
+                </div>
+                <div onClick={showFollowing} className="flex flex-col">
+                  <div>Following</div>
+                  <h2>{givenFollows?.length}</h2>
+                </div>                
+              </div>
+
+              <div>
+                <button onClick={showAllUsers}>
+                  All users
+                </button>
+              </div>              
 
 
               <div className="mt-3 pb-16 lg:pb-0 w-4/5 lg:w-full mx-auto flex flex-wrap items-center justify-center">
@@ -288,66 +338,7 @@ const ProfilePage = ({
               </div>
 
 
-              {/* <div className="mt-2">
-                {bookmarkedBlogs.length === 0 ? (
-                  <div></div>
-                ) : 
-                  (
-                  <div className="mt-2 pb-10 w-full mx-auto flex flex-col items-center justify-center">
-                    <div>
-                      <h1 className="text-3xl font-bold pt-4 lg:pt-5 text-center">Bookmarks</h1>                  
-                    </div>
-                    <BookmarkedView 
-                      data={bookmarkedBlogs}
-                      showBlog={showBlog}
-                    />
-                  </div>
-                )}                  
-              </div>  */}
-
-              {/* <div className="mt-2">
-                {draftBlogs.length === 0 ? (
-                  <div></div>
-                ) : 
-                  (
-                  <div className="mt-2 pb-10 w-full mx-auto flex flex-col items-center justify-center">
-                    <div>
-                      <h1 className="text-3xl font-bold pt-4 lg:pt-5 text-center">Drafts</h1>                  
-                    </div>
-                    <MyBlogs 
-                      data={draftBlogs}
-                      user = {user}
-                      showBlog={showBlog}
-                      updateBlog={updateBlog}
-                      destroyBlog={destroyBlog}
-                    />
-                  </div>
-                )}                  
-              </div> */}
               
-
-              {/* <div className="mt-2 pb-10 w-full mx-auto flex flex-col items-center justify-center">
-                <div>
-                  <h1 className="text-3xl font-bold pt-4 lg:pt-5 text-center">My Blogs</h1>                  
-                </div>
-                
-                <div className="mt-2">
-                  {publishedBlogs.length === 0 ? (
-                    <h1 className="text-3xl font-bold pt-4 lg:pt-5 text-center">
-                      You haven't shared your story yet
-                    </h1>
-                  ) : 
-                   (
-                    <MyBlogs 
-                      data={publishedBlogs}
-                      user = {user}
-                      showBlog={showBlog}
-                      updateBlog={updateBlog}
-                      destroyBlog={destroyBlog}
-                    />
-                  )}                  
-                </div>
-              </div> */}
             </div>
           </div>
         </div>
