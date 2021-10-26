@@ -7,6 +7,7 @@ const CommentLikes = ({comment,user,setUpdateLikes,updateLikes}) => {
     const [liked, setLiked] = useState(false)
     const [likesDisabled, setLikesDisabled] = useState(true)
     const [allLikes, setAllLikes] = useState([])
+    const [fakeLiked, setFakeLiked] = useState(false)
 
     const fetchLikes = () => {
         setAllLikes(comment?.likes)
@@ -14,9 +15,12 @@ const CommentLikes = ({comment,user,setUpdateLikes,updateLikes}) => {
     }
 
     useEffect(()=> {        
-        fetchLikes()
+        // fetchLikes()
+        setLikesDisabled(true) 
+        setAllLikes(comment?.likes)
         commentsLiked()
-    },[comment?.likes, allLikes, user?.id, comment?.id])
+        setLikesDisabled(false)         
+    },[comment?.likes, allLikes])
 
     const commentsLiked = () => {
         const likeFound = allLikes.find((like)=> {
@@ -30,10 +34,13 @@ const CommentLikes = ({comment,user,setUpdateLikes,updateLikes}) => {
     }
     console.log('comments allLikes',allLikes)
 
+    
+
     const handleLike = async() => {
         if(user?.logged_in){
             if(!likesDisabled){
                 setLiked(true)
+                setFakeLiked(true)
                 setLikesDisabled(true)
                 const response = await axios.post(`/likes`,{
                     likeable_id: comment?.id,
@@ -54,6 +61,7 @@ const CommentLikes = ({comment,user,setUpdateLikes,updateLikes}) => {
         if(user?.logged_in){
             if(!likesDisabled){
                 setLiked(false)
+                setFakeLiked(false)
                 setLikesDisabled(true)
                 const likeToDelete = allLikes.find((like)=> {
                     if(like?.likeable_id === comment?.id && like?.user_id === user?.id){
@@ -76,33 +84,68 @@ const CommentLikes = ({comment,user,setUpdateLikes,updateLikes}) => {
 
     return (
         <div>
-            {liked ? (
+            {/* {(liked && fakeLiked) ? (
                 <div>
                     <FaHeart onClick={handleUnlike} 
-                    style={likesDisabled 
-                        ? {pointerEvents:'none'}
-                        : {pointerEvents:'inherit'}
-                    }
-                    className="cursor-pointer text-red-600 hover:text-red-500
-                    hover:text-red-500"
-                />
-                
+                        style={likesDisabled 
+                            ? {pointerEvents:'none'}
+                            : {pointerEvents:'inherit'}
+                        }
+                        className="cursor-pointer text-red-600 hover:text-red-500
+                        hover:text-red-500"
+                    />                
                 </div>
                 
             ) : (
                 <div>
-                <FaRegHeart onClick={handleLike}
-                    style={likesDisabled 
-                        ? {pointerEvents:'none',backgroundColor:'transparent'}
-                        : {pointerEvents:'inherit'}
-                    }
-                    className="cursor-pointer"
-                />
+                    <FaRegHeart onClick={handleLike}
+                        style={likesDisabled 
+                            ? {pointerEvents:'none',backgroundColor:'transparent'}
+                            : {pointerEvents:'inherit'}
+                        }
+                        className="cursor-pointer"
+                    />                
                 </div>
             )}
+            
             &nbsp;
-            {allLikes?.length}
+            {allLikes?.length} */}
+
+            <div>
+                {(()=>{
+                    if(liked){
+                        return <FaHeart onClick={handleUnlike} 
+                                    style={likesDisabled 
+                                        ? {pointerEvents:'none'}
+                                        : {pointerEvents:'inherit'}
+                                    }
+                                    className="cursor-pointer text-red-600 hover:text-red-500
+                                    hover:text-red-500"
+                                />                        
+                    }else if(liked || fakeLiked){
+                        return <FaHeart onClick={handleUnlike} 
+                                    style={likesDisabled 
+                                        ? {pointerEvents:'none'}
+                                        : {pointerEvents:'inherit'}
+                                    }
+                                    className="cursor-pointer text-red-600 hover:text-red-500
+                                    hover:text-red-500"
+                                /> 
+                    }else if(fakeLiked === false){
+                        return <FaRegHeart onClick={handleLike}
+                                    style={likesDisabled 
+                                        ? {pointerEvents:'none',backgroundColor:'transparent'}
+                                        : {pointerEvents:'inherit'}
+                                    }
+                                    className="cursor-pointer"
+                                />
+                    }
+                })()}
+                &nbsp;
+                {allLikes?.length}
+            </div>
         </div>
+        
     )
 }
 

@@ -25,6 +25,7 @@ import PreviewBlog from "./Blogs/PreviewBlog";
 import TaggedBlogs from "./Tags/TaggedBlogs";
 import ProtectedRoute from "./ProtectedRoute";
 import Unauthorized from './Unauthorized'
+import Followers from "./Follow/Followers";
 
 
 const App = () => {
@@ -144,6 +145,15 @@ const App = () => {
                   user = {user} 
                   handleLogout={handleLogout} 
                   handleBlogSelect={handleBlogSelect}
+                />
+              )} 
+            />
+            {/* <Route exact path="/users/:username/followers" component={Followers} />           */}
+            
+            <Route exact path="/users/:username/followers" 
+              render={(props)=>(
+                <Followers 
+                  user = {user} 
                 />
               )} 
             />

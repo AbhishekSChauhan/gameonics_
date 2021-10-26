@@ -49,6 +49,8 @@ Rails.application.routes.draw do
       patch :suspend_comms, to: 'users#suspend_communication'
       post :follow, to: 'users#follow'
       post :unfollow, to: 'users#unfollow'
+      get :followers, to: 'users#followers'
+      get :following, to: 'users#following'
     end
   end
 

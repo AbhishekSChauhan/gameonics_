@@ -32,7 +32,8 @@ const Likes = ({blog,user,allLikes,setAllLikes}) => {
         localStorage.setItem('updateBlogLike', likeFound ? 'true': 'false')  
     }
     console.log('allLikes',allLikes)
-    // console.log('likes',likes)
+    const likesCount = allLikes.length
+    console.log('likes',likesCount)
 
     const handleLike = async() => {
         if(user?.logged_in){
