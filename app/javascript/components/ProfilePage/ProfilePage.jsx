@@ -218,15 +218,15 @@ const ProfilePage = ({
     }
 
     const showFollowers = () =>{
-      // history.push(`/users/${username}/followers`)
-      history.push({
-        pathname: `/users/${username}/followers`,          
-        state: { user:user,
-                selectedUser:selectedUser ,
-                receivedFollows:receivedFollows,
-                // setReceivedFollows:setReceivedFollows,                
-              }
-      })
+      history.push(`/users/${username}/followers`)
+      // history.push({
+      //   pathname: `/users/${username}/followers`,          
+      //   state: { user:user,
+      //           selectedUser:selectedUser ,
+      //           receivedFollows:receivedFollows,
+      //           // setReceivedFollows:setReceivedFollows,                
+      //         }
+      // })
     }
 
     const showFollowing = () =>{
@@ -246,7 +246,7 @@ const ProfilePage = ({
                 ):(
                   <div>
                     {!selectedUser.profile_image && (
-                      <FaUser className="block rounded-full shadow-xl mx-auto h-48 w-48 bg-cover bg-center" />
+                      <FaUser className="block rounded-full shadow-xl mx-auto h-48 w-48 gray-500 bg-cover bg-center" />
                     )}
                     {selectedUser.profile_image && (
                       <img className="block rounded-full shadow-xl mx-auto h-48 w-48 bg-cover bg-center"

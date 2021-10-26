@@ -80,7 +80,7 @@ class UsersController < ApplicationController
 
     def following
         selected_user = User.find_by(username: params[:username])
-        followinG = selected_user.following
+        followinG = selected_user.followings
         followinG_array = []
         followinG.each do |user|
             new_user = user.as_json(only: %i[id username is_activated admin_level])
@@ -92,8 +92,8 @@ class UsersController < ApplicationController
             end
             followinG_array.push(new_user)
         end
-        render json: {users:followinG_array,
-                    user: user_with_image(selected_user),
+        render json: {user_followings:followinG_array,
+                    selected_user: user_with_image(selected_user),
                     received_follows:selected_user.received_follows,
                     given_follows:selected_user.given_follows,
                     }

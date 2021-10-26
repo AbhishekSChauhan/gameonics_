@@ -26,6 +26,7 @@ import TaggedBlogs from "./Tags/TaggedBlogs";
 import ProtectedRoute from "./ProtectedRoute";
 import Unauthorized from './Unauthorized'
 import Followers from "./Follow/Followers";
+import Following from "./Follow/Following";
 
 
 const App = () => {
@@ -153,6 +154,14 @@ const App = () => {
             <Route exact path="/users/:username/followers" 
               render={(props)=>(
                 <Followers 
+                  user = {user} 
+                />
+              )} 
+            />
+
+            <Route exact path="/users/:username/following" 
+              render={(props)=>(
+                <Following 
                   user = {user} 
                 />
               )} 
