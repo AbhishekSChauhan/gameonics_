@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-
+ 
   root to: "home#index"
   # get '*path', to: 'home#index', via: :all
 
@@ -22,33 +22,37 @@ Rails.application.routes.draw do
   patch :change_password_with_token, to: 'registrations#change_password_with_token' 
 
   ###   Blogs and comments routes  ###
-  resources :blogs do
+  resources :blogs, param: :slug do
     member do
       get :preview, to: 'blogs#preview'
       patch :lock_post, to: 'blogs#lock_post'
       patch :pin_post, to: 'blogs#pin_post'
       patch :published, to: 'blogs#published'
+      patch :banner_image, to: 'blogs#banner_image'
     end
-    resources :comments, only: [:create]
   end
 
-  resources :users, only: %i[index show] do
+  resources :blogs, only: [:index] do
+    resources :comments
+  end
+
+  resources :likes, only: [:create, :destroy]
+  resources :bookmarks, only: [:create, :destroy, :index, :show]
+
+  get 'tags/:tag', to: 'blogs#index', as: 'tag'
+  
+  ### Users ###
+  resources :users, param: :username do
     member do
       patch :update_image, to: 'users#update_image'
       patch :set_admin_level, to: 'users#set_admin_level'
       patch :suspend_comms, to: 'users#suspend_communication'
+      post :follow, to: 'users#follow'
+      post :unfollow, to: 'users#unfollow'
     end
   end
 
-  resources :users, only: %i[index show] do
-    member do
-      patch :update_image, to: 'users#update_image'
-      patch :set_admin_level, to: 'users#set_admin_level'
-      patch :suspend_comms, to: 'users#suspend_communication'
-    end
-  end
+  ActiveAdmin.routes(self)
 
-  
-  
 
 end

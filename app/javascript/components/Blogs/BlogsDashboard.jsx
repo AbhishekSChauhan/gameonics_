@@ -2,10 +2,9 @@ import React, { useEffect, useState} from 'react'
 import axios from 'axios'
 import { MdDelete,MdEdit } from "react-icons/md";
 import parse from 'html-react-parser';
+import {Link} from 'react-router-dom'
 
 export default function BlogsDashboard({data,showBlog,updateBlog,destroyBlog}) {
-
-
     
     return (
       <div className="p-10 grid grid-cols-1 sm:grid-cols-1 sm:justify-center md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -19,11 +18,11 @@ export default function BlogsDashboard({data,showBlog,updateBlog,destroyBlog}) {
           >
             
             <div className="md:flex-shrink-0 relative">
-              <div className="z-10 mt-1 flex flex row text-gray-200 text-2xl absolute cursor-pointer right-0 top-0">
-                  <MdDelete onClick={()=>destroyBlog(blog.id)} />
-                  <MdEdit onClick={()=>updateBlog(blog.id)}/>
-              </div>
-              <img onClick={()=>showBlog(blog.id)}
+              {/* <div className="z-10 mt-1 flex flex row text-gray-200 text-2xl absolute cursor-pointer right-0 top-0">
+                  <MdDelete onClick={()=>destroyBlog(blog.slug)} />
+                  <MdEdit onClick={()=>updateBlog(blog.slug)}/>
+              </div> */}
+              <img onClick={()=>showBlog(blog.slug)}
                 src={blog.image}
                 alt="Blog Cover"
                 className="object-fill w-full cursor-pointer rounded-lg rounded-b-none md:h-56"
@@ -58,7 +57,7 @@ export default function BlogsDashboard({data,showBlog,updateBlog,destroyBlog}) {
                       d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                     ></path>
                   </svg>
-                  <span>1.5k</span>
+                  <span>{blog.views_count}</span>
                 </div>
 
                 <div
@@ -78,7 +77,7 @@ export default function BlogsDashboard({data,showBlog,updateBlog,destroyBlog}) {
                       d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
                     ></path>
                   </svg>
-                  <span>25</span>
+                  <span>{blog.comments_count}</span>
                 </div>
 
                 <div
@@ -98,20 +97,20 @@ export default function BlogsDashboard({data,showBlog,updateBlog,destroyBlog}) {
                       d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
                     ></path>
                   </svg>
-                  <span>7</span>
+                  <span>{blog.likeable_count}</span>
                 </div>
               </div>
             </div>
             <hr className="border-gray-300" />
             <div className="flex flex-wrap items-center flex-1 px-4 py-1 text-center mx-auto">
-              <a onClick={()=>showBlog(blog.id)} className="hover:underline">
+              <a onClick={()=>showBlog(blog.slug)} className="hover:underline">
                 <h2 className="text-2xl font-bold tracking-normal text-gray-800 cursor-pointer">
                   {parse(blog.title)}
                 </h2>
               </a>
             </div>
             <hr className="border-gray-300" />
-            {/* <p onClick={()=>showBlog(blog.id)}
+            {/* <p onClick={()=>showBlog(blog.slug)}
               dangerouslySetInnerHTML={{ __html: blog.body}}
               className="flex flex-row flex-wrap w-full px-4 py-2 cursor-pointer overflow-hidden text-sm text-justify text-gray-700"
             >
@@ -128,9 +127,10 @@ export default function BlogsDashboard({data,showBlog,updateBlog,destroyBlog}) {
                     alt="Avatar"
                   />
                   <div className="flex flex-col mx- cursor-pointer">
-                    <a href="" className="font-semibold text-gray-700 hover:underline">
-                      Written by {blog.user_id}
-                    </a>
+                    <Link to={`/users/${blog.user.username}`} 
+                      className="font-semibold text-gray-700 hover:underline">
+                      Written by {blog.user.username}
+                    </Link>
                     <span className="mx-1 text-xs text-gray-600">{blog.created_at}</span>
                   </div>
                 </div>

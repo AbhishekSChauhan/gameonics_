@@ -5,15 +5,15 @@ import 'react-quill/dist/quill.snow.css'
 import 'react-quill/dist/quill.bubble.css'
 import ReactQuill,{Quill} from "react-quill";
 import ImageResize from 'quill-image-resize-module-react';
-import ImageUploadModal from '../ProfilePage/ImageUploadModal'
+import toast from 'react-hot-toast'
+import Tags from '../Tags/Tags'
 
 Quill.register('modules/imageResize', ImageResize);
 
 export default function CreateForm(
     {
-    type="create",
-    loading,handleSubmit,setImage,handleTitleChange,
-    handleBodyChange,body,title,handleCheckFileSize,
+    type="create",loading,handleSubmit,setImage,tags,setTags,
+    handleTitleChange,handleBodyChange,body,title,setTitle,input,setInput,setIsKeyReleased,isKeyReleased
     }) {
 
     const editorRef = useRef(null);
@@ -110,7 +110,6 @@ export default function CreateForm(
         editorRef.current.getEditor().insertEmbed(null, "image", url);
     }
 
-
     return (
         <div className="bg-white">
             <div className="max-w-6xl mx-auto mt-10">
@@ -118,7 +117,7 @@ export default function CreateForm(
                     <div className="flex flex-col ">
                         <div className="w-full ">
                             <form className="max-w-full" onSubmit={handleSubmit}>
-                                <ReactQuill 
+                                {/* <ReactQuill 
                                     theme="bubble"
                                     placeholder="Your amazing title" 
                                     modules={titlemodules}
@@ -126,26 +125,22 @@ export default function CreateForm(
                                     forwardedRef={editorRef}
                                     onChange={handleTitleChange}
                                     value={title}        
+                                /> */}
+
+                                <input
+                                    required={true}
+                                    value={title}
+                                    // onKeyDown={onKeyDown}
+                                    // onKeyUp={onKeyUp}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                    // onChange={(e) => setInput(e.target.value)}
+                                    placeholder="Enter Title"
+                                    className="block w-full px-3 py-2 placeholder-gray-400
+                                    transition duration-150 ease-in-out border
+                                    border-gray-300 rounded-md appearance-none
+                                    focus:outline-none focus:shadow-outline-blue
+                                    focus:border-blue-300 sm:text-sm sm:leading-5"
                                 />
-
-                                <div className="flex items-center justify-center py-1 overflow-hidden">
-                                    {/* <div>    
-                                        {blogPosted.image && (
-                                            <img className="block shadow-xl mx-auto -mt-24 h-48 w-full bg-cover bg-center"
-                                            src={blogPosted.image} />
-                                        )}          
-                                    </div> */}
-                                    <div className="mt-2">                    
-                                        <input
-                                            type="file"
-                                            id="bannerImage"
-                                            name="banner_image"
-                                            accept="image/png, image/jpeg, image/jpg"
-                                            onChange={handleCheckFileSize}
-                                        />                    
-                                    </div>
-                                </div>
-
                             
                                 <ReactQuill 
                                     theme="bubble"
@@ -157,9 +152,18 @@ export default function CreateForm(
                                     value={body}        
                                 />
 
+                                <Tags 
+                                    tags={tags}
+                                    setTags={setTags}
+                                    isKeyReleased={isKeyReleased}
+                                    setIsKeyReleased={setIsKeyReleased}
+                                    input={input}
+                                    setInput={setInput}
+                                />
+
                                 <Button
-                                    type="submit"
-                                    buttonText={type === "create" ? "Preview" : "Update Blog"}
+                                    type="submit" disabled={loading}
+                                    buttonText={type === "create" ? "Preview and Save as Draft" : "Update and Preview"}
                                     loading={loading}
                                 />
                                 

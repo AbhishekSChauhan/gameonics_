@@ -5,12 +5,14 @@ import { VscAccount } from "react-icons/vsc";
 import { MdLockOutline } from "react-icons/md";
 import Input from "../Input";
 import Button from "../Button";
+import Loader from "./Loader";
 const SignupForm = ({
   handleSubmit,
   setUsername,
   setEmail,
   setPassword,
   setPasswordConfirmation,
+  loading
 }) => {
   
   return (
@@ -84,8 +86,17 @@ const SignupForm = ({
         </div>
       </div>
 
-      <button type="submit" className="w-full block bg-indigo-500 hover:bg-indigo-400 focus:bg-indigo-400 text-white font-semibold rounded-lg
-            px-4 py-3 mt-6">Register
+      
+      <button type="submit" disabled={loading}
+         className="w-full block bg-indigo-500 hover:bg-indigo-400 focus:bg-indigo-400 
+          text-white font-semibold rounded-lg px-4 py-3 mt-6">
+          {loading ? (
+            <div>
+              <Loader />
+            </div>
+          ) : (
+            <span>Register</span>
+          )}
       </button>
     </form>
   </div>

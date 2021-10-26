@@ -21,9 +21,33 @@ class UsersController < ApplicationController
 
 
     def show
-        selected_user = User.find(params[:id])
-        blogs = Blog.where(user_id: selected_user.id)
-        render json:{user: user_with_image(selected_user), blogs: blogs}
+        selected_user = User.find_by(username: params[:username])
+        published_blogs = Blog.where(user_id: selected_user.id , published:true ).order(created_at: :desc)
+        draft_blogs = Blog.where(user_id: selected_user.id , published:false ).order(created_at: :desc)
+   
+        bookmarks = selected_user.bookmarks
+        bookmarked = bookmarks.map{|bookmark| bookmark.attributes.except('updated_at','created_at')
+                            .merge({blogs: bookmark.blog},
+                            # {views: bookmark.blog.impressionist_count},
+                            {blog_creator: bookmark.blog.user.username},
+                            {likes: bookmark.blog.likes},
+                            {comments: bookmark.blog.comments}                             
+                            )}
+        # data = bookmarks.as_json(include: :blog)
+        
+        render json:{user: user_with_image(selected_user),
+                    received_follows:selected_user.received_follows,
+                    given_follows:selected_user.given_follows,
+                    published_blogs: published_blogs,
+                    draft_blogs: draft_blogs,
+                    user_blogs: selected_user.blogs,
+                    likes: selected_user.likes,
+                    bookmarked: bookmarked ,
+                    # followinG:selected_user.followings,
+                    # followerS:selected_user.followers,
+                    # following_count: selected_user.followings.count,
+                    # followers_count: selected_user.followers.count                  
+                }    
     end
 
     def update_image
@@ -35,6 +59,20 @@ class UsersController < ApplicationController
             render json: {errors:@current_user.errors.full_messages}, status: 422
         end
     end
+
+    def follow
+        selected_user = User.find_by(username: params[:username])
+        fo = current_user.given_follows.create(followed_id: selected_user.id)
+        render json: {notice: 'Followed user',fo:fo}
+    end
+
+    def unfollow
+        selected_user = User.find_by(username: params[:username])
+        ufo = current_user.given_follows.find_by(followed_id: selected_user.id)
+        d_ufo = ufo.destroy
+        render json: {notice: 'Unfollowed user', fol:selected_user.received_follows}
+    end
+
 
     def set_admin_level
         error_disc = 'Your admin level is too low'
@@ -70,7 +108,7 @@ class UsersController < ApplicationController
     private
 
     def set_user
-        @user = User.find(params[:id])
+        @user = User.find_by(username: params[:username])
     end
 
     def suspend_comms(user, comms, attr)

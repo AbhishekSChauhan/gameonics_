@@ -1,7 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react'
 import React, { useState, useEffect,Fragment } from 'react'
 
-const ImageUploadModal = ({handleCheckFileSize,handleProfileImageSubmit}) => {
+const ImageUploadModal = ({handleCheckFileSize,handleImageSubmit,uploadLoading, value}) => {
     const [isOpen, setIsOpen] = useState(false)
 
     function closeModal() {
@@ -17,7 +17,7 @@ const ImageUploadModal = ({handleCheckFileSize,handleProfileImageSubmit}) => {
             <div>
           <button onClick={openModal}
             className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
-            Change Profile Image
+            Change {value}
           </button>
         </div>
         <Transition appear show={isOpen} as={Fragment}>
@@ -56,18 +56,18 @@ const ImageUploadModal = ({handleCheckFileSize,handleProfileImageSubmit}) => {
               leaveTo="opacity-0 scale-95"
             >
               <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
-                <form onSubmit={handleProfileImageSubmit} encType="multipart/form-data">
+                <form onSubmit={handleImageSubmit} encType="multipart/form-data">
                 <Dialog.Title
                   as="h3"
                   className="text-lg font-medium leading-6 text-gray-900"
                 >
-                  Upload Profile Image
+                  Upload {value}
                 </Dialog.Title>
                   <div className="mt-2">                    
                       <input
                         type="file"
                         id="profileImage"
-                        name="profile_image"
+                        name="image"
                         accept="image/png, image/jpeg, image/jpg"
                         onChange={handleCheckFileSize}
                       />                    
@@ -76,6 +76,7 @@ const ImageUploadModal = ({handleCheckFileSize,handleProfileImageSubmit}) => {
                   <div className="mt-4">
                     <button
                       type="submit"
+                      disabled={uploadLoading}
                       className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                       onClick={closeModal}
                     >

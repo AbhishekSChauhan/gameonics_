@@ -1,9 +1,19 @@
 class CommentsController < ApplicationController
-    before_action :authorized_user?, except: [:show]
-    # before_action :set_blog, only: [:show, :create, :update, :destroy]
+    before_action :authorized_user?, only: [:create, :update, :destroy]
+    # before_action :set_blog
     before_action :set_comment, only: [:show,:update,:destroy]
 
     # include CurrentUserConcern
+
+    def index
+        all_comments = Comment.all
+        comments = all_comments.where(blog_id: params[:blog_id]).order(created_at: :desc)
+        like_comments = comments.as_json(include: :likes)
+        # like_comments = comments.map{|comment| comment.attributes.except('updated_at','created_at')
+        #                             .merge({likes: comment.likes})
+        #                             }
+        render json:{comments: like_comments}
+    end
 
     def show
         render json:{comment: @comment}
@@ -13,13 +23,9 @@ class CommentsController < ApplicationController
         # return if suspended(@current_user.can_comment_date)
 
         comment = @current_user.comments.new(content: params[:newComment],blog_id: params[:blog_id])
-        # comment = @blog.comments.build(comment_params)
-        # comment = @current_user.comments.new(comment_params.merge(blog_id: params[:blog_id]))
-
 
         if comment.save
             render json: {comment: comment,
-                        #  comments: Blog.author_comments_json(@blog.comments),
                          notice:"Comment successfully posted"}, status: :ok
         else
             errors = comment.errors.full_messages

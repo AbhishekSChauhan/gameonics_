@@ -5,18 +5,19 @@ import BlogNav from './BlogNav';
 import BlogsDashboard from './BlogsDashboard';
 import axios from 'axios'
 import toast, { Toaster } from "react-hot-toast";
+import {useHistory} from 'react-router-dom'
 
-export default function Blogs({history}) {
+
+export default function Blogs({user}) {
     const [blogs, setBlogs] = useState([]);
-    const [allUsers, setAllUsers] = useState([])
     const [loading, setLoading] = useState(true)
     const source = axios.CancelToken.source()
+    let history = useHistory()
 
     const fetchBlogs = async () => {
         try {
             const response = await blogsApi.list({cancelToken:source.token})
             setBlogs(response.data.blogs)
-            setAllUsers(response.data.all_users)
             console.log("Blogs",response)
             setLoading(false)
         } catch (error) {
@@ -30,39 +31,42 @@ export default function Blogs({history}) {
         }
     }
     
-    const showBlog = (id) => {
-        history.push(`/blogs/${id}/show`)
+    const showBlog = (slug) => {
+        history.push(`/blogs/${slug}/show`)
     }
 
-    const updateBlog = (id) => {
-        history.push(`/blogs/${id}/edit`)
+    const updateBlog = (slug) => {
+        history.push(`/blogs/${slug}/edit`)
     }
 
-    const destroyBlog = async(id) => {
-        try {
-            const response = await axios.delete(`/blogs/${id}`);
-            if(response){
-                response.success = response.status === 200;
-                if (response.data.notice){
-                    toast.success(response.data.notice)                  
+    const destroyBlog = async(slug) => {
+        if (window.confirm(`Are you sure want to delete this blog`)){
+            try {
+                const response = await axios.delete(`/blogs/${slug}`);
+                if(response){
+                    response.success = response.status === 200;
+                    if (response.data.notice){
+                        toast.success(response.data.notice)                  
+                    }
                 }
+                await fetchBlogs();
+            }catch(error){
+                if(error){
+                    toast.error(
+                        error.response?.data?.notice ||
+                        error.response?.data?.error ||
+                        error.message ||
+                        error.notice ||
+                        "Something went wrong!"
+                    )
+                }
+                if (error.response?.status === 423) {
+                    window.location.href = "/";
+                }
+                console.log(error)
             }
-            await fetchBlogs();
-        }catch(error){
-            if(error){
-                toast.error(
-                    error.response?.data?.notice ||
-                    error.response?.data?.error ||
-                    error.message ||
-                    error.notice ||
-                    "Something went wrong!"
-                )
-            }
-            if (error.response?.status === 423) {
-                window.location.href = "/";
-            }
-            console.log(error)
         }
+        
     }
 
     useEffect(()=>{
@@ -92,11 +96,10 @@ export default function Blogs({history}) {
 
     return (
         <div>
-            <BlogNav/>
+            <BlogNav user={user} />
             <div>
             <BlogsDashboard 
                 data={blogs}
-                users={allUsers}
                 showBlog={showBlog}
                 updateBlog={updateBlog}
                 destroyBlog={destroyBlog}

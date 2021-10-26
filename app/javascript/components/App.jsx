@@ -22,7 +22,9 @@ import GameDetails from "./Games/GameDetails";
 import { Redirect } from "react-router-dom";
 
 import PreviewBlog from "./Blogs/PreviewBlog";
-import Publish from './Blogs/Publish'
+import TaggedBlogs from "./Tags/TaggedBlogs";
+import ProtectedRoute from "./ProtectedRoute";
+import Unauthorized from './Unauthorized'
 
 
 const App = () => {
@@ -103,7 +105,7 @@ const App = () => {
       <Router>
         <div>
           <Toaster position="top-right" reverseOrder={false}/>          
-          <NavBar handleLogout={handleLogout} user={user} />
+          <NavBar handleLogout={handleLogout} user={user} setUser={setUser} />
           <ScrollToTop />
           <Switch>
             <Route exact path="/" component={Home}/>
@@ -117,27 +119,51 @@ const App = () => {
             <Route exact path="/signup"  component={Signup} />
             <Route exact path="/forgot_password" component={ForgotPassword} />
             <Route exact path="/reset_password" component={ResetPassword} />
-            <Route exact path="/blogs" component={Blogs} /> 
-            <Route exact path="/blogs/:id/show" component={ShowBlog} /> 
-            <Route exact path="/blogs/:id/preview" component={PreviewBlog} /> 
-            <Route exact path="/blogs/:id/edit" component={EditBlog} />   
-            <Route exact path="/blogs/create" component={CreateBlog} />
-            <Route exact path="/blogs/:id/comments" component={Comments} />
-            <Route exact path="/blogs/publish" component={Publish} />
-            <Route exact path="/users/:id" 
+            <Route exact path="/blogs" 
+            // component={Blogs} 
+              render={(props)=>(
+                <Blogs 
+                  user = {user} 
+                />
+              )}
+            /> 
+            <Route exact path="/blogs/:slug/show" 
+              render={(props)=>(
+                <ShowBlog 
+                  user = {user} 
+                />
+              )}
+            /> 
+            <Route exact path="/blogs/:slug/preview" component={PreviewBlog} /> 
+            <Route exact path="/blogs/:slug/edit" component={EditBlog} />   
+            <Route exact path="/blogs/create" component={CreateBlog}/>
+            <Route exact path="/blogs/:id/comments" component={Comments} />          
+            <Route exact path="/users/:username" 
               render={(props)=>(
                 <ProfilePage 
                   user = {user} 
                   handleLogout={handleLogout} 
                   handleBlogSelect={handleBlogSelect}
                 />
-              )} />
+              )} 
+            />
+
             <Route path="/games/:slug" 
               render={(props)=>(
                 <GameDetails 
                 />
               )}
             />
+            <Route exact path="/tags/:tag" component={TaggedBlogs} />
+
+            <ProtectedRoute
+              path="/admin"
+              redirectRoute="/login"
+              user={user}
+              component={Home}
+            />
+            <Route exact path='/unauthorized' component={Unauthorized} />
+
 
           </Switch>
           {/* <Footer /> */}

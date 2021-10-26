@@ -5,7 +5,7 @@ import { AiOutlineMenuFold,AiOutlineMenuUnfold } from "react-icons/ai";
 import NavItems from './NavItems';
 import Dropdown from './Dropdown';
 
-function NavBar({handleLogout,user}) {
+function NavBar({handleLogout,user,setUser}) {
 
     return (
         
@@ -32,7 +32,7 @@ function NavBar({handleLogout,user}) {
                          user.logged_in ? 
                             (   
                                 <div>
-                                    <Dropdown handleLogout={handleLogout} user={user}/>
+                                    <Dropdown handleLogout={handleLogout} user={user} setUser={setUser} />
                                 </div>
                             ) : (
                             <Link to="/login"

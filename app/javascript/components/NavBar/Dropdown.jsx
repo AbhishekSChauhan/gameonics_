@@ -4,8 +4,51 @@ import { HiChevronDown } from "react-icons/hi";
 import { Link } from 'react-router-dom';
 import React from 'react'
 import { FaUser } from 'react-icons/fa'
+import authApi from '../apis/auth';
+import toast from "react-hot-toast";
+import {useHistory} from 'react-router-dom'
 
-export default function Dropdown({handleLogout,user}) {
+
+export default function Dropdown({user,setUser}) {
+  const [loading, setLoading] = useState(false)
+  let history = useHistory()
+
+  // useEffect(() => {
+    
+    
+  // }, [user?.username])
+
+
+  const handleLogout = async() => {
+    try{
+      setLoading(true)
+      const response = await authApi.logout()
+      if(response.status === 200){
+        toast.success(response.data.notice)
+        setUser({logged_in:false})
+        setLoading(false)
+        history.push('/')
+      }
+      
+    }catch(error) {
+      console.log("signup error",error)
+      setLoading(false)
+      if(error){
+          toast.error(
+              error.response?.data?.notice ||
+              error.response?.data?.errors ||
+              error.response?.data?.error ||
+              error.message ||
+              error.notice ||
+              "Something went wrong!"
+        )
+      }
+    }            
+  }
+
+  const showProfile = () => {
+    history.push(`/users/${user.username}`)
+  }
 
   return (
     <div className="text-right">
@@ -46,11 +89,16 @@ export default function Dropdown({handleLogout,user}) {
               <div className="px-1 py-1 text-gray-500">
                 <Menu.Item>
                 {({ active }) => (
-                    <Link to={`/users/${user.id}`}
-                    className={`${active && 'text-gray-700'}`}
+                    // <Link to={`/users/${user.username}`}
+                    // className={`${active && 'text-gray-700'}`}
+                    // >
+                    // My Profile
+                    // </Link>
+                    <button className={`${active && 'text-gray-700'}`}
+                      onClick={showProfile}
                     >
-                    My Profile
-                    </Link>
+                      My Profile
+                    </button>
                 )}
                 </Menu.Item>
               </div>
@@ -58,12 +106,12 @@ export default function Dropdown({handleLogout,user}) {
               <div className="px-1 py-1 text-gray-500">
                 <Menu.Item>
                 {({ active }) => (
-                    <Link to=""
+                    <button 
                     className={`${active && 'text-gray-700'}`}
                     onClick={handleLogout}
                     >
                     Logout
-                    </Link>
+                    </button>
                 )}
                 </Menu.Item>
               </div>

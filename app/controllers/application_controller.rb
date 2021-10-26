@@ -11,26 +11,24 @@ class ApplicationController < ActionController::Base
     end
 
     def authorized_admin?
+        # if current_user.admin_level.positive?
+        #     render json: { notice: 'Welcome ' }
+        # else
+        #     render json: { notice: 'Insufficient Administrative Rights' }
+        # end
         authorized_user?
-        render json: { errors: 'Insufficient Administrative Rights' }, status: 401 unless @current_user.admin_level.positive?
-      end
+        render json: { errors: 'Insufficient Administrative Rights' }, status: 401 unless current_user.admin_level.positive?
+    end
+
+    def logged_in
+       
+        !current_user.nil?
+        
+    end
 
     private
 
-    def current_user
-        # return nil unless access_token.present?
-
-        # @current_user ||= User.find_by(token: access_token)
-        # return nil unless @current_user
-        # return nil if token_expire?(@current_user.token_date)
-
-        # @current_user
-        
-        # if session[:token] 
-        #     # user = User.where(token: session[:token])
-        #     #         .or(User.where(id: session[:user_id]))
-        #     @current_user = User.find_by(token: session[:token])
-        # end
+    def current_user        
         if session[:user_id]
             @current_user = User.find(session[:user_id])
         end
@@ -44,10 +42,6 @@ class ApplicationController < ActionController::Base
             true
         end
         false
-    end
-
-    def access_token
-        request.headers[:Authorization]
     end
 
 end

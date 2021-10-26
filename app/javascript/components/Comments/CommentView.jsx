@@ -1,18 +1,11 @@
 import React from 'react'
+import CommentLikes from '../Likes/CommentLikes'
 
-export default function Comment({comment}) {
+export default function Comment({comment,user,setUpdateLikes,updateLikes}) {
     if(!comment){
         return <div />
     }
-    return (
-        // <div className="bg-white rounded shadow-sm p-8">
-        //     <div className="flex justify-between mb-1">
-        //         <p className="text-grey-darkest leading-normal text-lg">{comment.content}</p>
-        //     </div>
-        //     <div className="text-grey-dark leading-normal text-sm">
-        //         <p>{comment.username} <span className="mx-1 text-xs">&bull;</span> {comment.created_at}</p>
-        //     </div>
-        // </div>
+    return (        
  
         <div className="mt-1 ml-1 mr-1 flex max-w-5xl">
             <div className="flex flex-col items-center">
@@ -29,6 +22,15 @@ export default function Comment({comment}) {
                 <p className="pt-4 text-xl leading-4 text-gray-600">
                     {comment.content}
                 </p>
+            </div>
+            <div className="pl-3">
+                <CommentLikes 
+                    comment={comment}
+                    user={user} 
+                    setUpdateLikes ={setUpdateLikes}
+                    updateLikes = {updateLikes}
+                    
+                />
             </div>
         </div>                                  
     )

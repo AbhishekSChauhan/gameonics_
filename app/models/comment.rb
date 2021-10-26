@@ -1,10 +1,10 @@
 class Comment < ApplicationRecord
-  belongs_to :blog
-  belongs_to :user
+  belongs_to :blog, counter_cache: true
+  belongs_to :user, counter_cache: true
 
   belongs_to :comment, optional: true
   has_many :comments, dependent: :destroy
-
+  has_many :likes, as: :likeable
   validates :content, length: { in: 2..500 }, presence: true
 
   # def comment_json
