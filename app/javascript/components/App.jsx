@@ -34,6 +34,9 @@ const App = () => {
   const [user, setUser] = useState({logged_in: false})
   const [selectedBlog, setSelectedBlog] = useState(null)
 
+  const url = 'https://morning-anchorage-15866.herokuapp.com'
+
+
   useEffect(() => {
     checkLoginStatus();
     setAuthHeaders(setLoading);
@@ -120,7 +123,7 @@ const App = () => {
             />
             <Route exact path="/signup"  component={Signup} />
             <Route exact path="/forgot_password" component={ForgotPassword} />
-            <Route exact path="/reset_password" component={ResetPassword} />
+            <Route exact path={`${url}/reset_password`} component={ResetPassword} />
             <Route exact path="/blogs" 
             // component={Blogs} 
               render={(props)=>(

@@ -20,12 +20,14 @@ const signup = (payload) => {
     return axios.post("/registrations", payload)
 }
 
+
+
 const forgotPassword = (email) => {
     return axios.patch('/forgot_password',{email} )
 }
 
 const resetPassword = (payload,user) => {
-    return axios.patch("/change_password_with_token",payload,user)
+    return axios.patch("/change_password_with_token",{payload,user})
 }
 
 const loggedIn = () => {

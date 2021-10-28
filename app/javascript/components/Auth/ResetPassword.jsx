@@ -26,7 +26,7 @@ const ResetPassword = ({history}) => {
         const user = {password,passwordConfirmation}
         setLoading(true)
         try{
-            const response = authApi.resetPassword({token,user})
+            const response = authApi.resetPassword(token,user)
             if(response){
                 if(response.status === 200){
                     toast.success(response.data.notice)
