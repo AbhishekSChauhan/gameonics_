@@ -140,13 +140,13 @@ Rails.application.configure do
 #   enable_starttls_auto: true
 # }
   config.action_mailer.delivery_method = :smtp
-  host = 'https://glacial-falls-06439.herokuapp.com/' #replace with your own url
+  host = 'https://morning-anchorage-15866.herokuapp.com' #replace with your own url
   config.action_mailer.default_url_options = { host: host }
 
   ActionMailer::Base.smtp_settings = {
   :user_name => ENV['SENDGRID_Username'], # This is the string literal 'apikey', NOT the ID of your API key
   :password => ENV['SENDGRID_API_KEY'], # This is the secret sendgrid API key which was issued during API key creation
-  :domain => 'https://glacial-falls-06439.herokuapp.com/',
+  :domain => 'https://morning-anchorage-15866.herokuapp.com',
   :address => 'smtp.sendgrid.net',
   :port => 587,
   :authentication => :plain,
