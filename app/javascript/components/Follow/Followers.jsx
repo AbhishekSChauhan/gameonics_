@@ -68,6 +68,7 @@ const Followers = ({user}) => {
                 <h1>{username}'s followers</h1>
             {selectedUserFollower.map((follower)=>(
             <div className="relative flex items-center w-full justify-between h-16">
+                <Link to={`/users/${follower.username}`} className="flex flex-row items-center">
                 <div className="mx-5">
                     {!follower.profile_image && (
                         <FaUser className="block rounded-full shadow-xl text-gray-500 h-10 w-10 bg-cover bg-center" />
@@ -83,9 +84,10 @@ const Followers = ({user}) => {
                         </svg>
                     </div> */}
                 </div>
-                <div className="mx-auto ml-4 w-12">
-                    <p className="text-sm font-semibold leading-normal text-gray-800">{follower.username}</p>
+                <div className="mx-auto ml-5 w-12">
+                    <p className="text-lg font-semibold leading-normal text-gray-800">{follower.username}</p>
                 </div>
+                </Link>
                 <div className="mx-auto ml-20">
                     <Follow
                     user={user}

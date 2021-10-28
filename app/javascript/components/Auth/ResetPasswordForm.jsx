@@ -17,13 +17,13 @@ const ResetPasswordForm = ({
     
         <form className="mt-8" onSubmit={handleSubmit}>
           <Input
-            label="Password"
+            label="New Password"
             type="password"
             placeholder="********"
             onChange={(e) => setPassword(e.target.value)}
           />
           <Input
-            label="Enter password again"
+            label="Password Confirmation"
             type="password"
             placeholder="********"
             onChange={(e) => setPasswordConfirmation(e.target.value)}

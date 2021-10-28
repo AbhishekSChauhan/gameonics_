@@ -20,16 +20,16 @@ const signup = (payload) => {
     return axios.post("/registrations", payload)
 }
 
-const forgotPassword = (payload) => {
-    axios.patch('/forgot_password', payload)
+const forgotPassword = (email) => {
+    return axios.patch('/forgot_password',{email} )
 }
 
-const resetPassword = (payload) => {
-    axios.patch("/reset_password",payload)
+const resetPassword = (payload,user) => {
+    return axios.patch("/change_password_with_token",payload,user)
 }
 
 const loggedIn = () => {
-    axios.get("/logged_in",{ headers: { Authorization: user.token } })
+    return axios.get("/logged_in",{ headers: { Authorization: user.token } })
 }
 
 const authApi = {

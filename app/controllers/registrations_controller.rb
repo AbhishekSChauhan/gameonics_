@@ -39,7 +39,7 @@ class RegistrationsController < ApplicationController
 
 
     def activate_account
-        url = 'https://shielded-spire-91772.herokuapp.com/'
+        url = 'https://glacial-falls-06439.herokuapp.com/'
         user = User.find(params[:id])
 
         if user.activation_key == params[:activation_key]
@@ -51,21 +51,26 @@ class RegistrationsController < ApplicationController
 
     def forgot_password
         user = User.find_by(email: params[:email])
-        if user
+        puts user        
+        if user            
             new_token = generate_token(user.id, 32, true)
             if user.update_attribute(:password_reset_token,new_token)
                 user.update_attribute(:password_reset_date, DateTime.now)
                 ActivationMailer.with(user: user).password_reset_email.deliver_now
-            else
-                render json:{ errors: user.errors.full_messages}, status: 401
+            # else
+            #     render json:{ errors: user.errors.full_messages}, status: 401
             end
+            render json:{notice: 'E-mail sent with password reset instructions.'} , status: 200
+        else
+            render json:{errors: 'Incorrect Email-id'}, status: 401 
         end
-        render json:{notice: 'Password reset information sent to associated account.'} , status: 200
+        # render json:{notice: 'Password reset information sent to associated account.'} , status: 200
     end
 
     def password_reset_account
         reset_token = params[:password_reset_token]
         url = "http://localhost:3000/reset_password?token=#{reset_token}"
+        redirect_to url
     end
 
     def change_password
