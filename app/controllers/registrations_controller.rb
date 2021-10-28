@@ -39,7 +39,7 @@ class RegistrationsController < ApplicationController
 
 
     def activate_account
-        url = 'https://morning-anchorage-15866.herokuapp.com/'
+        url = 'https://morning-anchorage-15866.herokuapp.com'
         user = User.find(params[:id])
 
         if user.activation_key == params[:activation_key]
