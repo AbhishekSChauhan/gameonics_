@@ -19,7 +19,7 @@ Rails.application.routes.draw do
 
   patch :forgot_password, to: 'registrations#forgot_password'
   patch :change_password, to: 'registrations#change_password'
-  patch :change_password_with_token, to: 'registrations#change_password_with_token' 
+  patch :reset_password, to: 'registrations#change_password_with_token' 
 
   ###   Blogs and comments routes  ###
   resources :blogs, param: :slug do

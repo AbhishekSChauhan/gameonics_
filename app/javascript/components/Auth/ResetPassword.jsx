@@ -32,7 +32,7 @@ const ResetPassword = ({history}) => {
                     toast.success(response.data.notice)
                 }
             }
-            console.log(response)
+            console.log('reset password',response)
             setMessage(response.data.notice)
             setPasswordReset(true)
             toast.success(response.data.notice)
