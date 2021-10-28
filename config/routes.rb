@@ -13,7 +13,7 @@ Rails.application.routes.draw do
       to: 'registrations#activate_account',
       as: 'activate_account'
   
-  get '/password_reset_account',
+  get '/reset_password',
       to: 'registration#password_reset_account',
       as: 'reset_password'
 
