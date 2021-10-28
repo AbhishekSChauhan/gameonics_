@@ -87,7 +87,9 @@ class RegistrationsController < ApplicationController
 
     def change_password_with_token
         token = params[:password_reset_token]
+        puts token
         user = User.find_by(password_reset_token: token) if token.present?
+        puts user.name
         if user
             #Check token validity
             return render json:{error:'Token expired'},status: 400 if user.password_token_expired?
