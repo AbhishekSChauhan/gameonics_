@@ -24,7 +24,7 @@ const ResetPassword = ({history}) => {
             toast.error("Password Confirmation dosen't match Password")
         }
         setLoading(true)
-        const token = query.get('password_reset_token')
+        const token = query.get('token')
         console.log('token',token)
         const user = {
             password,
