@@ -70,8 +70,8 @@ class RegistrationsController < ApplicationController
 
     def password_reset_account
         reset_token = params[:password_reset_token]
-        # url = "https://morning-anchorage-15866.herokuapp.com/reset_password?token=#{reset_token}"
-        url = "http://localhost:3000/reset_password?token=#{reset_token}"
+        url = "https://morning-anchorage-15866.herokuapp.com/reset_password?token=#{reset_token}"
+        # url = "http://localhost:3000/reset_password?token=#{reset_token}"
 
         redirect_to url
     end
