@@ -41,6 +41,7 @@ class RegistrationsController < ApplicationController
     def activate_account
         url = 'https://morning-anchorage-15866.herokuapp.com'
         user = User.find(params[:id])
+        puts user.name
 
         if user.activation_key == params[:activation_key]
             user.update_attribute(:is_activated,true)
@@ -69,7 +70,9 @@ class RegistrationsController < ApplicationController
 
     def password_reset_account
         reset_token = params[:password_reset_token]
-        url = "https://morning-anchorage-15866.herokuapp.com/reset_password?token=#{reset_token}"
+        # url = "https://morning-anchorage-15866.herokuapp.com/reset_password?token=#{reset_token}"
+        url = "http://localhost:3000/reset_password?token=#{reset_token}"
+
         redirect_to url
     end
 
@@ -89,7 +92,7 @@ class RegistrationsController < ApplicationController
         token = params[:password_reset_token]
         puts token
         user = User.find_by(password_reset_token: token) if token.present?
-        puts user.name
+        puts user
         if user
             #Check token validity
             return render json:{error:'Token expired'},status: 400 if user.password_token_expired?

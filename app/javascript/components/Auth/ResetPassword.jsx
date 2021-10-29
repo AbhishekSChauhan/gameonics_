@@ -10,23 +10,28 @@ const ResetPassword = ({history}) => {
     const [passwordConfirmation, setPasswordConfirmation] = useState('')
     const [message, setMessage] = useState('')
     const [loading, setLoading] = useState(false)
+    const [goToRoot, setGoToRoot] = useState(false)
 
     function useQuery(){
         return new URLSearchParams(useLocation().search)
     }
     const query = useQuery()
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async(event) => {
+        
         event.preventDefault()
         if (password !== passwordConfirmation){
             toast.error("Password Confirmation dosen't match Password")
         }
-
-        const token = query.get('token')
-        const user = {password,passwordConfirmation}
         setLoading(true)
+        const token = query.get('password_reset_token')
+        console.log('token',token)
+        const user = {
+            password,
+            password_confirmation:passwordConfirmation,
+        }        
         try{
-            const response = authApi.resetPassword(token,user)
+            const response =await authApi.resetPassword(token,user)
             if(response){
                 if(response.status === 200){
                     toast.success(response.data.notice)
@@ -34,10 +39,15 @@ const ResetPassword = ({history}) => {
             }
             console.log('reset password',response)
             setMessage(response.data.notice)
-            setPasswordReset(true)
-            toast.success(response.data.notice)
+            setPasswordReset(true)  
+            setGoToRoot(true)          
             setLoading(false)
-            history.push("/login")
+            toast.success(response.data.notice)
+            // history.push("/login")
+            history.push({
+                pathname: '/login',          
+                state: { goToRoot:true  }
+            })
         }catch(error) {
             console.log("signup error",error)
             setLoading(false)

@@ -4,10 +4,11 @@ import LoginForm from './LoginForm'
 import axios from 'axios'
 import toast, { Toaster } from "react-hot-toast";
 import authApi from '../apis/auth'
-import { useHistory } from 'react-router-dom'
+import { useHistory,useLocation } from 'react-router-dom'
 
 export default function Login({handleLogin}) {
   const history = useHistory()
+  const location = useLocation()
   
   const [loading, setLoading] = useState(false)
   const [password, setPassword] = useState("")
@@ -30,8 +31,13 @@ export default function Login({handleLogin}) {
       handleLogin(retrievedUser)
       setLoading(false)
       console.log("login res",response)
+      if(location.state.goToRoot === true){
+        history.push('/')
+      }else{
+        history.goBack();
+      }
       // history.push("/")
-      history.goBack();
+     
     }catch(error) {
       console.log("login error",error)
       setLoading(false)

@@ -52,26 +52,6 @@ const ForgotPassword = () => {
         </div>
     ) : (
         <div>
-        {/* <div className="bg-white">
-            <div className="max-w-6xl mx-auto mt-10">
-                <div className="relative max-w-4xl mx-auto items-center justify-between">
-                    <div className="flex flex-col ">
-                    <h2 className="text-center mb-1">Send Password Reset Email</h2>
-                    <form className="login-form" onSubmit={handleSubmit}>
-                        <h4>Email</h4>
-                        <input
-                        type="text"
-                        value={email}
-                        onChange={e => setEmail(e.target.value)}
-                        minLength="3"
-                        required
-                        />
-                        <button type="submit">Send Email</button>
-                    </form>
-                    </div>
-                </div>
-            </div>
-        </div>  */}
         <div className="flex flex-col h-screen items-center">
             <div className="bg-white w-full md:max-w-md lg:max-w-full md:mx-auto
                 md:mx-0 md:w-1/2 xl:w-1/3 h-screen px-6 lg:px-16 xl:px-12

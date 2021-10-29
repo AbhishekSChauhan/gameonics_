@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
  
   root to: "home#index"
-  # get '*path', to: 'home#index', via: :all
+  get '*path', to: 'home#index', via: :all
 
   ###    Authentication routes    ####
   resources :sessions, only: [:create] 
@@ -14,7 +14,7 @@ Rails.application.routes.draw do
       as: 'activate_account'
   
   get '/reset_password',
-      to: 'registration#password_reset_account',
+      to: 'registrations#password_reset_account',
       as: 'reset_password'
 
   patch :forgot_password, to: 'registrations#forgot_password'
