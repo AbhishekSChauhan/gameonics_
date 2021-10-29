@@ -31,11 +31,11 @@ export default function Login({handleLogin}) {
       handleLogin(retrievedUser)
       setLoading(false)
       console.log("login res",response)
-      if(location.state.goToRoot === true){
-        history.push('/')
-      }else{
+      // if(location.state.goToRoot === true){
+      //   history.push('/')
+      // }else{
         history.goBack();
-      }
+      // }
       // history.push("/")
      
     }catch(error) {
