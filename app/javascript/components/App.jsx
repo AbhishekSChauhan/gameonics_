@@ -124,7 +124,7 @@ const App = () => {
             <Route exact path="/signup"  component={Signup} />
             <Route exact path="/forgot_password" component={ForgotPassword} />
             <Route exact path={`/reset_password`} component={ResetPassword} />
-            <Route  path="/blogs" 
+            <Route exact path="/blogs" 
             // component={Blogs} 
               render={(props)=>(
                 <Blogs 
@@ -132,7 +132,7 @@ const App = () => {
                 />
               )}
             /> 
-            <Route  path="/blogs/:slug/show" 
+            <Route exact path="/blogs/:slug/show" 
               render={(props)=>(
                 <ShowBlog 
                   user = {user} 
@@ -143,7 +143,7 @@ const App = () => {
             <Route exact path="/blogs/:slug/edit" component={EditBlog} />   
             <Route exact path="/blogs/create" component={CreateBlog}/>
             <Route exact path="/blogs/:id/comments" component={Comments} />          
-            <Route path="/users/:username" 
+            <Route exact path="/users/:username" 
               render={(props)=>(
                 <ProfilePage 
                   user = {user} 
@@ -179,7 +179,7 @@ const App = () => {
             <Route exact path="/tags/:tag" component={TaggedBlogs} />
 
             <ProtectedRoute
-              exact
+              
               path="/admin"
               redirectRoute="/login"
               user={user}

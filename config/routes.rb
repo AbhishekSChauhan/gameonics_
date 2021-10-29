@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
  
   root to: "home#index"
-  get '*path', to: 'home#index', via: :all
+  get '*path', to: 'home#index', via: :all, format: true
 
   ###    Authentication routes    ####
   resources :sessions, only: [:create] 
