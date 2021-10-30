@@ -24,14 +24,14 @@ const ResetPassword = ({history}) => {
             toast.error("Password Confirmation dosen't match Password")
         }
         setLoading(true)
-        const token = query.get('token')
+        const token = query.get('password_reset_token')
         console.log('token',token)
         const user = {
             password,
             password_confirmation:passwordConfirmation,
         }        
         try{
-            const response =await authApi.resetPassword(token,user)
+            const response = await authApi.resetPassword(token,user)
             if(response){
                 if(response.status === 200){
                     toast.success(response.data.notice)

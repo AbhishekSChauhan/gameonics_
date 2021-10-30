@@ -70,10 +70,13 @@ class RegistrationsController < ApplicationController
 
     def password_reset_account
         reset_token = params[:password_reset_token]
-        url = "https://morning-anchorage-15866.herokuapp.com/reset_password?token=#{reset_token}"
+        # url = "https://morning-anchorage-15866.herokuapp.com/reset_password?token=#{reset_token}"
         # url = "http://localhost:3000/reset_password?token=#{reset_token}"
 
-        redirect_to url
+        # args = {token:reset_token}
+        # url = "http://localhost:3000/reset_password?" + args.to_query
+        @user = User.find_by(password_reset_token: reset_token)
+        # render json:{user:@user.username}
     end
 
     def change_password
@@ -95,7 +98,7 @@ class RegistrationsController < ApplicationController
         puts user
         if user
             #Check token validity
-            return render json:{error:'Token expired'},status: 400 if user.password_token_expired?
+            return render json:{error:'Password reset link expired'},status: 400 if user.password_token_expired?
             
             if user.update(password_params)
                 user.update_attribute(:password_reset_token, nil)
