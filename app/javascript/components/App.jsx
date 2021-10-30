@@ -27,6 +27,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import Unauthorized from './Unauthorized'
 import Followers from "./Follow/Followers";
 import Following from "./Follow/Following";
+import ActivationPage from "./Auth/ActivationPage";
 
 
 const App = () => {
@@ -124,6 +125,7 @@ const App = () => {
             <Route exact path="/signup"  component={Signup} />
             <Route exact path="/forgot_password" component={ForgotPassword} />
             <Route exact path={`/reset_password`} component={ResetPassword} />
+
             <Route exact path="/blogs" 
             // component={Blogs} 
               render={(props)=>(
@@ -186,7 +188,14 @@ const App = () => {
               component={Home}
             />
             <Route exact path='/unauthorized' component={Unauthorized} />
-
+              
+            <Route exact path="/activate_account" 
+              render={(props)=>(
+                <ActivationPage 
+                  user = {user} 
+                />
+              )} 
+            />
 
           </Switch>
           {/* <Footer /> */}
