@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ActivationPage = ({user}) => {
+const ActivationPage = () => {
     return (
         <div className="flex flex-col h-screen items-center">
             <div className="bg-white w-full md:max-w-md lg:max-w-full md:mx-auto
@@ -9,7 +9,7 @@ const ActivationPage = ({user}) => {
                 <div className="w-full h-96 text-gray-500">
                     <div>
                     Congratulations
-                    <span className="text-lg text-gray-700 md:text-2xl font-bold leading-tight">{` ${user.username}`}</span>
+                    {/* <span className="text-lg text-gray-700 md:text-2xl font-bold leading-tight">{` ${user.username}`}</span> */}
                     </div>
                     <div className="mt-2">
                     <span className="text-lg text-gray-700 md:text-2xl font-semibold leading-tight">
