@@ -35,7 +35,7 @@ class SessionsController < ApplicationController
 
     def authenticate_user(user)
         if user.try(:authenticate, params[:user][:password])
-            return unless activated(user)
+            # return unless activated(user)
             session[:user_id] = user.id
 
             new_token = generate_token(user.id)
@@ -98,11 +98,10 @@ class SessionsController < ApplicationController
         end
 
         user_with_status
-
     end    
 
     def activated(user)
-        unless user.is_activated
+        unless (user.is_activated) || (user.activation_key.present?)
             render json:{errors: ['Account not activated']}, status:401
             return false
         end
