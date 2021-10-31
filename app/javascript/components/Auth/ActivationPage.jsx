@@ -18,16 +18,34 @@ const ActivationPage = ({user}) => {
         return new URLSearchParams(useLocation().search)
     }
     const query = useQuery()
-
+    console.log('activation_key_query',query)
+    
     const activation_key = query.get('activation_key')
-
     console.log('activation_key',activation_key)
+
+
+    function getQueryVariable(variable)
+    {
+        var query = window.location.search.substring(1);
+        console.log('query',query)
+        var vars = query.split("&amp;");
+        console.log("vars",vars) 
+        for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            console.log('pair',pair)
+            if(pair[0] == variable){
+                return pair[1]
+            }
+        }
+        return(false);
+    }
+
+    // const activation_key = getQueryVariable('activation_key')
+    const user_id = getQueryVariable('id')
 
     const handleActivateClick = async(event) => {
         event.preventDefault()
         setLoading(true)
-        // const user_id = query.get('id')
-        const user_id = activation_key.substring(0,2)        
         try{
             const response = await authApi.activateAccount(user_id,activation_key)
             console.log("activate account",response)
