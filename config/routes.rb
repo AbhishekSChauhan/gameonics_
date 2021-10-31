@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   # get '*path', to: 'home#index', via: :all, format: false
   # get '*pages', to: 'home#index', via: :all, format: false
   
-  get '/*id', to: 'home#index', id: /(?!blogs|comments|tags|users|admin).*/ 
+  get '/*page', to: 'home#index', page: /(?!blogs|comments|tags|users|admin).*/ 
 
   ###    Authentication routes    ####
   resources :sessions, only: [:create] 
@@ -12,11 +12,13 @@ Rails.application.routes.draw do
   delete :logout, to: "sessions#destroy" 
   get :logged_in, to: "sessions#logged_in"
   
-  get '/activate_account',
-      to: 'registrations#activate_account',
-      as: 'activate_account'
+  get :activate_account,
+      to: 'registrations#activate_account'
+      # as: 'activate_account'
+
+  patch :activate_account, to: 'registrations#activate_account' 
   
-  get '/reset_password',
+  get :reset_password,
       to: 'registrations#password_reset_account',
       as: 'reset_password'
 

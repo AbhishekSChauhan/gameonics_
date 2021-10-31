@@ -39,15 +39,15 @@ class RegistrationsController < ApplicationController
 
 
     def activate_account
-        url = 'https://morning-anchorage-15866.herokuapp.com'
         user = User.find(params[:id])
-        puts user.name
-
-        if user.activation_key == params[:activation_key]
-            user.update_attribute(:is_activated,true)
+        if user.is_activated == true
+            render json: {notice: 'Account already activated'}
+        else            
+            if user.activation_key == params[:activation_key]
+                user.update_attribute(:is_activated,true)
+            end        
+            render json:{notice: 'Successfully activated account', username: user.username}
         end
-        render json:{message: 'Successfully activated account'}
-        redirect_to url
     end
 
     def forgot_password

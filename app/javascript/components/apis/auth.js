@@ -28,6 +28,10 @@ const resetPassword = (password_reset_token,user) => {
     return axios.patch("/change_password_with_token",{password_reset_token,user})
 }
 
+const activateAccount = (id,activation_key) => {
+    return axios.patch('/activate_account',{id,activation_key})
+}
+
 const loggedIn = () => {
     return axios.get("/logged_in",{ headers: { Authorization: user.token } })
 }
@@ -38,7 +42,8 @@ const authApi = {
     signup,
     forgotPassword,
     resetPassword,
-    loggedIn
+    loggedIn,
+    activateAccount
 }
 
 export default authApi;
