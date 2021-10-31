@@ -28,7 +28,7 @@ const ActivationPage = ({user}) => {
     {
         var query = window.location.search.substring(1);
         console.log('query',query)
-        var vars = query.split("&amp;");
+        var vars = query.split("&");
         console.log("vars",vars) 
         for (var i=0;i<vars.length;i++) {
             var pair = vars[i].split("=");
