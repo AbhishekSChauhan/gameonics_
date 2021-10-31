@@ -4,8 +4,8 @@ Rails.application.routes.draw do
   # get '*path', to: 'home#index', via: :all, format: false
   # get '*pages', to: 'home#index', via: :all, format: false
   
-  get '/*page', to: 'home#index', page: /(?!blogs|comments|tags|users|admin).*/ 
-
+  get '/*page', to: 'home#index', page: /(?!blogs|comments|tags|users|admin|rails).*/ 
+  # get '*path', controller: 'home', action: 'index', as: :react
   ###    Authentication routes    ####
   resources :sessions, only: [:create] 
   resources :registrations, only: [:create] 
@@ -61,10 +61,8 @@ Rails.application.routes.draw do
 
   ActiveAdmin.routes(self)
 
-  get "*path" => redirect('/'), constraints: lambda { |req|
+  get '*path', to: redirect('/'), constraints: lambda { |req|
     req.path.exclude? 'rails/active_storage'
   }
-
-
 
 end

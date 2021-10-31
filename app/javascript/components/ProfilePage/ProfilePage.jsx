@@ -246,7 +246,7 @@ const ProfilePage = ({
                 ):(
                   <div>
                     {!selectedUser.profile_image && (
-                      <FaUser className="block rounded-full shadow-xl mx-auto h-48 w-48 gray-500 bg-cover bg-center" />
+                      <FaUser className="block rounded-full shadow-xl mx-auto h-48 w-48 text-gray-500 bg-cover bg-center" />
                     )}
                     {selectedUser.profile_image && (
                       <img className="block rounded-full shadow-xl mx-auto h-48 w-48 bg-cover bg-center"

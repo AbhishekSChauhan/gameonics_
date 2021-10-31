@@ -22,6 +22,11 @@ const Following = ({user}) => {
     const [selectedUser, setSelectedUser] = useState()
     const [fromFollowingsPage, setFromFollowingsPage] = useState(false)
 
+    useEffect(() => {
+        getFollowings()
+        getCurrentUserFollowings()
+    }, [])
+    
     const getFollowings = async() => {        
         try{
             setLoading(true)
@@ -51,14 +56,11 @@ const Following = ({user}) => {
         } 
     }
 
-    // if(loading){
-    //     return <PageLoader />
-    // }
+    if(loading){
+        return <PageLoader />
+    }
 
-    useEffect(() => {
-        getFollowings()
-        getCurrentUserFollowings()
-    }, [])
+    
 
     return (
         <div className="bg-white">
