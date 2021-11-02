@@ -124,28 +124,27 @@ const App = () => {
             />
             <Route exact path="/signup"  component={Signup} />
             <Route exact path="/forgot_password" component={ForgotPassword} />
-            <Route exact path={`/reset_password`} component={ResetPassword} />
+            <Route exact path="/reset_password" component={ResetPassword} />
 
-            <Route exact path="/blogs" 
-            // component={Blogs} 
+            <Route exact path="/blog" 
               render={(props)=>(
                 <Blogs 
                   user = {user} 
                 />
               )}
             /> 
-            <Route exact path="/blogs/:slug/show" 
+            <Route exact path="/blog/:slug/show" 
               render={(props)=>(
                 <ShowBlog 
                   user = {user} 
                 />
               )}
             /> 
-            <Route exact path="/blogs/:slug/preview" component={PreviewBlog} /> 
-            <Route exact path="/blogs/:slug/edit" component={EditBlog} />   
-            <Route exact path="/blogs/create" component={CreateBlog}/>
-            <Route exact path="/blogs/:id/comments" component={Comments} />          
-            <Route exact path="/users/:username" 
+            <Route exact path="/blog/:slug/preview" component={PreviewBlog} /> 
+            <Route exact path="/blog/:slug/edit" component={EditBlog} />   
+            <Route exact path="/blog/create" component={CreateBlog}/>
+            <Route exact path="/blog/:id/comments" component={Comments} />          
+            <Route exact path="/user/:username" 
               render={(props)=>(
                 <ProfilePage 
                   user = {user} 
@@ -154,9 +153,9 @@ const App = () => {
                 />
               )} 
             />
-            {/* <Route exact path="/users/:username/followers" component={Followers} />           */}
+            {/* <Route exact path="/user/:username/followers" component={Followers} />           */}
             
-            <Route exact path="/users/:username/followers" 
+            <Route exact path="/user/:username/followers" 
               render={(props)=>(
                 <Followers 
                   user = {user} 
@@ -164,7 +163,7 @@ const App = () => {
               )} 
             />
 
-            <Route exact path="/users/:username/following" 
+            <Route exact path="/user/:username/following" 
               render={(props)=>(
                 <Following 
                   user = {user} 
@@ -180,8 +179,7 @@ const App = () => {
             />
             <Route exact path="/tags/:tag" component={TaggedBlogs} />
 
-            <ProtectedRoute
-              
+            <ProtectedRoute              
               path="/admin"
               redirectRoute="/login"
               user={user}

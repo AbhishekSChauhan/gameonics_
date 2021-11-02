@@ -66,7 +66,7 @@ export default function PreviewBlog(props) {
                     toast.success('Blog Pubished')                    
                 }
             }            
-            history.push('/blogs');
+            history.push('/blog');
         } catch(error){
             console.log("blog not published error",error)
             setLoading(false)

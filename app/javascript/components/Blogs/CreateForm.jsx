@@ -85,7 +85,7 @@ export default function CreateForm(
         const fd = new FormData();
         fd.append("upload", file);  
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", "/blogs", true);
+        xhr.open("POST", "/blog", true);
 
         xhr.upload.onprogress = function(event){
             const progress =event.loaded / event.total * 100;

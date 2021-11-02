@@ -18,7 +18,7 @@ const NavItems = () => {
                     <IoNewspaperSharp className="mx-0.5" />
                     <span >News</span>
                 </Link >  
-                <Link to="/blogs" className="flex flex-row items-center transition duration-250 ease-in transform hover:text-gray-800 hover:-translate-y-1 hover:scale-110">
+                <Link to="/blog" className="flex flex-row items-center transition duration-250 ease-in transform hover:text-gray-800 hover:-translate-y-1 hover:scale-110">
                     <FaBlog className="mx-0.5" />
                     <span >Blog</span>
                 </Link >  
@@ -32,3 +32,6 @@ const NavItems = () => {
 }
 
 export default NavItems
+
+
+

@@ -122,7 +122,7 @@ const BookmarkedView = ({data,showBlog}) => {
                     alt="Avatar"
                   />
                   <div className="flex flex-col mx- cursor-pointer">
-                    <Link to={`/users/${blog.blog_creator}`}
+                    <Link to={`/user/${blog.blog_creator}`}
                      className="font-semibold text-gray-700 hover:underline">
                       Written by {blog.blog_creator}
                     </Link>

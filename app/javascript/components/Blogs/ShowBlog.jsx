@@ -128,7 +128,7 @@ export default function ShowBlog({user}) {
                             
                             <div>
                                 by
-                                <Link to={`/users/${blogCreator}`}>
+                                <Link to={`/user/${blogCreator}`}>
                                     {blogCreator}
                                 </Link>
 
