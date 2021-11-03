@@ -39,33 +39,44 @@ class RegistrationsController < ApplicationController
 
 
     def activate_account
-        url = 'https://shielded-spire-91772.herokuapp.com/'
         user = User.find(params[:id])
-
-        if user.activation_key == params[:activation_key]
-            user.update_attribute(:is_activated,true)
+        if user.is_activated == true
+            render json: {notice: 'Account already activated'}
+        else            
+            if user.activation_key == params[:activation_key]
+                user.update_attribute(:is_activated,true)
+            end        
+            render json:{notice: 'Successfully activated account', username: user.username}
         end
-        render json:{message: 'Successfully activated account'}
-        redirect_to url
     end
 
     def forgot_password
         user = User.find_by(email: params[:email])
-        if user
+        puts user        
+        if user            
             new_token = generate_token(user.id, 32, true)
             if user.update_attribute(:password_reset_token,new_token)
                 user.update_attribute(:password_reset_date, DateTime.now)
                 ActivationMailer.with(user: user).password_reset_email.deliver_now
-            else
-                render json:{ errors: user.errors.full_messages}, status: 401
+            # else
+            #     render json:{ errors: user.errors.full_messages}, status: 401
             end
+            render json:{notice: 'E-mail sent with password reset instructions.'} , status: 200
+        else
+            render json:{errors: 'Incorrect Email-id'}, status: 401 
         end
-        render json:{notice: 'Password reset information sent to associated account.'} , status: 200
+        # render json:{notice: 'Password reset information sent to associated account.'} , status: 200
     end
 
     def password_reset_account
         reset_token = params[:password_reset_token]
-        url = "http://localhost:3000/reset_password?token=#{reset_token}"
+        # url = "https://morning-anchorage-15866.herokuapp.com/reset_password?token=#{reset_token}"
+        # url = "http://localhost:3000/reset_password?token=#{reset_token}"
+
+        # args = {token:reset_token}
+        # url = "http://localhost:3000/reset_password?" + args.to_query
+        @user = User.find_by(password_reset_token: reset_token)
+        # render json:{user:@user.username}
     end
 
     def change_password
@@ -82,10 +93,12 @@ class RegistrationsController < ApplicationController
 
     def change_password_with_token
         token = params[:password_reset_token]
+        puts token
         user = User.find_by(password_reset_token: token) if token.present?
+        puts user
         if user
             #Check token validity
-            return render json:{error:'Token expired'},status: 400 if user.password_token_expired?
+            return render json:{error:'Password reset link expired'},status: 400 if user.password_token_expired?
             
             if user.update(password_params)
                 user.update_attribute(:password_reset_token, nil)

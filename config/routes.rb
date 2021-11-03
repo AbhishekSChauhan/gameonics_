@@ -1,20 +1,25 @@
 Rails.application.routes.draw do
  
   root to: "home#index"
-  # get '*path', to: 'home#index', via: :all
-
+  # get '*path', to: 'home#index', via: :all, format: false
+  # get '*pages', to: 'home#index', via: :all, format: false
+  
+  get '/*page', to: 'home#index', page: /(?!blogs|comments|tags|users|admin|rails).*/ 
+  # get '*path', controller: 'home', action: 'index', as: :react
   ###    Authentication routes    ####
   resources :sessions, only: [:create] 
   resources :registrations, only: [:create] 
   delete :logout, to: "sessions#destroy" 
   get :logged_in, to: "sessions#logged_in"
   
-  get '/activate_account',
-      to: 'registrations#activate_account',
-      as: 'activate_account'
+  get :activate_account,
+      to: 'registrations#activate_account'
+      # as: 'activate_account'
+
+  patch :activate_account, to: 'registrations#activate_account' 
   
-  get '/password_reset_account',
-      to: 'registration#password_reset_account',
+  get :reset_password,
+      to: 'registrations#password_reset_account',
       as: 'reset_password'
 
   patch :forgot_password, to: 'registrations#forgot_password'
@@ -56,5 +61,8 @@ Rails.application.routes.draw do
 
   ActiveAdmin.routes(self)
 
+  get '*path', to: redirect('/'), constraints: lambda { |req|
+    req.path.exclude? 'rails/active_storage'
+  }
 
 end

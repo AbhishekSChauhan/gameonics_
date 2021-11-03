@@ -22,6 +22,11 @@ const Following = ({user}) => {
     const [selectedUser, setSelectedUser] = useState()
     const [fromFollowingsPage, setFromFollowingsPage] = useState(false)
 
+    useEffect(() => {
+        getFollowings()
+        getCurrentUserFollowings()
+    }, [])
+    
     const getFollowings = async() => {        
         try{
             setLoading(true)
@@ -51,14 +56,11 @@ const Following = ({user}) => {
         } 
     }
 
-    // if(loading){
-    //     return <PageLoader />
-    // }
+    if(loading){
+        return <PageLoader />
+    }
 
-    useEffect(() => {
-        getFollowings()
-        getCurrentUserFollowings()
-    }, [])
+    
 
     return (
         <div className="bg-white">
@@ -68,6 +70,7 @@ const Following = ({user}) => {
                 <h1>{username}'s Followings</h1>
             {selectedUserFollowing.map((Following)=>(
             <div className="relative flex items-center w-full justify-between h-16">
+                <Link to={`/users/${Following.username}`} className="flex flex-row items-center">
                 <div className="mx-5">
                     {!Following.profile_image && (
                         <FaUser className="block rounded-full shadow-xl text-gray-500 h-10 w-10 bg-cover bg-center" />
@@ -83,9 +86,10 @@ const Following = ({user}) => {
                         </svg>
                     </div> */}
                 </div>
-                <div className="mx-auto ml-4 w-12">
-                    <p className="text-sm font-semibold leading-normal text-gray-800">{Following.username}</p>
+                <div className="mx-auto ml-5 w-12">
+                    <p className="text-lg font-semibold leading-normal text-gray-800">{Following.username}</p>
                 </div>
+                </Link>
                 <div className="mx-auto ml-20">
                     <Follow
                     user={user}

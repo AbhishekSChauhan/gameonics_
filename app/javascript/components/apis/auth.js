@@ -20,16 +20,20 @@ const signup = (payload) => {
     return axios.post("/registrations", payload)
 }
 
-const forgotPassword = (payload) => {
-    axios.patch('/forgot_password', payload)
+const forgotPassword = (email) => {
+    return axios.patch('/forgot_password',{email} )
 }
 
-const resetPassword = (payload) => {
-    axios.patch("/reset_password",payload)
+const resetPassword = (password_reset_token,user) => {
+    return axios.patch("/change_password_with_token",{password_reset_token,user})
+}
+
+const activateAccount = (id,activation_key) => {
+    return axios.patch('/activate_account',{id,activation_key})
 }
 
 const loggedIn = () => {
-    axios.get("/logged_in",{ headers: { Authorization: user.token } })
+    return axios.get("/logged_in",{ headers: { Authorization: user.token } })
 }
 
 const authApi = {
@@ -38,7 +42,8 @@ const authApi = {
     signup,
     forgotPassword,
     resetPassword,
-    loggedIn
+    loggedIn,
+    activateAccount
 }
 
 export default authApi;

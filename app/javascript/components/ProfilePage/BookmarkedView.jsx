@@ -98,7 +98,7 @@ const BookmarkedView = ({data,showBlog}) => {
             </div>
             <hr className="border-gray-300" />
             <div className="flex flex-wrap items-center flex-1 px-4 py-1 text-center mx-auto">
-              <a onClick={()=>showBlog(blog.blog_id)} className="hover:underline">
+              <a onClick={()=>showBlog(blog.blogs.slug)} className="hover:underline">
                 <h2 className="text-2xl font-bold tracking-normal text-gray-800 cursor-pointer">
                   {parse(blog.blogs.title)}
                 </h2>
