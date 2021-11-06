@@ -29,7 +29,7 @@ export default function EditBlog({history}) {
         event.preventDefault()
         setLoading(true)
         try{
-            const response = await axios.put(`/blog/${slug}`,{
+            const response = await axios.put(`/blogs/${slug}`,{
                 blog:{
                     title,
                     body,
@@ -73,7 +73,7 @@ export default function EditBlog({history}) {
     const fetchBlogDetails = async () => {
         setLoading(true)
         try {
-          const response = await axios.get(`/blog/${slug}`)
+          const response = await axios.get(`/blogs/${slug}`)
           setTitle(response.data.blog.title);
           setBody(response.data.blog.body)
           if(response.data.blog.published === true){

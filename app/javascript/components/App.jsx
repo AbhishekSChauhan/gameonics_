@@ -141,7 +141,7 @@ const App = () => {
               )}
             /> 
             <Route exact path="/blog/:slug/preview" component={PreviewBlog} /> 
-            <Route exact path="/blog/:slug/edit" component={EditBlog} />   
+            <Route exact path="/blog/:slug/update" component={EditBlog} />   
             <Route exact path="/blog/create" component={CreateBlog}/>
             <Route exact path="/blog/:id/comments" component={Comments} />          
             <Route exact path="/user/:username" 

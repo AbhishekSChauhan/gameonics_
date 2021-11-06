@@ -191,12 +191,12 @@ const ProfilePage = ({
     }
 
     const updateBlog = (slug) => {
-      history.push(`/blog/${slug}/edit`)
+      history.push(`/blog/${slug}/update`)
     }
 
     const destroyBlog = async(slug) => {
         try {
-            const response = await axios.delete(`/blog/${slug}`);
+            const response = await axios.delete(`/blogs/${slug}`);
             if(response){
                 response.success = response.status === 200;
                 if (response.data.notice){

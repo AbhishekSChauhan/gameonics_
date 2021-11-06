@@ -143,7 +143,7 @@ export default function CreateForm(
                                 />
                             
                                 <ReactQuill 
-                                    theme="bubble"
+                                    theme="snow"
                                     placeholder="Write your story" 
                                     modules={modules}
                                     formats={formats}

@@ -29,6 +29,7 @@
     "react-icons": "^4.2.0",
     "react-quill": "^1.3.5",
     "react-router-dom": "^5.2.0",
+    "react-share": "^4.4.0",
     "react-slick": "^0.28.1",
     "react-trix-rte": "^1.0.14",
     "react_ujs": "^2.6.1",

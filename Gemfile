@@ -33,6 +33,8 @@ gem 'activeadmin'
 gem 'arctic_admin'
 gem 'cancan'
 gem "bullet"
+gem 'social-share-button'
+
 
 # Use Active Storage variant
 gem 'image_processing', '~> 1.2'
