@@ -7,8 +7,10 @@ import { Comments } from '../Comments/Comments'
 import parse from 'html-react-parser';
 import Likes from '../Likes/Likes'
 import Bookmarks from '../Bookmarks/Bookmarks'
+import Share from '../Share/Share'
 import { useLocation } from "react-router-dom";
 import {useHistory,Link} from 'react-router-dom'
+import HelmetMetaData from '../Share/HelmetMetaData'
 
 export default function ShowBlog({user}) {
     const componentMounted = true
@@ -56,6 +58,7 @@ export default function ShowBlog({user}) {
             top:0,
             behavior:"smooth"
         })
+        console.log('url location', window.location.href)
         return () => {
             source.cancel()
         }
@@ -91,6 +94,22 @@ export default function ShowBlog({user}) {
                                         setBookmark={setBookmark}
                                     />
                                 </div>                                
+                            </div>
+                            <div>
+                                <Share 
+                                    title={blogDetails?.title}
+                                    shareImage={blogDetails?.image}
+                                    url={(window.location.href)}
+                                />
+                            </div>
+                            <div>
+                                <HelmetMetaData 
+                                    t={blogDetails?.title}
+                                    i={blogDetails?.image}
+                                    // d={parse(blogDetails.body)}
+
+                                    url={window.location.href}
+                                />
                             </div>
                             <div
                                 className="text-base font-medium text-gray-500 

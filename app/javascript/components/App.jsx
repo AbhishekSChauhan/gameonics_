@@ -28,6 +28,7 @@ import Unauthorized from './Unauthorized'
 import Followers from "./Follow/Followers";
 import Following from "./Follow/Following";
 import ActivationPage from "./Auth/ActivationPage";
+import HelmetMetaData from "./Share/HelmetMetaData";
 
 
 const App = () => {
@@ -110,6 +111,7 @@ const App = () => {
   return ( 
       <Router>
         <div>
+          <HelmetMetaData />
           <Toaster position="top-right" reverseOrder={false}/>          
           <NavBar handleLogout={handleLogout} user={user} setUser={setUser} />
           <ScrollToTop />
