@@ -1,5 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react'
 import React, { useState, useEffect,Fragment } from 'react'
+import { FaCamera } from "react-icons/fa";
+import { MdImage } from "react-icons/md";
 
 const ImageUploadModal = ({handleCheckFileSize,handleImageSubmit,uploadLoading, value}) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -15,17 +17,29 @@ const ImageUploadModal = ({handleCheckFileSize,handleImageSubmit,uploadLoading, 
     return (
         <div>
             <div>
-          <button onClick={openModal}
-            className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
-            Change {value}
-          </button>
-        </div>
+              {value === 'profile'? (
+                <FaCamera onClick={openModal}
+                  className="hover:text-blue-700 z-10 mt-1 flex flex row text-blue-500 
+                  text-3xl absolute cursor-pointer right-20 sm:right-56 lg:right-96 md:right-72 bottom-4"
+                />                
+              ):(
+                <button onClick={openModal}
+                  className="bg-transparent hover:text-blue-500 text-blue-700 font-semibold hover:text-white
+                   border px-1 border-blue-500 hover:border-blue-700 rounded">
+                    <div className="flex flex-row items-center justify-center">
+                      <MdImage className="text-3xl pr-1" />
+                      <span>Upload banner image</span>
+                    </div>                    
+                </button>
+              )}
+              
+            </div>
         <Transition appear show={isOpen} as={Fragment}>
-        <Dialog
-          as="div"
-          className="fixed inset-0 z-10 overflow-y-auto"
-          onClose={closeModal}
-        >
+          <Dialog
+            as="div"
+            className="fixed inset-0 z-10 overflow-y-auto"
+            onClose={closeModal}
+          >
           <div className="min-h-screen px-4 text-center">
             <Transition.Child
               as={Fragment}
@@ -80,7 +94,7 @@ const ImageUploadModal = ({handleCheckFileSize,handleImageSubmit,uploadLoading, 
                       className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                       onClick={closeModal}
                     >
-                      Submit
+                      Update
                     </button>
                   </div>
                 </form> 

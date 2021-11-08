@@ -41,6 +41,7 @@ const Share = ({
                     url={"https://morning-anchorage-15866.herokuapp.com" + location.pathname}
                     quote={title}
                     image={shareImage}
+                    hashtag="#gameonics"
                     >
                         <FacebookIcon size={32} round={true} />
                     </FacebookShareButton>
@@ -50,6 +51,7 @@ const Share = ({
                     className="network__share-button"
                     url={"https://morning-anchorage-15866.herokuapp.com" + location.pathname}
                     title={title}
+                    hashtag="#gameonics"
                     >
                         <TwitterIcon size={32} round={true} />
                     </TwitterShareButton>
@@ -77,7 +79,7 @@ const Share = ({
                     className="network__share-button"
                     url = {"https://morning-anchorage-15866.herokuapp.com" + location.pathname}
                     image = {shareImage}
-                    separator=":: "
+                    separator=" :: "
                     title={title}
                     >
                         <WhatsappIcon size={32} round={true} />

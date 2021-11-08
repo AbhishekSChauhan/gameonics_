@@ -47,6 +47,7 @@ Rails.application.routes.draw do
         patch :update_image, to: 'users#update_image'
         patch :set_admin_level, to: 'users#set_admin_level'
         patch :suspend_comms, to: 'users#suspend_communication'
+        patch :update_bio, to: 'users#update_bio'
         post :follow, to: 'users#follow'
         post :unfollow, to: 'users#unfollow'
         get :followers, to: 'users#followers'

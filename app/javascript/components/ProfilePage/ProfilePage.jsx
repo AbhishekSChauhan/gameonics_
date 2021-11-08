@@ -13,6 +13,7 @@ import BookmarkedView from './BookmarkedView';
 import Tabs from './Tabs';
 import Loader from '../Auth/Loader';
 import Follow from '../Follow/Follow';
+import UserBio from './UserBio';
 
 const ProfilePage = ({
     user, handleLogout, handleBlogSelect,
@@ -27,8 +28,10 @@ const ProfilePage = ({
     const [profileImage, setProfileImage] = useState()
     const [receivedFollows, setReceivedFollows] = useState([])
     const [givenFollows, setGivenFollows] = useState([])
-    const [followingCount, setFollowingCount] = useState(0)
-    const [followerCount, setFollowerCount] = useState(0)
+    // const [followingCount, setFollowingCount] = useState(0)
+    // const [followerCount, setFollowerCount] = useState(0)
+    const [getBio, setGetBio] = useState('')
+
 
     const [loading, setLoading] = useState(false)
     const [uploadLoading, setUploadLoading] = useState(false)
@@ -71,8 +74,8 @@ const ProfilePage = ({
         setBookmarkedBlogs(response.data.bookmarked)
         setReceivedFollows(response.data.received_follows)
         setGivenFollows(response.data.given_follows)
-        setFollowingCount(response.data.followinG)
-        setFollowerCount(response.data.followerS)
+        // setFollowingCount(response.data.followinG)
+        // setFollowerCount(response.data.followerS)
         setLoading(false)
         console.log('user details',response)
       }catch(error){
@@ -243,49 +246,85 @@ const ProfilePage = ({
           <div className="w-full rounded-lg shadow-2xl bg-white mx-6 lg:mx-0">
             <div className="p-4 md:p-14 text-center">
               <div>
-                {uploadLoading ? (
+                <div className="relative">
+                  {uploadLoading ? (
+                    <div>
+                      <Loader />
+                    </div>
+                  ):(
+                    <div>
+                      {!selectedUser.profile_image && (
+                        <FaUser className="block rounded-full shadow-xl mx-auto h-48 w-48 text-gray-500 bg-cover bg-center" />
+                      )}
+                      {selectedUser.profile_image && (
+                        <img className="block rounded-full shadow-xl mx-auto h-48 w-48 bg-cover bg-center"
+                        src={selectedUser.profile_image} />
+                      )} 
+                    </div>
+                  )}
+
+                  {(user.username === username) ? (
                   <div>
-                    <Loader />
-                  </div>
+                    <ImageUploadModal 
+                      handleImageSubmit={handleProfileImageSubmit}
+                      handleCheckFileSize={handleCheckFileSize}
+                      uploadLoading={uploadLoading}
+                      value="profile"
+                    />        
+                  </div> 
                 ):(
-                  <div>
-                    {!selectedUser.profile_image && (
-                      <FaUser className="block rounded-full shadow-xl mx-auto h-48 w-48 text-gray-500 bg-cover bg-center" />
-                    )}
-                    {selectedUser.profile_image && (
-                      <img className="block rounded-full shadow-xl mx-auto h-48 w-48 bg-cover bg-center"
-                      src={selectedUser.profile_image} />
-                    )} 
-                  </div>
+                  null
                 )}                         
-              </div>
-              {(user.username === username) ? (
-                <div>
-                  <ImageUploadModal 
-                    handleImageSubmit={handleProfileImageSubmit}
-                    handleCheckFileSize={handleCheckFileSize}
-                    uploadLoading={uploadLoading}
-                    value="profile image"
-                  />        
-                </div> 
-              ):(
-                null
-              )}             
+                </div>
+
+                
+              </div>             
                      
 
               <div>
-                <h1 className="text-3xl font-bold pt-8 lg:pt-5 text-center">{selectedUser.username}</h1>     
+                <h1 className="text-3xl font-bold pt-8 lg:pt-5 text-center">{selectedUser.username}</h1> 
+                <div className="flex flex-row justify-center text-center">
+                  <h2 >Email: </h2>
+                  <span>{selectedUser.email}</span>
+                </div>
+
               </div>
 
 
+            <div>              
               <div>
-                  <Follow
+                <UserBio
+                  username={username} 
+                  user = {user}
+                  selectedUser={selectedUser}
+                  getBio={getBio}
+                  setGetBio={setGetBio}
+                />
+              </div>
+
+              <div className="flex items-center justify-center py-1 overflow-hidden mt-5">
+                {(()=>{
+                    if((getBio && selectedUser.bio !== "null")){
+                        return <div className="w-96">{getBio}</div>
+                    }else if(selectedUser?.bio !== "null"){
+                        return <div className="w-96">{selectedUser.bio}</div>
+                    } else if(getBio){
+                        return <div className="w-96">{getBio}</div>
+                    }else {
+                        return <div></div>
+                    }
+                })()} 
+              </div>
+            </div>
+
+
+              <div>
+                <Follow
                   user={user}
                   username={username}
                   selectedUser={selectedUser} 
                   receivedFollows={receivedFollows}
-                  setReceivedFollows={setReceivedFollows}
-                 
+                  setReceivedFollows={setReceivedFollows}                 
                 />                
               </div>
 
