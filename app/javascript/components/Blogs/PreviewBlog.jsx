@@ -66,7 +66,7 @@ export default function PreviewBlog(props) {
                     toast.success('Blog Pubished')                    
                 }
             }            
-            history.push('/blogs');
+            history.push('/blog');
         } catch(error){
             console.log("blog not published error",error)
             setLoading(false)
@@ -216,7 +216,7 @@ export default function PreviewBlog(props) {
                                     handleImageSubmit={handleBannerImageSubmit}
                                     handleCheckFileSize={handleCheckFileSize}
                                     uploadLoading={uploadLoading}
-                                    value="banner image"
+                                    value="banner"
                                     />                                                                                                    
                             </div>
                             <div className="flex items-center justify-center py-1 overflow-hidden">

@@ -127,7 +127,7 @@ export default function BlogsDashboard({data,showBlog,updateBlog,destroyBlog}) {
                     alt="Avatar"
                   />
                   <div className="flex flex-col mx- cursor-pointer">
-                    <Link to={`/users/${blog.user.username}`} 
+                    <Link to={`/user/${blog.user.username}`} 
                       className="font-semibold text-gray-700 hover:underline">
                       Written by {blog.user.username}
                     </Link>

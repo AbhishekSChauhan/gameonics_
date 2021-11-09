@@ -13,6 +13,7 @@ import BookmarkedView from './BookmarkedView';
 import Tabs from './Tabs';
 import Loader from '../Auth/Loader';
 import Follow from '../Follow/Follow';
+import UserBio from './UserBio';
 
 const ProfilePage = ({
     user, handleLogout, handleBlogSelect,
@@ -27,8 +28,10 @@ const ProfilePage = ({
     const [profileImage, setProfileImage] = useState()
     const [receivedFollows, setReceivedFollows] = useState([])
     const [givenFollows, setGivenFollows] = useState([])
-    const [followingCount, setFollowingCount] = useState(0)
-    const [followerCount, setFollowerCount] = useState(0)
+    // const [followingCount, setFollowingCount] = useState(0)
+    // const [followerCount, setFollowerCount] = useState(0)
+    const [getBio, setGetBio] = useState('')
+
 
     const [loading, setLoading] = useState(false)
     const [uploadLoading, setUploadLoading] = useState(false)
@@ -71,8 +74,8 @@ const ProfilePage = ({
         setBookmarkedBlogs(response.data.bookmarked)
         setReceivedFollows(response.data.received_follows)
         setGivenFollows(response.data.given_follows)
-        setFollowingCount(response.data.followinG)
-        setFollowerCount(response.data.followerS)
+        // setFollowingCount(response.data.followinG)
+        // setFollowerCount(response.data.followerS)
         setLoading(false)
         console.log('user details',response)
       }catch(error){
@@ -94,8 +97,12 @@ const ProfilePage = ({
     const handleCheckFileSize = e => {
         const elem = e.target;
         if (elem.files[0].size > 1048576) {
-        elem.value = '';
-        } else { setProfileImage(elem.files[0]); }
+            elem.value = '';
+            toast.error('Size is more than 1 MB')
+        } else 
+        { 
+          setProfileImage(elem.files[0]); 
+        }
     };
 
     const handleProfileImageSubmit = async(e) => {
@@ -183,11 +190,11 @@ const ProfilePage = ({
     }
 
     const showBlog = (slug) => {
-      history.push(`/blogs/${slug}/show`)
+      history.push(`/blog/${slug}/show`)
     }
 
     const updateBlog = (slug) => {
-      history.push(`/blogs/${slug}/edit`)
+      history.push(`/blog/${slug}/update`)
     }
 
     const destroyBlog = async(slug) => {
@@ -218,7 +225,7 @@ const ProfilePage = ({
     }
 
     const showFollowers = () =>{
-      history.push(`/users/${username}/followers`)
+      history.push(`/user/${username}/followers`)
       // history.push({
       //   pathname: `/users/${username}/followers`,          
       //   state: { user:user,
@@ -230,7 +237,7 @@ const ProfilePage = ({
     }
 
     const showFollowing = () =>{
-      history.push(`/users/${username}/following`)
+      history.push(`/user/${username}/following`)
     }
 
     return (
@@ -239,49 +246,85 @@ const ProfilePage = ({
           <div className="w-full rounded-lg shadow-2xl bg-white mx-6 lg:mx-0">
             <div className="p-4 md:p-14 text-center">
               <div>
-                {uploadLoading ? (
+                <div className="relative">
+                  {uploadLoading ? (
+                    <div>
+                      <Loader />
+                    </div>
+                  ):(
+                    <div>
+                      {!selectedUser.profile_image && (
+                        <FaUser className="block rounded-full shadow-xl mx-auto h-48 w-48 text-gray-500 bg-cover bg-center" />
+                      )}
+                      {selectedUser.profile_image && (
+                        <img className="block rounded-full shadow-xl mx-auto h-48 w-48 bg-cover bg-center"
+                        src={selectedUser.profile_image} />
+                      )} 
+                    </div>
+                  )}
+
+                  {(user.username === username) ? (
                   <div>
-                    <Loader />
-                  </div>
+                    <ImageUploadModal 
+                      handleImageSubmit={handleProfileImageSubmit}
+                      handleCheckFileSize={handleCheckFileSize}
+                      uploadLoading={uploadLoading}
+                      value="profile"
+                    />        
+                  </div> 
                 ):(
-                  <div>
-                    {!selectedUser.profile_image && (
-                      <FaUser className="block rounded-full shadow-xl mx-auto h-48 w-48 text-gray-500 bg-cover bg-center" />
-                    )}
-                    {selectedUser.profile_image && (
-                      <img className="block rounded-full shadow-xl mx-auto h-48 w-48 bg-cover bg-center"
-                      src={selectedUser.profile_image} />
-                    )} 
-                  </div>
+                  null
                 )}                         
-              </div>
-              {(user.username === username) ? (
-                <div>
-                  <ImageUploadModal 
-                    handleImageSubmit={handleProfileImageSubmit}
-                    handleCheckFileSize={handleCheckFileSize}
-                    uploadLoading={uploadLoading}
-                    value="profile image"
-                  />        
-                </div> 
-              ):(
-                null
-              )}             
+                </div>
+
+                
+              </div>             
                      
 
               <div>
-                <h1 className="text-3xl font-bold pt-8 lg:pt-5 text-center">{selectedUser.username}</h1>     
+                <h1 className="text-3xl font-bold pt-8 lg:pt-5 text-center">{selectedUser.username}</h1> 
+                <div className="flex flex-row justify-center text-center">
+                  <h2 >Email: </h2>
+                  <span>{selectedUser.email}</span>
+                </div>
+
               </div>
 
 
+            <div>              
               <div>
-                  <Follow
+                <UserBio
+                  username={username} 
+                  user = {user}
+                  selectedUser={selectedUser}
+                  getBio={getBio}
+                  setGetBio={setGetBio}
+                />
+              </div>
+
+              <div className="flex items-center justify-center py-1 overflow-hidden mt-5">
+                {(()=>{
+                    if((getBio && selectedUser.bio !== "null")){
+                        return <div className="w-96">{getBio}</div>
+                    }else if(selectedUser?.bio !== "null"){
+                        return <div className="w-96">{selectedUser.bio}</div>
+                    } else if(getBio){
+                        return <div className="w-96">{getBio}</div>
+                    }else {
+                        return <div></div>
+                    }
+                })()} 
+              </div>
+            </div>
+
+
+              <div>
+                <Follow
                   user={user}
                   username={username}
                   selectedUser={selectedUser} 
                   receivedFollows={receivedFollows}
-                  setReceivedFollows={setReceivedFollows}
-                 
+                  setReceivedFollows={setReceivedFollows}                 
                 />                
               </div>
 
@@ -311,7 +354,7 @@ const ProfilePage = ({
 
               {(user.username === username) ? (
                 <div className="flex items-center justify-center my-5 overflow-hidden">
-                  <Link to="/blogs/create">
+                  <Link to="/blog/create">
                     <button className="inline-flex justify-center px-4 py-2 text-sm font-medium
                             text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200
                             focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500" 

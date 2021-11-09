@@ -47,7 +47,7 @@ export default function Dropdown({user,setUser}) {
   }
 
   const showProfile = () => {
-    history.push(`/users/${user.username}`)
+    history.push(`/user/${user.username}`)
   }
 
   return (

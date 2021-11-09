@@ -35,7 +35,7 @@ class SessionsController < ApplicationController
 
     def authenticate_user(user)
         if user.try(:authenticate, params[:user][:password])
-            return unless activated(user)
+            # return unless activated(user)
             session[:user_id] = user.id
 
             new_token = generate_token(user.id)
@@ -86,7 +86,7 @@ class SessionsController < ApplicationController
     end
 
     def user_status(user)
-        user_with_status = user.as_json(only: %i[id username
+        user_with_status = user.as_json(only: %i[id username bio email
                                         is_activated token admin_level can_post_date
                                         can_comment_date])
         user_with_status['logged_in'] = true

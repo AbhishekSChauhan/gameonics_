@@ -153,7 +153,7 @@ export default function MyBlogs({data,user,username,showBlog,updateBlog,destroyB
                     alt="Avatar"
                   />
                   <div className="flex flex-col mx- cursor-pointer">
-                      <Link to={`/users/${username}`}
+                      <Link to={`/user/${username}`}
                         className="font-semibold text-gray-700 hover:underline">
                         Written by {username}
                       </Link>

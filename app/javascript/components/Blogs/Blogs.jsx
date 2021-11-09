@@ -32,17 +32,17 @@ export default function Blogs({user}) {
     }
     
     const showBlog = (slug) => {
-        history.push(`/blogs/${slug}/show`)
+        history.push(`/blog/${slug}/show`)
     }
 
     const updateBlog = (slug) => {
-        history.push(`/blogs/${slug}/edit`)
+        history.push(`/blog/${slug}/edit`)
     }
 
     const destroyBlog = async(slug) => {
         if (window.confirm(`Are you sure want to delete this blog`)){
             try {
-                const response = await axios.delete(`/blogs/${slug}`);
+                const response = await axios.delete(`/blog/${slug}`);
                 if(response){
                     response.success = response.status === 200;
                     if (response.data.notice){

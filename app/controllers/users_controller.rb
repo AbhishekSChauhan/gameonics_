@@ -7,7 +7,7 @@ class UsersController < ApplicationController
         all_users = User.all.order(created_at: :desc)
         users_array = []
         all_users.each do |user|
-            new_user = user.as_json(only: %i[id username is_activated admin_level])
+            new_user = user.as_json(only: %i[id username is_activated admin_level bio])
             new_user['can_blog'] = DateTime.now > user.can_post_date
             new_user['can_comment'] = DateTime.now > user.can_comment_date
             new_user['profile_image'] = nil
@@ -52,13 +52,21 @@ class UsersController < ApplicationController
     end
 
     def update_image
-        if @current_user.update_attribute(:profile_image, params[:user][:profile_image])
-            render json:{user: user_with_image(@current_user),
-                        profile_image_url:url_for(@current_user.profile_image),
+        if current_user.update_attribute(:profile_image, params[:user][:profile_image])
+            render json:{user: user_with_image(current_user),
+                        profile_image_url:url_for(current_user.profile_image),
                         notice:"Image added successfully"},
                         status: 200
         else
-            render json: {errors:@current_user.errors.full_messages}, status: 422
+            render json: {errors:current_user.errors.full_messages}, status: 422
+        end
+    end
+
+    def update_bio 
+        if current_user.update_attribute(:bio, params[:bio])
+            render json: {bio: current_user.bio,notice:"Bio updated successfully"}, status: :ok
+        else
+            render json: {errors: current_user.errors.full_messages}, status: 422
         end
     end
 
@@ -167,8 +175,8 @@ class UsersController < ApplicationController
 
     # Returns a hash object of a user with their profile_image included
     def user_with_image(user)
-        user_with_attachment = user.as_json(only: %i[id username is_activated
-                                                 admin_level can_post_date
+        user_with_attachment = user.as_json(only: %i[id username is_activated bio
+                                                 admin_level can_post_date email
                                                  can_comment_date])
         user_with_attachment['profile_image'] = nil
         # user_with_attachment['can_post'] = DateTime.now > user.can_post_date

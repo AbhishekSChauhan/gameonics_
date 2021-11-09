@@ -26,7 +26,7 @@ const TaggedBlogs = () => {
     }
 
     const showBlog = (id) => {
-        history.push(`/blogs/${id}/show`)
+        history.push(`/blog/${id}/show`)
     }
 
     useEffect(()=>{

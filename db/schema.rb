@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_31_135400) do
+ActiveRecord::Schema.define(version: 2021_11_08_053946) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -188,6 +188,7 @@ ActiveRecord::Schema.define(version: 2021_10_31_135400) do
     t.integer "blogs_count"
     t.integer "comments_count"
     t.integer "bookmarks_count"
+    t.string "bio"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

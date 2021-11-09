@@ -70,7 +70,7 @@ const Following = ({user}) => {
                 <h1>{username}'s Followings</h1>
             {selectedUserFollowing.map((Following)=>(
             <div className="relative flex items-center w-full justify-between h-16">
-                <Link to={`/users/${Following.username}`} className="flex flex-row items-center">
+                <Link to={`/user/${Following.username}`} className="flex flex-row items-center">
                 <div className="mx-5">
                     {!Following.profile_image && (
                         <FaUser className="block rounded-full shadow-xl text-gray-500 h-10 w-10 bg-cover bg-center" />
