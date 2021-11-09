@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useState } from 'react'
 import toast from 'react-hot-toast'
 import { MdEdit } from "react-icons/md";
+import Loader from '../Auth/Loader';
 
 
 const UserBio = ({user,username,selectedUser,getBio,setGetBio}) => {
@@ -93,12 +94,23 @@ const UserBio = ({user,username,selectedUser,getBio,setGetBio}) => {
                         </textarea>
                     </div>
 
-                    <button type="submit" 
+                    {/* <button type="submit" 
                     // onClick={closeEditBox}
                         className="border border-blue-700 mt-1 right-0 bg-blue-500 
                         text-white hover:bg-blue-900 py-2 px-4 rounded tracking-wide mr-1"
                     >
                         Update bio
+                    </button> */}
+                    <button type="submit" disabled={loading}
+                        className="border border-blue-700 mt-1 right-0 bg-blue-500 text-white 
+                        text-white hover:bg-blue-900 py-2 px-4 rounded tracking-wide mr-1">
+                            {loading ? (
+                            <div>
+                                <Loader />
+                            </div>
+                            ) : (
+                            <span>Update bio</span>
+                            )}
                     </button>
                 </form>
             ):(

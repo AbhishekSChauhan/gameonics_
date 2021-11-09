@@ -20,14 +20,13 @@ const ImageUploadModal = ({handleCheckFileSize,handleImageSubmit,uploadLoading, 
               {value === 'profile'? (
                 <FaCamera onClick={openModal}
                   className="hover:text-blue-700 z-10 mt-1 flex flex row text-blue-500 
-                  text-3xl absolute cursor-pointer right-20 sm:right-56 lg:right-96 md:right-72 bottom-4"
+                  text-3xl absolute cursor-pointer right-20 sm:right-52 lg:right-96 md:right-72 bottom-4"
                 />                
               ):(
                 <button onClick={openModal}
-                  className="bg-transparent hover:text-blue-500 text-blue-700 font-semibold hover:text-white
-                   border px-1 border-blue-500 hover:border-blue-700 rounded">
+                  className="bg-transparent hover:text-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-blue-700 rounded">
                     <div className="flex flex-row items-center justify-center">
-                      <MdImage className="text-3xl pr-1" />
+                      <MdImage className="text-4xl pr-2" />
                       <span>Upload banner image</span>
                     </div>                    
                 </button>
