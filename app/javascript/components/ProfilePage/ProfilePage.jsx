@@ -242,8 +242,8 @@ const ProfilePage = ({
 
     return (
       <div>
-        <div className="max-w-6xl flex items-center h-auto flex-wrap mx-auto my-4 lg:my-4">
-          <div className="w-full rounded-lg shadow-2xl bg-white mx-6 lg:mx-0">
+        <div className="max-w-6xl flex items-center overflow-hidden h-auto flex-wrap mx-auto my-4 lg:my-4">
+          <div className="w-full rounded-lg shadow-2xl bg-white lg:mx-0">
             <div className="p-4 md:p-14 text-center">
               <div>
                 <div className="relative">
