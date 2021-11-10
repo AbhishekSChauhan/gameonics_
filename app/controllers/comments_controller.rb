@@ -30,8 +30,8 @@ class CommentsController < ApplicationController
         else
             errors = comment.errors.full_messages
             render json: {error: errors}, status: 422
-        end       
-        
+        end  
+        CommentMailer.new_comment(comment).deliver_now
     end
 
     def update

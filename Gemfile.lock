@@ -239,6 +239,7 @@ GEM
       execjs
       railties (>= 3.2)
       tilt
+    redis (4.5.1)
     regexp_parser (2.1.1)
     responders (3.0.1)
       actionpack (>= 5.0)
@@ -275,6 +276,10 @@ GEM
       sendgrid-ruby (~> 6.4)
     sendgrid-ruby (6.5.2)
       ruby_http_client (~> 3.4)
+    sidekiq (6.3.1)
+      connection_pool (>= 2.2.2)
+      rack (~> 2.0)
+      redis (>= 4.2.0)
     social-share-button (1.2.4)
       coffee-rails
     sprockets (4.0.2)
@@ -344,6 +349,7 @@ DEPENDENCIES
   sass-rails (>= 6)
   selenium-webdriver
   sendgrid-actionmailer
+  sidekiq
   social-share-button
   tzinfo-data
   web-console (>= 4.1.0)

@@ -34,6 +34,7 @@ gem 'arctic_admin'
 gem 'cancan'
 gem "bullet"
 gem 'social-share-button'
+gem "sidekiq"
 
 
 # Use Active Storage variant
