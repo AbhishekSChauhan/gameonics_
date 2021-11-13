@@ -24,8 +24,8 @@ const forgotPassword = (email) => {
     return axios.patch('/forgot_password',{email} )
 }
 
-const resetPassword = (password_reset_token,user) => {
-    return axios.patch("/change_password_with_token",{password_reset_token,user})
+const resetPassword = (token,user) => {
+    return axios.patch("/change_password_with_token",{token,user})
 }
 
 const activateAccount = (id,activation_key) => {

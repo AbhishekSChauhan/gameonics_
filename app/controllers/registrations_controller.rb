@@ -29,7 +29,7 @@ class RegistrationsController < ApplicationController
         new_activation_key = generate_token(user.id, 52)
         user.update_attribute(:admin_level, 3) if User.all.size <= 1
         if user.update_attribute(:activation_key, new_activation_key)
-            ActivationMailer.with(user: user).welcome_email.deliver_now
+            ActivationMailer.with(user: user).welcome_email.deliver_later
         end
         session[:user_id] = user.id
         render json:{notice: 'Account registered but activation required'},
@@ -57,7 +57,7 @@ class RegistrationsController < ApplicationController
             new_token = generate_token(user.id, 32, true)
             if user.update_attribute(:password_reset_token,new_token)
                 user.update_attribute(:password_reset_date, DateTime.now)
-                ActivationMailer.with(user: user).password_reset_email.deliver_now
+                ActivationMailer.with(user: user).password_reset_email.deliver_later
             # else
             #     render json:{ errors: user.errors.full_messages}, status: 401
             end
@@ -71,12 +71,12 @@ class RegistrationsController < ApplicationController
     def password_reset_account
         reset_token = params[:password_reset_token]
         # url = "https://morning-anchorage-15866.herokuapp.com/reset_password?token=#{reset_token}"
-        # url = "http://localhost:3000/reset_password?token=#{reset_token}"
+        url = "http://localhost:3000/reset_password?token=#{reset_token}"
 
         # args = {token:reset_token}
         # url = "http://localhost:3000/reset_password?" + args.to_query
         @user = User.find_by(password_reset_token: reset_token)
-        # render json:{user:@user.username}
+        redirect_to url
     end
 
     def change_password
@@ -92,7 +92,7 @@ class RegistrationsController < ApplicationController
     end
 
     def change_password_with_token
-        token = params[:password_reset_token]
+        token = params[:token]
         puts token
         user = User.find_by(password_reset_token: token) if token.present?
         puts user

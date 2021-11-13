@@ -28,7 +28,7 @@ const ActivationPage = ({user}) => {
     {
         var query = window.location.search.substring(1);
         console.log('query',query)
-        var vars = query.split("&");
+        var vars = query.split("&amp;");
         console.log("vars",vars) 
         for (var i=0;i<vars.length;i++) {
             var pair = vars[i].split("=");
@@ -42,6 +42,8 @@ const ActivationPage = ({user}) => {
 
     // const activation_key = getQueryVariable('activation_key')
     const user_id = getQueryVariable('id')
+    console.log('user id',user_id)
+
 
     const handleActivateClick = async(event) => {
         event.preventDefault()
