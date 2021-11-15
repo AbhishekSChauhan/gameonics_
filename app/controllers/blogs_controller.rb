@@ -34,13 +34,14 @@ class BlogsController < ApplicationController
   def show   
       # comments = @blog.comments.select("comments.*, users.username").joins(:user).by_created_at
       impressionist(@blog)
-      # views = @blog.impressionist_count(:filter=>:session_hash) 
+      views =  @blog.impressionist_count(:filter=>:all)
+
       render json: { blog: @blog,
                      tags: @blog.tags,
                      blog_creator: @blog.user.username, 
                      bookmark: @blog.bookmarks, 
                      likes: @blog.likes,
-                    #  views: views
+                     views: views
                     }, 
                     status: :ok
   end
