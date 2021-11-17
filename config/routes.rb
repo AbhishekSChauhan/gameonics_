@@ -32,10 +32,12 @@ Rails.application.routes.draw do
       patch :pin_post, to: 'blogs#pin_post'
       patch :published, to: 'blogs#published'
       patch :banner_image, to: 'blogs#banner_image'
+      
     end
   end
 
   resources :blogs, only: [:index] do
+    get :stats, to: 'stats#index'
     resources :comments
   end
 

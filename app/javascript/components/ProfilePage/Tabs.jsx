@@ -7,7 +7,7 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function Tabs({publishedBlogs,draftBlogs,bookmarkedBlogs,user , username,showBlog,updateBlog,destroyBlog}) {
+export default function Tabs({publishedBlogs,draftBlogs,bookmarkedBlogs,user , username,showBlog,updateBlog,destroyBlog,showStats}) {
   return (
     <Tab.Group>
       <Tab.List className="flex p-1 space-x-1 bg-blue-900/20 rounded-xl">
@@ -88,6 +88,7 @@ export default function Tabs({publishedBlogs,draftBlogs,bookmarkedBlogs,user , u
               showBlog={showBlog}
               updateBlog={updateBlog}
               destroyBlog={destroyBlog}
+              showStats={showStats}
             />
           )}                  
         </Tab.Panel>

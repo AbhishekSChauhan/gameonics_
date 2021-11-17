@@ -3,13 +3,6 @@ class Blog < ApplicationRecord
 
   after_validation :set_slug, only: [:create, :update]
 
-  scope :published, -> do
-    where(published: true)
-  end
-
-  scope :most_recently_published, -> do
-    where(published_at: :desc)
-  end
 
   belongs_to :user, counter_cache: true
   has_many :comments, dependent: :destroy
@@ -27,7 +20,16 @@ class Blog < ApplicationRecord
   scope :not_pinned, ->{ where('is_pinned = false')}
 
   is_impressionable :counter_cache => true, :column_name => :views_count, :unique => :session_hash
+ 
   
+  scope :published, -> do
+    where(published: true)
+  end
+
+  scope :most_recently_published, -> do
+    where(published_at: :desc)
+  end
+
   def created_at
     time = attributes['created_at']
     time.strftime('%a, %-d %b %Y')
@@ -56,6 +58,10 @@ class Blog < ApplicationRecord
     end
   end
 
+  def self.impressions
+    Impression.where(impressionable_type: "Blog")
+  end
+  
   def to_param
     "#{id}-#{slug}"
   end

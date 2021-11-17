@@ -1,12 +1,12 @@
 import React, { useEffect, useState} from 'react'
 import axios from 'axios'
-import { MdDelete,MdEdit } from "react-icons/md";
+import { MdDelete,MdEdit, MdOutlineAnalytics } from "react-icons/md";
 import parse from 'html-react-parser';
 import {Link} from 'react-router-dom'
+import BlogStats from '../Stats/Stats';
+import { CgInsights } from "react-icons/cg";
 
-export default function MyBlogs({data,user,username,showBlog,updateBlog,destroyBlog}) {
-
-    
+export default function MyBlogs({data,user,username,showBlog,updateBlog,destroyBlog,showStats}) {   
     
     return (
       <div className="p-10 grid grid-cols-1 sm:grid-cols-1 sm:justify-center md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -24,8 +24,10 @@ export default function MyBlogs({data,user,username,showBlog,updateBlog,destroyB
                 <div className="z-10 mt-1 flex flex row text-gray-200 text-2xl absolute cursor-pointer right-0 top-0">
                   {(user.username === username) ? (
                     <div className="flex flex row">
+                  
                       <MdDelete onClick={()=>destroyBlog(blog.slug)} />
                       <MdEdit onClick={()=>updateBlog(blog.slug)}/>
+                      <CgInsights onClick={()=>showStats(blog.id)} />
                     </div>                    
                   ):(
                     null
