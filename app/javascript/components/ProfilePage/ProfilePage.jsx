@@ -197,10 +197,14 @@ const ProfilePage = ({
       history.push(`/blog/${slug}/update`)
     }
 
-    const showStats = (slug) => {
+    const showStats = (id, comments_count,bookmarks_count,likeable_count, views_count) => {
       history.push({
           pathname: `/stats`,          
-          state: { slug:slug
+          state: {id:id,
+                  likeable_count: likeable_count,
+                  comments_count: comments_count,
+                  bookmarks_count: bookmarks_count,
+                  views_count: views_count
                   // setReceivedFollows:setReceivedFollows,                
                 }
         })
