@@ -11,10 +11,6 @@ import { GrView } from "react-icons/gr";
 
 
 const BlogStats = () => {
-    const [dataLabel, setDataLabel] = useState([])
-    const [dataValue, setDataValue] = useState([])
-    const [uniqueDataLable, setUniqueDataLable] = useState([])
-    const [uniqueDataValue, setUniqueDataValue] = useState([])
     const [loading, setLoading] = useState(false)
 
     const location = useLocation()
@@ -25,25 +21,11 @@ const BlogStats = () => {
     const views_count = location.state.views_count
 
     useEffect(() => {
-        getStats();
+        // window.scrollTo({
+        //     top:0,
+        //     behavior:"smooth"
+        //   })
     }, [location])  
-
-    const getStats = async() => {
-        setLoading(true)
-        const response = await axios.get(`/blogs/${location.state.id}/stats`)
-        console.log('stats', response)
-        setDataLabel(response.data.count_by_date_keys)
-        setDataValue(response.data.count_by_date_values)
-        setUniqueDataLable(response.data.unique_count_by_date_keys)
-        setUniqueDataValue(response.data.unique_count_by_date_values)
-
-        console.log('dataLabels', response.data.count_by_date_keys)
-        console.log('dataValues', response.data.count_by_date_values)
-        console.log('unique data labels', response.data.unique_count_by_date_keys)
-        console.log('unique data values', response.data.unique_count_by_date_values)
-
-        setLoading(false)
-    }
    
     if(loading){
         <PageLoader />
@@ -91,14 +73,9 @@ const BlogStats = () => {
                             </div> 
 
                             <div>
-                                <div className="flex mb-4 justify-center">
-                                    Chart for last 7 days
-                                </div>
-                                <div className="">
-                                    <Charts dataLabel={dataLabel} dataValue={dataValue} 
-                                        uniqueDataLable={uniqueDataLable}
-                                        uniqueDataValue={uniqueDataValue}
-                                        loading={loading}
+                                <div>
+                                    <Charts
+                                        id={location.state.id} 
                                     />
                                 </div>                                                            
                             </div>

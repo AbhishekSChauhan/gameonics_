@@ -37,7 +37,10 @@ Rails.application.routes.draw do
   end
 
   resources :blogs, only: [:index] do
-    get :stats, to: 'stats#index'
+    member do
+      get :stats, to: 'stats#index'
+      get :show_stats, to: 'stats#show'
+    end
     resources :comments
   end
 
