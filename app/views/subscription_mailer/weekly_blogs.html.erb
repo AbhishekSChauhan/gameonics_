@@ -1,0 +1,27 @@
+<p> Dear Followers: </p>
+<p> Those are the lastest entries to our blog. We invite you to read and share everything we did on this week. </p>
+
+<br/>
+<%# <table> %>
+<%# <% @blog.each do |blog| %> %>
+  <%#= link_to blog_url(blog) do %>
+      <%# <tr style="display:flex; float:left; clear:both;"> %>
+        <%# <td style="display:flex; float:left; clear:both; height: 80px; width: 100px;"> %>
+          <%# <% if blog.image.present? %> %>
+            <%# <%= image_tag blog.image, class:"principal-home-image-slider" %> %>
+          <%# <% end %> %>
+        <%# </td> %>
+        <%# <td> %>
+          <%# <h3> %>
+          <%# <%= blog.title %> %>
+            <%# <%= link_to blog.title, :controller => "blog", :action => "show", :only_path => false, :id => blog.id %> %>
+          <%# </h3> %>
+        <%# </td> %>
+      <%# </tr> %>
+  <%# end %>
+<%# <% end %> %>
+<%# </table> %>
+  <% @blog.each do |blog| %>
+    <%= blog.title %>
+  <% end %>
+

@@ -18,12 +18,14 @@ class User < ApplicationRecord
 
     validates :username, length: {in: 4..32 }, presence: true,
                         uniqueness: {case_sensitive: true}
+
     
-    VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i.freeze
+    VALID_EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i.freeze
+    
 
     validates :email, length:{maximum:255}, presence: true,
                         uniqueness: {case_sensitive: false},
-                        format:{with: VALID_EMAIL_REGEX }
+                        format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }
     
     validates :password, length: {minimum: 8}, presence: true
     validates :password, confirmation: true

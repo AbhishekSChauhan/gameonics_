@@ -2,7 +2,7 @@ class BlogsController < ApplicationController
   before_action :set_blog, only: [:show, :update, :destroy, :lock_blog, :pin_blog]
   before_action :authorized_user?, except: [:index, :show, :lock_blog, :pin_blog]
   before_action :authorized_admin?, only: [:lock_blog,:pin_blog]
-  # impressionist actions: [:show], unique: [:session_hash]
+  # impressionist :actions=>[:show,:index]
 
   def index
     @blogs =  Blog.published
@@ -33,14 +33,17 @@ class BlogsController < ApplicationController
 
   def show   
       # comments = @blog.comments.select("comments.*, users.username").joins(:user).by_created_at
-      impressionist(@blog)
-      # views = @blog.impressionist_count(:filter=>:session_hash) 
+      unique_views = impressionist(@blog)
+      # unique_views = @blog.impressionist_count(:filter=>:session_hash)
+      # views =  @blog.impressionist_count(:filter=>:all)
+
       render json: { blog: @blog,
                      tags: @blog.tags,
                      blog_creator: @blog.user.username, 
                      bookmark: @blog.bookmarks, 
                      likes: @blog.likes,
-                    #  views: views
+                    #  views: views,
+                     unique_views: unique_views,
                     }, 
                     status: :ok
   end

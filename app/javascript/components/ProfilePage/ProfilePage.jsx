@@ -197,6 +197,19 @@ const ProfilePage = ({
       history.push(`/blog/${slug}/update`)
     }
 
+    const showStats = (id, comments_count,bookmarks_count,likeable_count, views_count) => {
+      history.push({
+          pathname: `/stats`,          
+          state: {id:id,
+                  likeable_count: likeable_count,
+                  comments_count: comments_count,
+                  bookmarks_count: bookmarks_count,
+                  views_count: views_count
+                  // setReceivedFollows:setReceivedFollows,                
+                }
+        })
+    }
+
     const destroyBlog = async(slug) => {
         try {
             const response = await axios.delete(`/blogs/${slug}`);
@@ -223,6 +236,7 @@ const ProfilePage = ({
             console.log(error)
         }
     }
+
 
     const showFollowers = () =>{
       history.push(`/user/${username}/followers`)
@@ -377,6 +391,7 @@ const ProfilePage = ({
                   showBlog={showBlog}
                   updateBlog={updateBlog}
                   destroyBlog={destroyBlog}
+                  showStats={showStats}
                 />
               </div>
 

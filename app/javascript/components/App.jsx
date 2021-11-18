@@ -29,6 +29,8 @@ import Followers from "./Follow/Followers";
 import Following from "./Follow/Following";
 import ActivationPage from "./Auth/ActivationPage";
 import HelmetMetaData from "./Share/HelmetMetaData";
+import Subscribe from "./Subscribe.jsx/Subscribe";
+import BlogStats from "./Stats/Stats";
 
 
 const App = () => {
@@ -128,6 +130,8 @@ const App = () => {
             <Route exact path="/forgot_password" component={ForgotPassword} />
             <Route exact path="/reset_password" component={ResetPassword} />
 
+            <Route exact path="/subscribe" component={Subscribe} />
+
             <Route exact path="/blog" 
               render={(props)=>(
                 <Blogs 
@@ -179,6 +183,16 @@ const App = () => {
                 />
               )}
             />
+
+            <Route exact path="/stats" 
+              render={(props)=>(
+                <BlogStats 
+                  user={user} 
+                />
+              )}
+            />
+
+            <Route exact path="/stats" component = {BlogStats} />
             <Route exact path="/tags/:tag" component={TaggedBlogs} />
 
             <ProtectedRoute              
