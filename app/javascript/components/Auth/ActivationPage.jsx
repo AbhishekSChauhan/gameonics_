@@ -28,7 +28,7 @@ const ActivationPage = ({user}) => {
     {
         var query = window.location.search.substring(1);
         console.log('query',query)
-        var vars = query.split("&");
+        var vars = query.split("&amp;");
         console.log("vars",vars) 
         for (var i=0;i<vars.length;i++) {
             var pair = vars[i].split("=");
@@ -55,7 +55,10 @@ const ActivationPage = ({user}) => {
             // setUser(response.data.username)
             setLoading(false)
             toast.success(response.data.notice)
-            history.push('/login')
+            history.push({
+                pathname: '/login',          
+                state: { goToRoot:true  }
+            })
         }catch(error){
             console.log("signup error",error)
             setLoading(false)
@@ -114,11 +117,16 @@ const ActivationPage = ({user}) => {
                                         <div className="w-full h-96 text-gray-500">        
                                             <div>                
                                                 <span className="text-lg text-gray-700 md:text-2xl font-bold leading-tight">
-                                                    {user.username}
+                                                   Hey {user.username}
                                                 </span>
                                                 <div className="text-md text-gray-700 md:text-2xl font-semibold leading-tight">
                                                     Your account is already activated
                                                 </div>
+                                                <Link to="/" 
+                                                    className="w-full block bg-indigo-500 hover:bg-indigo-400 focus:bg-indigo-400 text-center text-white
+                                                        font-semibold rounded-lg px-4 py-3 mt-6">
+                                                    Back to home
+                                                </Link>
                                             </div>
                                         </div>
                                     ):(
@@ -127,6 +135,11 @@ const ActivationPage = ({user}) => {
                                                 <div className="text-md text-gray-700 md:text-2xl font-semibold leading-tight">
                                                     Your account is not activated
                                                 </div>
+                                                <Link to="/" 
+                                                    className="w-full block bg-indigo-500 hover:bg-indigo-400 focus:bg-indigo-400 text-center text-white
+                                                        font-semibold rounded-lg px-4 py-3 mt-6">
+                                                    Back to home
+                                                </Link>
                                             </div>
                                         </div>
                                     )}

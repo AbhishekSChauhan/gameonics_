@@ -13,6 +13,7 @@ export default function Login({handleLogin}) {
   const [loading, setLoading] = useState(false)
   const [password, setPassword] = useState("")
   const [credential, setCredential] = useState('');
+
   
   const handleSubmit = async(event) => {
     event.preventDefault();
@@ -31,13 +32,13 @@ export default function Login({handleLogin}) {
       handleLogin(retrievedUser)
       setLoading(false)
       console.log("login res",response)
-      // if(location.state.goToRoot === true){
-      //   history.push('/')
-      // }else{
+      if(!location.state){
+        history.goBack()
+      }else if((location.state.goToRoot === true)){
+        history.push('/')
+      }else{
         history.goBack();
-      // }
-      // history.push("/")
-     
+      }     
     }catch(error) {
       console.log("login error",error)
       setLoading(false)

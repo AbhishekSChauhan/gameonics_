@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_11_055533) do
+ActiveRecord::Schema.define(version: 2021_11_18_115146) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -73,11 +73,11 @@ ActiveRecord::Schema.define(version: 2021_11_11_055533) do
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "image"
     t.boolean "is_pinned", default: false
     t.boolean "is_locked", default: false
     t.boolean "published", default: false
     t.datetime "published_at"
+    t.string "image"
     t.integer "views_count"
     t.integer "comments_count"
     t.integer "likeable_count"
@@ -188,13 +188,16 @@ ActiveRecord::Schema.define(version: 2021_11_11_055533) do
     t.datetime "token_date"
     t.string "password_reset_token"
     t.datetime "password_reset_date"
-    t.datetime "can_post_date", default: "2021-11-11 08:21:50"
-    t.datetime "can_comment_date", default: "2021-11-11 08:21:50"
+    t.datetime "can_post_date", default: "2021-09-15 18:05:06"
+    t.datetime "can_comment_date", default: "2021-09-15 18:05:07"
     t.integer "likeable_count"
     t.integer "blogs_count"
     t.integer "comments_count"
     t.integer "bookmarks_count"
     t.string "bio"
+    t.string "facebook_url"
+    t.string "twitter_url"
+    t.string "instagram_url"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

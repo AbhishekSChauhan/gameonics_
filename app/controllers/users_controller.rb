@@ -70,6 +70,9 @@ class UsersController < ApplicationController
         end
     end
 
+    def add_social_link
+    end
+
     def follow
         selected_user = User.find_by(username: params[:username])
         fo = current_user.given_follows.create(followed_id: selected_user.id)
@@ -80,7 +83,6 @@ class UsersController < ApplicationController
         selected_user = User.find_by(username: params[:username])
         ufo = current_user.given_follows.find_by(followed_id: selected_user.id)
         d_ufo = ufo.destroy
-        puts selected_user.given_follows
         render json: {notice: 'Unfollowed user',ufo:ufo,d_ufo:d_ufo,
          fol:selected_user.received_follows, given_fol:current_user.given_follows
         }
