@@ -60,6 +60,7 @@ Rails.application.routes.draw do
       post :unfollow, to: 'users#unfollow'
       get :followers, to: 'users#followers'
       get :following, to: 'users#following'
+      patch :add_social_link, to: 'users#add_social_link'
     end
   end
 

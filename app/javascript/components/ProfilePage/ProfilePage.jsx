@@ -20,7 +20,7 @@ const ProfilePage = ({
     user, handleLogout, handleBlogSelect,
 }) => {
     let history = useHistory()
-    const {username} = useParams()
+    const {username} = useParams() //ex.. username is of selected user
 
     const [selectedUser, setSelectedUser] = useState({})
     const [publishedBlogs, setPublishedBlogs] = useState([])
@@ -345,7 +345,11 @@ const ProfilePage = ({
 
 
               <div className="mt-3 pb-16 lg:pb-0 w-4/5 lg:w-full mx-auto flex flex-wrap items-center justify-center">
-                <UsersSocialLinks />
+                <UsersSocialLinks 
+                  username={username}
+                  selectedUser={selectedUser}
+                  user={user}
+                 />
               </div>
 
               {(user.username === username) ? (

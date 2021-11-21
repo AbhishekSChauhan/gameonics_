@@ -71,6 +71,28 @@ class UsersController < ApplicationController
     end
 
     def add_social_link
+        # fb = params[:facebook_url]
+        # twitter = params[:twitter_url]
+        # insta = params[:instagram_url]
+        # if (current_user.update_attribute(:facebook_url,params[:facebook_url]))||
+        #     (current_user.update_attribute(:twitter_url,params[:twitter_url])) ||
+        #     (current_user.update_attribute(:instagram_url,params[:instagram_url]))
+        #     render json: {link: current_user,notice:"Link added successfully"}, status: :ok
+        # else
+        #     render json: {errors: current_user.errors.full_messages}, status: 422
+        # end
+        if params[:facebook_url]
+            current_user.update_attribute(:facebook_url,params[:facebook_url])
+            render json: {link: current_user.facebook_url ,notice:"Facebook link added successfully"}, status: :ok
+        elsif params[:twitter_url]
+            current_user.update_attribute(:twitter_url,params[:twitter_url])
+            render json: {link: current_user.twitter_url ,notice:"Twitter link added successfully"}, status: :ok
+        elsif params[:instagram_url]
+            current_user.update_attribute(:instagram_url,params[:instagram_url])
+            render json: {link: current_user.instagram_url ,notice:"Instagram link added successfully"}, status: :ok
+        else
+            render json: {errors: current_user.errors.full_messages}, status: 422
+        end
     end
 
     def follow
@@ -178,8 +200,9 @@ class UsersController < ApplicationController
     # Returns a hash object of a user with their profile_image included
     def user_with_image(user)
         user_with_attachment = user.as_json(only: %i[id username is_activated bio
-                                                 admin_level can_post_date email
-                                                 can_comment_date])
+                                                    admin_level can_post_date email
+                                                    can_comment_date facebook_url 
+                                                    twitter_url instagram_url])
         user_with_attachment['profile_image'] = nil
         # user_with_attachment['can_post'] = DateTime.now > user.can_post_date
         # user_with_attachment['can_comment'] = DateTime.now > user.can_comment_date

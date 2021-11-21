@@ -20,6 +20,7 @@ const UserBio = ({user,username,selectedUser,getBio,setGetBio}) => {
             setEditOpen(false)
             setGetBio(response.data.bio)
             toast.success(response.data.notice)
+            setLoading(false)
         }catch(error){
             console.log("signup error",error)
             setLoading(false)
