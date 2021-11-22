@@ -13,8 +13,10 @@ import BookmarkedView from './BookmarkedView';
 import Tabs from './Tabs';
 import Loader from '../Auth/Loader';
 import Follow from '../Follow/Follow';
-import UserBio from './UserBio';
-import UsersSocialLinks from './UsersSocialLinks';
+import { MdEdit } from "react-icons/md";
+import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
+
+
 
 const ProfilePage = ({
     user, handleLogout, handleBlogSelect,
@@ -29,9 +31,6 @@ const ProfilePage = ({
     const [profileImage, setProfileImage] = useState()
     const [receivedFollows, setReceivedFollows] = useState([])
     const [givenFollows, setGivenFollows] = useState([])
-    // const [followingCount, setFollowingCount] = useState(0)
-    // const [followerCount, setFollowerCount] = useState(0)
-    const [getBio, setGetBio] = useState('')
 
 
     const [loading, setLoading] = useState(false)
@@ -75,8 +74,6 @@ const ProfilePage = ({
         setBookmarkedBlogs(response.data.bookmarked)
         setReceivedFollows(response.data.received_follows)
         setGivenFollows(response.data.given_follows)
-        // setFollowingCount(response.data.followinG)
-        // setFollowerCount(response.data.followerS)
         setLoading(false)
         console.log('user details',response)
       }catch(error){
@@ -189,7 +186,6 @@ const ProfilePage = ({
                   comments_count: comments_count,
                   bookmarks_count: bookmarks_count,
                   views_count: views_count
-                  // setReceivedFollows:setReceivedFollows,                
                 }
         })
     }
@@ -224,18 +220,19 @@ const ProfilePage = ({
 
     const showFollowers = () =>{
       history.push(`/user/${username}/followers`)
-      // history.push({
-      //   pathname: `/users/${username}/followers`,          
-      //   state: { user:user,
-      //           selectedUser:selectedUser ,
-      //           receivedFollows:receivedFollows,
-      //           // setReceivedFollows:setReceivedFollows,                
-      //         }
-      // })
     }
 
     const showFollowing = () =>{
       history.push(`/user/${username}/following`)
+    }
+
+    const showEditOptions = () => {
+      history.push({
+        pathname: `/user/${username}/edit`,          
+        state: { user:user,
+                selectedUser:selectedUser ,
+              }
+      })
     }
 
     return (
@@ -262,17 +259,17 @@ const ProfilePage = ({
                   )}
 
                   {(user.username === username) ? (
-                  <div>
-                    <ImageUploadModal 
-                      handleImageSubmit={handleProfileImageSubmit}
-                      handleCheckFileSize={handleCheckFileSize}
-                      uploadLoading={uploadLoading}
-                      value="profile"
-                    />        
-                  </div> 
-                ):(
-                  null
-                )}                         
+                    <div>
+                      <ImageUploadModal 
+                        handleImageSubmit={handleProfileImageSubmit}
+                        handleCheckFileSize={handleCheckFileSize}
+                        uploadLoading={uploadLoading}
+                        value="profile"
+                      />        
+                    </div> 
+                  ):(
+                    null
+                  )}                         
                 </div>
 
                 
@@ -289,29 +286,28 @@ const ProfilePage = ({
               </div>
 
 
+              {(user.username === username) ? (
+                <div>
+                  <button className="hover:text-blue-700 z-10 mt-4 flex flex-row text-blue-500 
+                      text-lg absolute cursor-pointer right-10 md:right-12 lg:right-64 lg:bottom-0 bottom-56"
+                      onClick={showEditOptions}>
+                      <MdEdit onClick={showEditOptions}
+                      className="px-1 pt-1 text-2xl justify-centert text-center"
+                      />
+                      <div className="text-center">
+                        Edit profile page
+                      </div>
+                  </button>        
+                </div> 
+              ):(
+                null
+              )} 
+
+
             <div>              
-              <div>
-                <UserBio
-                  username={username} 
-                  user = {user}
-                  selectedUser={selectedUser}
-                  getBio={getBio}
-                  setGetBio={setGetBio}
-                />
-              </div>
 
               <div className="flex items-center justify-center py-1 overflow-hidden mt-5">
-                {(()=>{
-                    if((getBio && selectedUser.bio !== "null")){
-                        return <div className="w-96">{getBio}</div>
-                    }else if(selectedUser?.bio !== "null"){
-                        return <div className="w-96">{selectedUser.bio}</div>
-                    } else if(getBio){
-                        return <div className="w-96">{getBio}</div>
-                    }else {
-                        return <div></div>
-                    }
-                })()} 
+                {selectedUser.bio}
               </div>
             </div>
 
@@ -344,12 +340,30 @@ const ProfilePage = ({
               </div>              
 
 
-              <div className="mt-3 pb-16 lg:pb-0 w-4/5 lg:w-full mx-auto flex flex-wrap items-center justify-center">
-                <UsersSocialLinks 
-                  username={username}
-                  selectedUser={selectedUser}
-                  user={user}
-                 />
+              <div className="mt-3 pb-4 lg:pb-0 w-4/5 lg:w-full mx-auto flex flex-wrap items-center justify-center">
+                 <div className="flex flex-row items-center justify-center my-5 overflow-hidden">
+                        {(selectedUser.facebook_url === "") ? (
+                            null
+                        ):(
+                            <a href={selectedUser.facebook_url} target="_blank" rel="noopener noreferrer" >
+                                <FaFacebookF className="mx-2 text-lg cursor-pointer" />
+                            </a>
+                        )}
+                        {(selectedUser.twitter_url === "") ? (
+                            null
+                        ):(
+                            <a href={selectedUser.twitter_url} target="_blank" rel="noopener noreferrer" >
+                                <FaTwitter className="mx-2 text-lg cursor-pointer" />
+                            </a>
+                        )}
+                        {(selectedUser.instagram_url === "") ? (
+                            null
+                        ):(
+                            <a href={selectedUser.instagram_url} target="_blank" rel="noopener noreferrer" >
+                                <FaInstagram className="mx-2 text-lg cursor-pointer" />
+                            </a>
+                        )}
+                    </div>
               </div>
 
               {(user.username === username) ? (
@@ -379,10 +393,7 @@ const ProfilePage = ({
                   destroyBlog={destroyBlog}
                   showStats={showStats}
                 />
-              </div>
-
-
-              
+              </div>              
             </div>
           </div>
         </div>

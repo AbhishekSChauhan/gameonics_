@@ -61,6 +61,7 @@ Rails.application.routes.draw do
       get :followers, to: 'users#followers'
       get :following, to: 'users#following'
       patch :add_social_link, to: 'users#add_social_link'
+      patch :update_profile, to: 'users#update_profile'
     end
   end
 

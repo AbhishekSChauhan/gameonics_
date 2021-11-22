@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-    before_action :authorized_user?, only: [:update_image]
+    before_action :authorized_user?, only: [:update_image,:update_profile]
     before_action :authorized_admin?, only: [:suspend_communication, :set_admin_level]
     before_action :set_user, only: [:show, :update_image, :set_admin_level, :suspend_communication]
 
@@ -71,16 +71,6 @@ class UsersController < ApplicationController
     end
 
     def add_social_link
-        # fb = params[:facebook_url]
-        # twitter = params[:twitter_url]
-        # insta = params[:instagram_url]
-        # if (current_user.update_attribute(:facebook_url,params[:facebook_url]))||
-        #     (current_user.update_attribute(:twitter_url,params[:twitter_url])) ||
-        #     (current_user.update_attribute(:instagram_url,params[:instagram_url]))
-        #     render json: {link: current_user,notice:"Link added successfully"}, status: :ok
-        # else
-        #     render json: {errors: current_user.errors.full_messages}, status: 422
-        # end
         if params[:facebook_url]
             current_user.update_attribute(:facebook_url,params[:facebook_url])
             render json: {link: current_user.facebook_url ,notice:"Facebook link added successfully"}, status: :ok
@@ -93,6 +83,19 @@ class UsersController < ApplicationController
         else
             render json: {errors: current_user.errors.full_messages}, status: 422
         end
+    end
+
+    def update_profile
+        if @current_user
+            current_user.update_attribute(:username, params[:username])
+            current_user.update_attribute(:bio, params[:bio])
+            current_user.update_attribute(:facebook_url,params[:facebook_url])
+            current_user.update_attribute(:twitter_url,params[:twitter_url])
+            current_user.update_attribute(:instagram_url,params[:instagram_url])
+            render json: {user: user_with_image(current_user),notice:"Profile details updated successfully"}, status: :ok
+        else
+            render json: {errors: current_user.errors.full_messages}, status: 422
+        end 
     end
 
     def follow
@@ -188,6 +191,10 @@ class UsersController < ApplicationController
 
     def set_user
         @user = User.find_by(username: params[:username])
+    end
+
+    def user_params
+        params.require(:user).permit(:bio, :facebook_url, :twitter_url, :instagram_url)
     end
 
     def suspend_comms(user, comms, attr)

@@ -64,10 +64,10 @@ const UserBio = ({user,username,selectedUser,getBio,setGetBio}) => {
 
             {(user.username === username) ? (
                 <div>
-                    <MdEdit onClick={openEditBox}
+                    {/* <MdEdit onClick={openEditBox}
                     className="hover:text-blue-700 z-10 mt-4 flex flex row text-blue-500 
                     text-2xl absolute cursor-pointer right-7 md:right-40 lg:right-60 -top-3"
-                    />
+                    /> */}
                     {/* Update bio
                     </button> */}
                 </div>
