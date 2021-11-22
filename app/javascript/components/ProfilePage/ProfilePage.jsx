@@ -242,34 +242,56 @@ const ProfilePage = ({
             <div className="p-4 md:p-14 text-center">
               <div>
                 <div className="relative">
-                  {uploadLoading ? (
-                    <div>
-                      <Loader />
-                    </div>
-                  ):(
-                    <div>
-                      {!selectedUser.profile_image && (
-                        <FaUser className="block rounded-full shadow-xl mx-auto h-48 w-48 text-gray-500 bg-cover bg-center" />
-                      )}
-                      {selectedUser.profile_image && (
-                        <img className="block rounded-full shadow-xl mx-auto h-48 w-48 bg-cover bg-center"
-                        src={selectedUser.profile_image} />
-                      )} 
-                    </div>
-                  )}
-
+                  <div className="flex justify-center">
                   {(user.username === username) ? (
                     <div>
-                      <ImageUploadModal 
-                        handleImageSubmit={handleProfileImageSubmit}
-                        handleCheckFileSize={handleCheckFileSize}
-                        uploadLoading={uploadLoading}
-                        value="profile"
-                      />        
+                      <button className="hover:text-blue-700 flex flex-row text-blue-500 
+                          text-lg absolute cursor-pointer left-20 -bottom-28 ml-3 sm:-bottom-28
+                          sm:left-56  md:ml-5 md:-bottom-28 md:left-80 lg:-bottom-28 lg:left-96 lg:ml-12"
+                          onClick={showEditOptions}>
+                          <MdEdit onClick={showEditOptions}
+                          className="px-1 pt-1 text-2xl justify-centert text-center"
+                          />
+                          <div className="text-center">
+                            Edit profile page
+                          </div>
+                      </button>        
                     </div> 
                   ):(
                     null
-                  )}                         
+                  )}
+                  </div>
+
+                  <div>
+                    {uploadLoading ? (
+                      <div>
+                        <Loader />
+                      </div>
+                    ):(
+                      <div>
+                        {!selectedUser.profile_image && (
+                          <FaUser className="block rounded-full shadow-xl mx-auto h-48 w-48 text-gray-500 bg-cover bg-center" />
+                        )}
+                        {selectedUser.profile_image && (
+                          <img className="block rounded-full shadow-xl mx-auto h-48 w-48 bg-cover bg-center"
+                          src={selectedUser.profile_image} />
+                        )} 
+                      </div>
+                    )}
+
+                    {(user.username === username) ? (
+                      <div>
+                        <ImageUploadModal 
+                          handleImageSubmit={handleProfileImageSubmit}
+                          handleCheckFileSize={handleCheckFileSize}
+                          uploadLoading={uploadLoading}
+                          value="profile"
+                        />        
+                      </div> 
+                    ):(
+                      null
+                    )} 
+                  </div>                        
                 </div>
 
                 
@@ -277,36 +299,16 @@ const ProfilePage = ({
                      
 
               <div>
-                <h1 className="text-3xl font-bold pt-8 lg:pt-5 text-center">{selectedUser.username}</h1> 
+                <h1 className="text-3xl font-bold pt-5 lg:pt-5 text-center">{selectedUser.username}</h1> 
                 <div className="flex flex-row justify-center text-center">
                   <h2 >Email: </h2>
                   <span>{selectedUser.email}</span>
                 </div>
 
               </div>
-
-
-              {(user.username === username) ? (
-                <div>
-                  <button className="hover:text-blue-700 z-10 mt-4 flex flex-row text-blue-500 
-                      text-lg absolute cursor-pointer right-10 md:right-12 lg:right-64 lg:bottom-0 bottom-56"
-                      onClick={showEditOptions}>
-                      <MdEdit onClick={showEditOptions}
-                      className="px-1 pt-1 text-2xl justify-centert text-center"
-                      />
-                      <div className="text-center">
-                        Edit profile page
-                      </div>
-                  </button>        
-                </div> 
-              ):(
-                null
-              )} 
-
-
             <div>              
 
-              <div className="flex items-center justify-center py-1 overflow-hidden mt-5">
+              <div className="flex items-center justify-center py-1 overflow-hidden mt-7 lg:mt-8">
                 {selectedUser.bio}
               </div>
             </div>

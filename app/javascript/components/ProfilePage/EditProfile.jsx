@@ -207,7 +207,7 @@ const EditProfile = ({
                     <input  
                     placeholder="Update your username" 
                     value={username}
-                    // disabled={true}
+                    disabled={true}
                     onChange={(e) => setUsername(e.target.value)}
                     className="w-96 py-3 -ml-10 pl-10 pr-3 rounded-lg bg-gray-200  
                     border items-center focus:border-blue-500 focus:bg-white focus:outline-none" />
@@ -294,17 +294,19 @@ const EditProfile = ({
                     </div>
                 </div>
 
-                <button type="submit" disabled={loading}
-                    className="flex justify-center w-96 block bg-indigo-500 hover:bg-indigo-400 focus:bg-indigo-400 
-                    text-white font-semibold rounded-lg px-4 py-3 mt-6">
-                    {loading ? (
-                        <div>
-                        <Loader />
-                        </div>
-                    ) : (
-                        <span>Update</span>
-                    )}
-                </button>
+                <div className="flex justify-center">
+                  <button type="submit" disabled={loading}
+                      className="flex justify-center w-96 block bg-indigo-500 hover:bg-indigo-400 focus:bg-indigo-400 
+                      text-white font-semibold rounded-lg px-4 py-3 mt-6">
+                      {loading ? (
+                          <div>
+                          <Loader />
+                          </div>
+                      ) : (
+                          <span>Update</span>
+                      )}
+                  </button>
+                </div>
             </form>
                                            
             </div>
