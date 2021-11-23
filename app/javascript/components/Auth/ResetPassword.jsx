@@ -76,8 +76,7 @@ const ResetPassword = ({history}) => {
                 setPassword={setPassword}
                 loading={loading}
                 handleSubmit={handleSubmit}
-            />
-            
+            />            
         </div>
     )
 }

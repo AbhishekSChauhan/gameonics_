@@ -31,6 +31,7 @@ import ActivationPage from "./Auth/ActivationPage";
 import HelmetMetaData from "./Share/HelmetMetaData";
 import Subscribe from "./Subscribe.jsx/Subscribe";
 import BlogStats from "./Stats/Stats";
+import EditProfile from "./ProfilePage/EditProfile";
 
 
 const App = () => {
@@ -159,7 +160,14 @@ const App = () => {
                 />
               )} 
             />
-            {/* <Route exact path="/user/:username/followers" component={Followers} />           */}
+
+            <Route exact path="/user/:username/edit" 
+              render={(props)=>(
+                <EditProfile 
+                  user = {user} 
+                />
+              )} 
+            />
             
             <Route exact path="/user/:username/followers" 
               render={(props)=>(

@@ -48,6 +48,13 @@ const ForgotPassword = () => {
                 <div className="w-full h-96">
                     <h2 className="text-lg text-gray-600 md:text-2xl font-bold leading-tight">{notice}</h2>
                 </div>
+                <div>
+                    <Link to="/" 
+                        className="w-full block bg-indigo-500 hover:bg-indigo-400 focus:bg-indigo-400
+                            text-white text-center font-semibold rounded-lg px-4 py-3 mt-6">
+                            Back to home
+                    </Link>
+                </div>
             </div>
         </div>
     ) : (

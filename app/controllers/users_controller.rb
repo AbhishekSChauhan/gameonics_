@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-    before_action :authorized_user?, only: [:update_image]
+    before_action :authorized_user?, only: [:update_image,:update_profile]
     before_action :authorized_admin?, only: [:suspend_communication, :set_admin_level]
     before_action :set_user, only: [:show, :update_image, :set_admin_level, :suspend_communication]
 
@@ -70,6 +70,34 @@ class UsersController < ApplicationController
         end
     end
 
+    def add_social_link
+        if params[:facebook_url]
+            current_user.update_attribute(:facebook_url,params[:facebook_url])
+            render json: {link: current_user.facebook_url ,notice:"Facebook link added successfully"}, status: :ok
+        elsif params[:twitter_url]
+            current_user.update_attribute(:twitter_url,params[:twitter_url])
+            render json: {link: current_user.twitter_url ,notice:"Twitter link added successfully"}, status: :ok
+        elsif params[:instagram_url]
+            current_user.update_attribute(:instagram_url,params[:instagram_url])
+            render json: {link: current_user.instagram_url ,notice:"Instagram link added successfully"}, status: :ok
+        else
+            render json: {errors: current_user.errors.full_messages}, status: 422
+        end
+    end
+
+    def update_profile
+        if @current_user
+            current_user.update_attribute(:username, params[:username])
+            current_user.update_attribute(:bio, params[:bio])
+            current_user.update_attribute(:facebook_url,params[:facebook_url])
+            current_user.update_attribute(:twitter_url,params[:twitter_url])
+            current_user.update_attribute(:instagram_url,params[:instagram_url])
+            render json: {user: user_with_image(current_user),notice:"Profile details updated successfully"}, status: :ok
+        else
+            render json: {errors: current_user.errors.full_messages}, status: 422
+        end 
+    end
+
     def follow
         selected_user = User.find_by(username: params[:username])
         fo = current_user.given_follows.create(followed_id: selected_user.id)
@@ -80,7 +108,6 @@ class UsersController < ApplicationController
         selected_user = User.find_by(username: params[:username])
         ufo = current_user.given_follows.find_by(followed_id: selected_user.id)
         d_ufo = ufo.destroy
-        puts selected_user.given_follows
         render json: {notice: 'Unfollowed user',ufo:ufo,d_ufo:d_ufo,
          fol:selected_user.received_follows, given_fol:current_user.given_follows
         }
@@ -166,6 +193,10 @@ class UsersController < ApplicationController
         @user = User.find_by(username: params[:username])
     end
 
+    def user_params
+        params.require(:user).permit(:bio, :facebook_url, :twitter_url, :instagram_url)
+    end
+
     def suspend_comms(user, comms, attr)
         comms_i = comms.map(&:to_i)
         d = DateTime.now
@@ -176,8 +207,9 @@ class UsersController < ApplicationController
     # Returns a hash object of a user with their profile_image included
     def user_with_image(user)
         user_with_attachment = user.as_json(only: %i[id username is_activated bio
-                                                 admin_level can_post_date email
-                                                 can_comment_date])
+                                                    admin_level can_post_date email
+                                                    can_comment_date facebook_url 
+                                                    twitter_url instagram_url])
         user_with_attachment['profile_image'] = nil
         # user_with_attachment['can_post'] = DateTime.now > user.can_post_date
         # user_with_attachment['can_comment'] = DateTime.now > user.can_comment_date

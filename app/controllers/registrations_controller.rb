@@ -29,7 +29,7 @@ class RegistrationsController < ApplicationController
         new_activation_key = generate_token(user.id, 52)
         user.update_attribute(:admin_level, 3) if User.all.size <= 1
         if user.update_attribute(:activation_key, new_activation_key)
-            ActivationMailer.with(user: user).welcome_email.deliver_later
+            ActivationMailer.with(user: user).welcome_email.deliver_now
         end
         session[:user_id] = user.id
         render json:{notice: 'Account registered but activation required'},
@@ -57,7 +57,7 @@ class RegistrationsController < ApplicationController
             new_token = generate_token(user.id, 32, true)
             if user.update_attribute(:password_reset_token,new_token)
                 user.update_attribute(:password_reset_date, DateTime.now)
-                ActivationMailer.with(user: user).password_reset_email.deliver_later
+                ActivationMailer.with(user: user).password_reset_email.deliver_now
             # else
             #     render json:{ errors: user.errors.full_messages}, status: 401
             end

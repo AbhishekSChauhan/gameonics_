@@ -44,19 +44,4 @@ class User < ApplicationRecord
         offset / 1.hours >= 1 # Token expires after 1 hour
     end
 
-    # #Follows a user
-    # def follow(other_user)
-    #     given_follows.create(followed_id: other_user.id)
-    # end
-
-    # #Unfollows a user
-    # def unfollow(other_user)
-    #     given_follows.find_by(followed_id: other_user.id).destroy
-    # end
-
-    # # Returns true if the current user is following the other user.
-    # def following?(other_user)
-    #     following.include?(other_user)
-    # end
-
 end
