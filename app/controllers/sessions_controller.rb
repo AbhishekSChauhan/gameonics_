@@ -45,7 +45,7 @@ class SessionsController < ApplicationController
                 render json:{user: user_status(user),
                             status: :created,
                             notice: "Login Successful",
-                            current_user:@current_user
+                            # current_user:@current_user
                            }
             else
                 render json:{errors: user.errors.full_messages.to_sentence}, status: 401
@@ -62,15 +62,11 @@ class SessionsController < ApplicationController
     end
 
     def logged_in
-        # render json:{
-        #         # logged_in: true,
-        #         user: user_status(@current_user)
-        #     }
-        !current_user.nil?
+        # !current_user.nil?
         if @current_user
             render json:{
                 logged_in: true,
-                user: @current_user
+                user: user_status(@current_user)
             }
         else
             render json: {
@@ -79,11 +75,6 @@ class SessionsController < ApplicationController
         end
     end
 
-    def logout
-        reset_session
-        render json: {status:200, logged_out: true,
-                notice:"Logout Successful"}
-    end
 
     def user_status(user)
         user_with_status = user.as_json(only: %i[id username bio email
