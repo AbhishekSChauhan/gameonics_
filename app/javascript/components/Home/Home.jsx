@@ -7,7 +7,7 @@ const Home = (props) => {
         <div>      
             <SlickSlider />
             <Viewers />
-            <Games />
+            {/* <Games /> */}
         </div>
     )
 }

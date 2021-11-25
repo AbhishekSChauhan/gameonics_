@@ -11,12 +11,10 @@ export default function BlogsDashboard({data,showBlog,updateBlog,destroyBlog}) {
         {data.map((blog)=>(
           <div key={blog.id}
           className="transition-all duration-150 flex w-full"
-        >
-         
+        >         
           <div
             className="flex flex-col items-stretch min-h-full pb-4 mb-6 transition-all duration-150 bg-white rounded-lg shadow-lg hover:shadow-2xl"
-          >
-            
+          >            
             <div className="md:flex-shrink-0 relative">
               {/* <div className="z-10 mt-1 flex flex row text-gray-200 text-2xl absolute cursor-pointer right-0 top-0">
                   <MdDelete onClick={()=>destroyBlog(blog.slug)} />

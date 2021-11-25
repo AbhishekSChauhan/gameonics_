@@ -8,6 +8,10 @@ import authApi from '../apis/auth';
 import toast from "react-hot-toast";
 import {useHistory} from 'react-router-dom'
 import { MdMenu } from "react-icons/md";
+import { ImHome } from "react-icons/im";
+import { FaBlog, FaStarHalfAlt } from "react-icons/fa";
+import { MdGames } from "react-icons/md";
+
 
 export default function MenuDropdown() {
   const [loading, setLoading] = useState(false)
@@ -44,9 +48,12 @@ export default function MenuDropdown() {
                 <Menu.Item>
                 {({ active }) => (
                     <Link to={`/`}
-                    className={`${active && 'text-gray-700'}`}
+                    className={`${active && 'text-gray-700 '}`}
                     >
-                    Home
+                      <div className="flex flex-row items-center">
+                      <ImHome className="mx-0.5"/>
+                      <span className="mx-0.5">Home</span>
+                      </div>
                     </Link>                    
                 )}
                 </Menu.Item>
@@ -55,10 +62,13 @@ export default function MenuDropdown() {
               <div className="px-1 py-1 text-gray-500">
                 <Menu.Item>
                 {({ active }) => (
-                    <Link to={`/`}
-                    className={`${active && 'text-gray-700'}`}
+                    <Link to={`/games`}
+                    className={`${active && 'text-gray-700 '}`}
                     >
-                    News
+                      <div className="flex flex-row items-center">
+                      <MdGames className="mx-0.5" />
+                      <span className="mx-0.5">Games</span>
+                      </div>
                     </Link>
                 )}
                 </Menu.Item>
@@ -68,9 +78,12 @@ export default function MenuDropdown() {
                 <Menu.Item>
                 {({ active }) => (
                     <Link to={`/blog`}
-                    className={`${active && 'text-gray-700'}`}
+                    className={`${active && 'text-gray-700 '}`}
                     >
-                    Blog
+                      <div className="flex flex-row items-center">
+                      <FaBlog className="mx-0.5" />
+                      <span className="mx-0.5">Blog</span>
+                      </div>
                     </Link>
                 )}
                 </Menu.Item>
@@ -80,9 +93,12 @@ export default function MenuDropdown() {
                 <Menu.Item>
                 {({ active }) => (
                     <Link to={`/`}
-                    className={`${active && 'text-gray-700'}`}
+                    className={`${active && 'text-gray-700 '}`}
                     >
-                    Reviews
+                      <div className="flex flex-row items-center">
+                      <FaStarHalfAlt className="mx-0.5" />
+                      <span className="mx-0.5">Reviews</span>
+                      </div>
                     </Link>
                 )}
                 </Menu.Item>

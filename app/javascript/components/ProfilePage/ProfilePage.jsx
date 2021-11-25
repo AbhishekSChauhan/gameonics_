@@ -292,9 +292,7 @@ const ProfilePage = ({
                       null
                     )} 
                   </div>                        
-                </div>
-
-                
+                </div>                
               </div>             
                      
 
@@ -304,7 +302,6 @@ const ProfilePage = ({
                   <h2 >Email: </h2>
                   <span>{selectedUser.email}</span>
                 </div>
-
               </div>
             <div>              
 

@@ -33,6 +33,7 @@ import HelmetMetaData from "./Share/HelmetMetaData";
 import Subscribe from "./Subscribe.jsx/Subscribe";
 import BlogStats from "./Stats/Stats";
 import EditProfile from "./ProfilePage/EditProfile";
+import Games from "./Games/Games";
 
 
 const App = () => {
@@ -179,13 +180,23 @@ const App = () => {
                 />
               )} 
             />
+            
+            <Route exact path="/games" component = {Games} />
+            <Route exact path="/games/:slug" component = {GameDetails} />
+
+            {/* <Route path="/games" 
+              render={(props)=>(
+                <Games 
+                />
+              )}
+            />
 
             <Route path="/games/:slug" 
               render={(props)=>(
                 <GameDetails 
                 />
               )}
-            />
+            /> */}
 
             <Route exact path="/stats" 
               render={(props)=>(
