@@ -68,7 +68,7 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
 
   root to: "home#index"
-  get '*path' => 'home#index', constraints: -> (req) { !(req.fullpath =~ /^\/rails\/.*/) }
+  get '*path', to: 'home#index', constraints: -> (req) { !(req.fullpath =~ /^\/rails\/.*/) }
   # get '*path', :to => 'home#index', :constraints => { path: /(?!blogs|comments|tags|users|admin|rails).*/ }
 
   # get '/*pages', to: 'home#index', page: /(?!blogs|comments|tags|users|admin|rails).*/ 

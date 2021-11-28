@@ -89,13 +89,14 @@ const GamesSlider = ({history,upcomingGames,trendingGames,popularGames}) => {
                 </a>
             </div>
             {/* <div className="mx-10 my-10 grid grid-cols-1 "> */}
-                <Slider {...settings}>
+                <Slider {...settings} >
                     {trendingGames.map((game)=>(
-                        <div className="lg:mb-20 group">    
+                      // <div className="grid grid-cols-3 gap-5 ">
+                        <div className="lg:mb-20 group ">    
                         <img src={game.background_image} 
                         alt="geme cover" onClick={()=>showGame(game.slug)}
                         className="w-88 h-64 cursor-pointer bg-blend-screen hover:bg-blend-normal 
-                        object-cover object-center rounded-lg shadow-md bg-opacity-100" />                            
+                        object-cover object-center rounded-2xl border-t-2 border-b-2 border-l-4 border-r-4 border-white  bg-opacity-100" />                            
                         <div className="relative px-4 -mt-16 lg:hidden lg:group-hover:block">
                           <div className="bg-white p-4 rounded-lg shadow-lg h-32 w-88">
                             <div className="flex items-baseline">
@@ -125,9 +126,10 @@ const GamesSlider = ({history,upcomingGames,trendingGames,popularGames}) => {
                           </div>
                         </div>                      
                     </div>
+                    // </div>
                   ))}                        
                 </Slider>
-            {/* </div>  */}
+             
 
 
             <div className="flex flex-wrap items-center flex-1 px-4 py-1 text-center mx-auto">
@@ -144,7 +146,7 @@ const GamesSlider = ({history,upcomingGames,trendingGames,popularGames}) => {
                         <div className="lg:mb-20 group">    
                           <img src={game.background_image} 
                           alt="game cover" onClick={()=>showGame(game.slug)}
-                          className="w-88 h-64 cursor-pointer bg-gray-400 hover:bg-gray-50 object-cover object-center rounded-lg shadow-md" />                            
+                          className="w-88 h-64 cursor-pointer bg-gray-400 hover:bg-gray-50 object-cover object-center rounded-2xl border-t-2 border-b-2 border-l-4 border-r-4 border-white " />                            
                           <div className="relative px-4 -mt-16 lg:hidden lg:group-hover:block">
                             <div className="bg-white p-4 rounded-lg shadow-lg h-32 w-88">
                               <div className="flex items-baseline">
@@ -192,7 +194,7 @@ const GamesSlider = ({history,upcomingGames,trendingGames,popularGames}) => {
                       <div className="lg:mb-20 group">    
                           <img src={game.background_image} 
                           alt="geme cover" onClick={()=>showGame(game.slug)}
-                          className="w-88 h-64 cursor-pointer bg-gray-400 hover:bg-gray-50 object-cover object-center rounded-lg shadow-md" />                            
+                          className="w-88 h-64 cursor-pointer bg-gray-400 hover:bg-gray-50 object-cover object-center rounded-2xl border-t-2 border-b-2 border-l-4 border-r-4 border-white " />                            
                           <div className="relative px-4 -mt-16 lg:hidden lg:group-hover:block ">
                             <div className="bg-white p-4 rounded-lg shadow-lg h-32 w-88">
                               <div className="flex items-baseline">

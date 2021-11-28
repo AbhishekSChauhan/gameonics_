@@ -57,7 +57,7 @@ const SearchGames = () => {
           <div className="relative max-w-4xl mx-auto items-center justify-between">
             <div className="flex flex-col ">
               <div className="w-full ">
-                <div className='mb-8 mr-3 relative'>
+                <div className='mb-8 lg:mr-3 relative'>
                   <form onSubmit={submitHandler}>
                   <input
                     aria-label='powered by RAWG.io'
@@ -85,8 +85,7 @@ const SearchGames = () => {
           <div className="relative max-w-6xl mx-auto items-center justify-between">
             <div className="flex flex-col ">
               <div className="w-full ">
-                <div className='mb-8 mr-3 relative'>                
-                  <div className="relative w-full mx-auto items-center justify-between">
+                
                   {dataIsReady ? (
                     <div className="p-10 grid grid-cols-1 sm:grid-cols-1 
                       md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-3">
@@ -96,7 +95,7 @@ const SearchGames = () => {
                             alt="geme cover" onClick={()=>showGame(game.slug)}
                             className="w-88 h-64 cursor-pointer object-cover object-center rounded-lg shadow-md" />                            
                             <div className="relative px-4 -mt-16  ">
-                              <div className="bg-white p-4 rounded-lg shadow-lg h-32 w-88">
+                              <div className="bg-white p-4 rounded-lg shadow-lg h-32 w-80">
                                 <div className="flex items-baseline">
                                   {game.genres.map((genre)=>(                                  
                                     <div className="mx-1 text-gray-600 text-xs font-semibold tracking-wider">
@@ -129,9 +128,7 @@ const SearchGames = () => {
                     </div>
               
                   ) : null
-                  }
-                  </div>
-                </div>
+                  }                  
               </div>
             </div>
           </div>
