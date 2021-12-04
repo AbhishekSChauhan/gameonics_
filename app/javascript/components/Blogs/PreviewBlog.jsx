@@ -123,7 +123,7 @@ export default function PreviewBlog(props) {
           setImageSelected(true)
           setUploadLoading(false)
         }catch(error) {
-          console.log("signup error",error)
+          console.log("image upload error",error)
           setUploadLoading(false)
           if(error){
               toast.error(

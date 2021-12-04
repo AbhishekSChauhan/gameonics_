@@ -28,7 +28,7 @@ const ProfilePage = ({
     const [publishedBlogs, setPublishedBlogs] = useState([])
     const [draftBlogs, setDraftBlogs] = useState([])
     const [bookmarkedBlogs, setBookmarkedBlogs] = useState([])
-    const [profileImage, setProfileImage] = useState()
+    const [profileImage, setProfileImage] = useState('')
     const [receivedFollows, setReceivedFollows] = useState([])
     const [givenFollows, setGivenFollows] = useState([])
 
@@ -118,7 +118,7 @@ const ProfilePage = ({
           setSelectedUser(response.data.user)
           setUploadLoading(false)
         }catch(error) {
-          console.log("signup error",error)
+          console.log("image upload error",error)
           setUploadLoading(false)
           if(error){
               toast.error(
