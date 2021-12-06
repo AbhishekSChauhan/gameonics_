@@ -23,7 +23,7 @@ export default function Comment({comment,user,setUpdateLikes,updateLikes}) {
                     {comment.content}
                 </p>
             </div>
-            <div className="pl-3">
+            <div className="pl-3 mt-2">
                 <CommentLikes 
                     comment={comment}
                     user={user} 
