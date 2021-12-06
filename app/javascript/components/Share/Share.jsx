@@ -32,7 +32,7 @@ const Share = ({
     const url = window.location.href
     console.log('url location', window.location.href)
     return (
-        <div>
+        <div className="flex flex-row lg:flex-col mx-auto ml-10 lg:ml-0">
             {/* <div class="w-full bg-white rounded-lg shadow-lg lg:w-1/3">
                 <ul class="divide-y-2 divide-gray-100">
                     <li class="p-3 hover:bg-blue-600 hover:text-blue-200"> */}
