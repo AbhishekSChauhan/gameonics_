@@ -20,6 +20,7 @@ import ProfilePage from "./ProfilePage/ProfilePage";
 import authApi from "./apis/auth";
 import GameDetails from "./Games/GameDetails";
 import { Redirect } from "react-router-dom";
+import axios from "axios";
 
 import PreviewBlog from "./Blogs/PreviewBlog";
 import TaggedBlogs from "./Tags/TaggedBlogs";
@@ -32,6 +33,7 @@ import HelmetMetaData from "./Share/HelmetMetaData";
 import Subscribe from "./Subscribe.jsx/Subscribe";
 import BlogStats from "./Stats/Stats";
 import EditProfile from "./ProfilePage/EditProfile";
+import Games from "./Games/Games";
 
 
 const App = () => {
@@ -83,23 +85,17 @@ const App = () => {
   }
 
   const checkLoginStatus = async() => {
-    setLoading(true)
-    if(sessionStorage.getItem('user')){
-      const retrievedUser = JSON.parse(sessionStorage.getItem('user'))
-      console.log('Session Storage user',retrievedUser)
-      setUser(retrievedUser)
-    }
-    // try{
-    //   // const response = await authApi.logged_in()
-    //   const response = await axios.get("/logged_in",{ headers: { Authorization: user.token } })
-    //   setUser(response.data.user)
-    //   console.log('logged in status', response)
-    //   if(sessionStorage.getItem('user')){
-    //     setLoading(false);
-    //   }
-    // }catch(error) {
-    //   setLoading(false)
-    // } 
+    setLoading(true)    
+    try{
+      const response = await authApi.loggedIn()
+      // const response = await axios.get("/logged_in",{ withCredentials: true })
+      setUser(response.data.user)
+      console.log('logged in status', response)
+      setLoading(false)
+    }catch(error) {
+      setLoading(false)
+      console.log('check login error',error)
+    } 
   }
   
 
@@ -184,15 +180,25 @@ const App = () => {
                 />
               )} 
             />
+            
+            <Route exact path="/games" component = {Games} />
+            <Route exact path="/games/:slug" component = {GameDetails} />
+
+            {/* <Route path="/games" 
+              render={(props)=>(
+                <Games 
+                />
+              )}
+            />
 
             <Route path="/games/:slug" 
               render={(props)=>(
                 <GameDetails 
                 />
               )}
-            />
+            /> */}
 
-            <Route exact path="/stats" 
+            <Route exact path="/:slug/stats" 
               render={(props)=>(
                 <BlogStats 
                   user={user} 

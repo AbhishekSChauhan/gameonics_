@@ -17,14 +17,16 @@ class BlogsController < ApplicationController
     #                             }
     #                           )
     #                   }
-    data = @blogs.as_json(include: {user: {only: [:username,:id]}})
+    data = @blogs.as_json(include: {user: {only: [:username,:id, :avatar]}})
+    # data = @blogs.includes(:user, :tags)
+    tags = @blogs.as_json(include: :tags)
     if params[:tag]
       tagged_blogs = Blog.tagged_with(params[:tag])
       pub_tagged_blogs = tagged_blogs.where(published:true)
       data = pub_tagged_blogs.as_json(include: {user: {only: :username}})
       render json: { blogs: data, tag_count: data.length} , status: :ok
     else
-      render json: { blogs: data } , status: :ok
+      render json: { blogs: data, tags: tags } , status: :ok
     end
 
 
@@ -39,7 +41,9 @@ class BlogsController < ApplicationController
 
       render json: { blog: @blog,
                      tags: @blog.tags,
-                     blog_creator: @blog.user.username, 
+                     blog_creator: @blog.user.username,
+                     blog_creator_img: @blog.user.avatar ,
+                     blog_user: @blog.user,
                      bookmark: @blog.bookmarks, 
                      likes: @blog.likes,
                     #  views: views,

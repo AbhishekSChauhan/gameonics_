@@ -28,7 +28,7 @@ const ProfilePage = ({
     const [publishedBlogs, setPublishedBlogs] = useState([])
     const [draftBlogs, setDraftBlogs] = useState([])
     const [bookmarkedBlogs, setBookmarkedBlogs] = useState([])
-    const [profileImage, setProfileImage] = useState()
+    const [profileImage, setProfileImage] = useState('')
     const [receivedFollows, setReceivedFollows] = useState([])
     const [givenFollows, setGivenFollows] = useState([])
 
@@ -118,7 +118,7 @@ const ProfilePage = ({
           setSelectedUser(response.data.user)
           setUploadLoading(false)
         }catch(error) {
-          console.log("signup error",error)
+          console.log("image upload error",error)
           setUploadLoading(false)
           if(error){
               toast.error(
@@ -178,9 +178,9 @@ const ProfilePage = ({
       history.push(`/blog/${slug}/update`)
     }
 
-    const showStats = (id, comments_count,bookmarks_count,likeable_count, views_count) => {
+    const showStats = (id,slug, comments_count,bookmarks_count,likeable_count, views_count) => {
       history.push({
-          pathname: `/stats`,          
+          pathname: `/${slug}/stats`,          
           state: {id:id,
                   likeable_count: likeable_count,
                   comments_count: comments_count,
@@ -237,7 +237,7 @@ const ProfilePage = ({
 
     return (
       <div>
-        <div className="max-w-6xl flex items-center overflow-hidden h-auto flex-wrap mx-auto my-4 lg:my-4">
+        <div className="max-w-7xl flex items-center overflow-hidden h-auto flex-wrap mx-auto ">
           <div className="w-full rounded-lg shadow-2xl bg-white lg:mx-0">
             <div className="p-4 md:p-14 text-center">
               <div>
@@ -246,8 +246,8 @@ const ProfilePage = ({
                   {(user.username === username) ? (
                     <div>
                       <button className="hover:text-blue-700 flex flex-row text-blue-500 
-                          text-lg absolute cursor-pointer left-20 -bottom-28 ml-3 sm:-bottom-28
-                          sm:left-56  md:ml-5 md:-bottom-28 md:left-80 lg:-bottom-28 lg:left-96 lg:ml-12"
+                          text-lg absolute cursor-pointer left-20 -bottom-28 ml-5 sm:-bottom-28
+                          sm:left-56  md:ml-5 md:-bottom-28 md:left-80 lg:-bottom-28 lg:left-96 lg:ml-28"
                           onClick={showEditOptions}>
                           <MdEdit onClick={showEditOptions}
                           className="px-1 pt-1 text-2xl justify-centert text-center"
@@ -292,19 +292,16 @@ const ProfilePage = ({
                       null
                     )} 
                   </div>                        
-                </div>
-
-                
+                </div>                
               </div>             
                      
 
               <div>
                 <h1 className="text-3xl font-bold pt-5 lg:pt-5 text-center">{selectedUser.username}</h1> 
                 <div className="flex flex-row justify-center text-center">
-                  <h2 >Email: </h2>
+                  <h2 >Email: &nbsp; </h2>
                   <span>{selectedUser.email}</span>
                 </div>
-
               </div>
             <div>              
 
@@ -383,7 +380,7 @@ const ProfilePage = ({
                 null
               )}              
 
-              <div>
+              <div >
                 <Tabs 
                   bookmarkedBlogs={bookmarkedBlogs}
                   draftBlogs={draftBlogs}

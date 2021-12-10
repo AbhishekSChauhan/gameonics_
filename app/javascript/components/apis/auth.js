@@ -33,7 +33,7 @@ const activateAccount = (id,activation_key) => {
 }
 
 const loggedIn = () => {
-    return axios.get("/logged_in",{ headers: { Authorization: user.token } })
+    return axios.get("/logged_in",{ withCredentials: true })
 }
 
 const authApi = {

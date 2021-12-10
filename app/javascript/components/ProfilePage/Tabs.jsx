@@ -71,7 +71,7 @@ export default function Tabs({publishedBlogs,draftBlogs,bookmarkedBlogs,user , u
       <Tab.Panel
             // key={idx}
             className={classNames(
-              'bg-white rounded-xl p-3',
+              'bg-white rounded-xl p-0 sm:p-3',
               'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60'
             )}
         >
@@ -95,7 +95,7 @@ export default function Tabs({publishedBlogs,draftBlogs,bookmarkedBlogs,user , u
         <Tab.Panel
             // key={idx}
             className={classNames(
-              'bg-white rounded-xl p-3',
+              'bg-white rounded-xl p-0 sm:p-3',
               'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60'
             )}
         >
@@ -116,7 +116,7 @@ export default function Tabs({publishedBlogs,draftBlogs,bookmarkedBlogs,user , u
         <Tab.Panel
             // key={idx}
             className={classNames(
-              'bg-white rounded-xl p-3',
+              'bg-white rounded-xl p-0 sm:p-3',
               'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60'
             )}
         >

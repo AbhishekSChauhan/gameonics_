@@ -93,7 +93,7 @@ const Bookmarks = ({blog,user,bookmark,setBookmark}) => {
                         : {pointerEvents:'inherit'}
                     }
                     className="cursor-pointer text-black hover:text-black
-                    hover:text-black"
+                    hover:text-black h-6 w-6"
                 />
                 
                 </div>
@@ -105,7 +105,7 @@ const Bookmarks = ({blog,user,bookmark,setBookmark}) => {
                         ? {pointerEvents:'none',backgroundColor:'transparent'}
                         : {pointerEvents:'inherit'}
                     }
-                    className="cursor-pointer"
+                    className="cursor-pointer h-6 w-6"
                 />
                 </div>
             )}

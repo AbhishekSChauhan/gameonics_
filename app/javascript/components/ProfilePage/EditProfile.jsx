@@ -15,8 +15,6 @@ import BookmarkedView from './BookmarkedView';
 import Tabs from './Tabs';
 import Loader from '../Auth/Loader';
 import Follow from '../Follow/Follow';
-import UserBio from './UserBio';
-import UsersSocialLinks from './UsersSocialLinks';
 import { VscAccount } from "react-icons/vsc";
 
 const EditProfile = ({

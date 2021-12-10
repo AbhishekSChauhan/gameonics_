@@ -30,6 +30,7 @@ class UsersController < ApplicationController
                             .merge({blogs: bookmark.blog},
                             # {views: bookmark.blog.impressionist_count},
                             {blog_creator: bookmark.blog.user.username},
+                            {avatar: bookmark.blog.user.avatar},
                             {likes: bookmark.blog.likes},
                             {comments: bookmark.blog.comments}                             
                             )}
@@ -53,37 +54,16 @@ class UsersController < ApplicationController
 
     def update_image
         if current_user.update_attribute(:profile_image, params[:user][:profile_image])
+            current_user.update_attribute(:avatar, url_for(current_user.profile_image))
             render json:{user: user_with_image(current_user),
-                        profile_image_url:url_for(current_user.profile_image),
+                        avatar:url_for(current_user.profile_image),
                         notice:"Image added successfully"},
                         status: 200
         else
             render json: {errors:current_user.errors.full_messages}, status: 422
         end
     end
-
-    def update_bio 
-        if current_user.update_attribute(:bio, params[:bio])
-            render json: {bio: current_user.bio,notice:"Bio updated successfully"}, status: :ok
-        else
-            render json: {errors: current_user.errors.full_messages}, status: 422
-        end
-    end
-
-    def add_social_link
-        if params[:facebook_url]
-            current_user.update_attribute(:facebook_url,params[:facebook_url])
-            render json: {link: current_user.facebook_url ,notice:"Facebook link added successfully"}, status: :ok
-        elsif params[:twitter_url]
-            current_user.update_attribute(:twitter_url,params[:twitter_url])
-            render json: {link: current_user.twitter_url ,notice:"Twitter link added successfully"}, status: :ok
-        elsif params[:instagram_url]
-            current_user.update_attribute(:instagram_url,params[:instagram_url])
-            render json: {link: current_user.instagram_url ,notice:"Instagram link added successfully"}, status: :ok
-        else
-            render json: {errors: current_user.errors.full_messages}, status: 422
-        end
-    end
+    
 
     def update_profile
         if @current_user
@@ -206,7 +186,7 @@ class UsersController < ApplicationController
 
     # Returns a hash object of a user with their profile_image included
     def user_with_image(user)
-        user_with_attachment = user.as_json(only: %i[id username is_activated bio
+        user_with_attachment = user.as_json(only: %i[id username is_activated bio avatar
                                                     admin_level can_post_date email
                                                     can_comment_date facebook_url 
                                                     twitter_url instagram_url])

@@ -92,12 +92,12 @@ export const Comments = ({blog,user}) => {
                     blogId={blog?.id}
                 /> 
             ):( 
-                <Link to="/login">
+                <Link to="/login" className="font-medium sm:p-2 p-1 text-base border-2 border-gray-500">
                     Login to share your views on this article.
                 </Link>
             )}  
                          
-            <div className="text-lg my-5">
+            <div className="text-lg my-8">
                 {comments.length === 0 ? 
                     <p>Be the first one to comment</p> :
                     <span>Comments({comments.length})</span>
