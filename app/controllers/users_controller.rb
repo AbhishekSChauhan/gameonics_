@@ -30,6 +30,7 @@ class UsersController < ApplicationController
                             .merge({blogs: bookmark.blog},
                             # {views: bookmark.blog.impressionist_count},
                             {blog_creator: bookmark.blog.user.username},
+                            {avatar: bookmark.blog.user.avatar},
                             {likes: bookmark.blog.likes},
                             {comments: bookmark.blog.comments}                             
                             )}

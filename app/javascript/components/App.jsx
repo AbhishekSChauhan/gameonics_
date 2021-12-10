@@ -198,7 +198,7 @@ const App = () => {
               )}
             /> */}
 
-            <Route exact path="/stats" 
+            <Route exact path="/:slug/stats" 
               render={(props)=>(
                 <BlogStats 
                   user={user} 

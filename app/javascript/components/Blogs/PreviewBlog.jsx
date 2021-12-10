@@ -166,27 +166,45 @@ export default function PreviewBlog(props) {
 
 
     return (
-        <div className="bg-white">                
-                <div className="max-w-6xl mx-auto mt-10 col-span-2">
-                    <div className="relative max-w-4xl mx-auto items-center justify-between">
+        <div className="bg-white mx-6">                
+                <div className="max-w-6xl mx-auto mt-5 sm:mt-6 col-span-2">
+                    <div className="relative text-justify max-w-4xl mx-auto items-center justify-between">
                         <div className="flex flex-col ">
+                            <div className="absolute flex items-center justify-center right-0 sm:right-0 lg:-right-36 sm:-top-4 -top-8 py-1 overflow-hidden">
+                                <button className="group inline-flex justify-center px-4 py-2 text-sm font-medium w-32
+                                    text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:bg-blue-400
+                                    focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500" 
+                                    onClick={handlePublish}          
+                                >
+                                    Publish
+                                </button>
+                            </div>
+                            <div className="absolute flex items-center justify-center right-0 sm:right-0 lg:-right-36 sm:top-8 top-4 py-1 overflow-hidden">
+                                <button className="inline-flex justify-center px-4 py-2 text-sm font-medium w-32
+                                    text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200
+                                    focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500" 
+                                    onClick={(published && imageSelected) ? handlePublishedSubmit : handleUnpublisherror}          
+                                >
+                                    Post your blog
+                                </button>
+                            </div> 
                           <div className="w-full">
                             <div>
                                 {uploadLoading ? (
-                                <div>
+                                <div className="my-4">
                                     <Loader />
                                 </div>
                                 ):(
-                                <div className="flex items-center justify-center py-1 overflow-hidden mt-5">
+                                <div className="flex items-center justify-center pb-1 overflow-hidden mt-5">
                                     {(()=>{
                                         if((imagePosted && blogDetails.image !== "null")){
-                                            return <img className="block shadow-xl mx-auto h-96 w-full bg-cover bg-center"
+                                            return <img className="block shadow-xl mx-auto h-96 mt-10 md:mt-16 lg:mt-10 w-full bg-cover bg-center"
                                             src={imagePosted}/>
                                         }else if(blogDetails?.image !== "null"){
-                                            return <img className="block shadow-xl mx-auto h-96 w-full bg-cover bg-center"
+                                            return <img className="block shadow-xl mx-auto h-96 mt-10 md:mt-16 lg:mt-10 w-full bg-cover bg-center"
                                             src={blogDetails?.image}/>
                                         } else if(imagePosted ){
-                                            return <img className="block shadow-xl mx-auto h-96 w-full bg-cover bg-center"
+                                            return <img className="block shadow-xl mx-auto h-96 mt-10 md:mt-16 lg:mt-10 w-full bg-cover bg-center"
                                             src={imagePosted}/>
                                         }else {
                                             return <div></div>
@@ -195,23 +213,10 @@ export default function PreviewBlog(props) {
                                 </div>
                                 )}                         
                             </div>
-                           
-                            <div className="flex items-center justify-center py-1 overflow-hidden">
-                                <h2 className="text-gray-700 text-xl font-bold ">
-                                    {parse(blogDetails?.title)}
-                                </h2>
-                                {/* by <span className="text-gray-700 pl-2 text-lg font-bold">{BannerIsetBannerImage?.username}</span> */}
-                            </div>
 
+                            
 
-                            <div className="flex items-center justify-center py-1 overflow-hidden">
-                                <div className="prose-lg">
-                                    {parse(blogDetails?.body)}
-                                </div>
-                            </div>                       
-                            </div> 
-
-                            <div className="flex items-center justify-center py-1 overflow-hidden">
+                            <div className="absolute flex items-center justify-center py-1 overflow-hidden left-0 -top-3 sm:top-0 sm:right-0">
                                     <ImageUploadModal 
                                     handleImageSubmit={handleBannerImageSubmit}
                                     handleCheckFileSize={handleCheckFileSize}
@@ -219,24 +224,21 @@ export default function PreviewBlog(props) {
                                     value="banner"
                                     />                                                                                                    
                             </div>
+
+                            <div className="flex items-center mt-5 sm:mt-5 lg:mt-5 justify-center my-3 overflow-hidden">
+                                <h2 className="text-gray-700 text-xl font-bold ">
+                                    {parse(blogDetails?.title)}
+                                </h2>
+                                {/* by <span className="text-gray-700 pl-2 text-lg font-bold">{BannerIsetBannerImage?.username}</span> */}
+                            </div>                            
+
+
                             <div className="flex items-center justify-center py-1 overflow-hidden">
-                                <button className="group inline-flex justify-center px-4 py-2 text-sm font-medium
-                                    text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:bg-blue-400
-                                    focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500" 
-                                    onClick={handlePublish}          
-                                >
-                                    Publish
-                                </button>
-                            </div>
-                            <div className="flex items-center justify-center py-1 overflow-hidden">
-                                <button className="inline-flex justify-center px-4 py-2 text-sm font-medium
-                                    text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200
-                                    focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500" 
-                                    onClick={(published && imageSelected) ? handlePublishedSubmit : handleUnpublisherror}          
-                                >
-                                    Post your blog
-                                </button>
-                            </div>  
+                                <div className="prose-lg">
+                                    {parse(blogDetails?.body)}
+                                </div>
+                            </div>                       
+                            </div>           
                         </div>
                     </div>
                 </div>   

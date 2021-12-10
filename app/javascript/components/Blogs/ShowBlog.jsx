@@ -89,9 +89,9 @@ export default function ShowBlog({user}) {
 
     return (
         <div className="bg-white mx-6 relative">
-            <div className="flex flex-row text-justify max-w-7xl mx-auto mt-10 static">
+            <div className="flex flex-row text-justify max-w-7xl mx-auto mt-5 sm:mt-6 static">
                 {/* Left Side Bar */}
-                <div className="lg:visible lg:mt-12 fixed bg-white lg:max-w-2xl lg:justify-center lg:mx-10 z-10 lg:z-0 bottom-0 lg:top-36 sm:mx-4"> 
+                <div className="lg:visible lg:mt-12 fixed bg-white lg:max-w-2xl lg:justify-center lg:mx-10 z-10 lg:z-0 bottom-0 lg:top-36 sm:mx-4 md:mx-3"> 
                     {isScrolled && (
                     <div className="flex flex-row lg:flex-col lg:items-center mx-auto mb-1.5">                              
                         <div className="flex mr-2 lg:my-1 sm:ml-5 sm:mt-1.5 mt-1 ">    
@@ -116,7 +116,7 @@ export default function ShowBlog({user}) {
                                 setBookmark={setBookmark}
                             />
                         </div>
-                        <div className="mt-2 lg:mt-4 ml-10 lg:ml-0 sm:ml-96 sm:pl-16 lg:pl-0 sm:mt-1">
+                        <div className="mt-2 lg:mt-4 ml-10 lg:ml-0 sm:ml-96 md:ml-80 sm:pl-16 lg:pl-0 sm:mt-1">
                             <Share 
                                 title={blogDetails?.title}
                                 shareImage={blogDetails?.image}
@@ -146,15 +146,16 @@ export default function ShowBlog({user}) {
                                 />
                             </div>                            
 
-                            <div>
+                            <div className="my-1">
+                                Tags: 
                                 {tags.map((tag)=>(
                                     <button onClick={()=>showTaggedBlog(tag.name)} >
-                                        <span className="pl-2 mt-2 mb-2">{tag.name}</span>
+                                        <span className="pl-2 mt-2 mb-2 text-gray-500 cursor-pointer">{tag.name}</span>
                                     </button>
                                 ))}
                             </div>             
                                                       
-                            <div className="flex items-center justify-center py-1 overflow-hidden">
+                            <div className="flex items-center justify-center my-3 overflow-hidden">
                                 <img className="block shadow-xl mx-auto h-96 w-full bg-cover bg-center"
                                     src={blogDetails?.image} /> 
                             </div>
