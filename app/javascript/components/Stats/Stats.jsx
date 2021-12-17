@@ -40,7 +40,7 @@ const BlogStats = () => {
                             <div className="flex flex-row justify-center pt-10 pb-10">
                                 <div className="flex flex-col text-3xl mx-5 text-center">
                                     <GrView />
-                                    {views_count === null ? (
+                                    {(views_count === null) ? (
                                         <span className="text-xl">0</span>
                                     ):(
                                         <span className="text-xl">{views_count}</span>
@@ -48,7 +48,7 @@ const BlogStats = () => {
                                 </div>
                                 <div className="flex flex-col text-3xl mx-5 text-center">
                                     <MdModeComment /> 
-                                    {comments_count === null ? (
+                                    {(comments_count === null) ? (
                                         <span className="text-xl">0</span>
                                     ):(
                                         <span className="text-xl">{comments_count}</span>
@@ -56,7 +56,7 @@ const BlogStats = () => {
                                 </div>
                                 <div className="flex flex-col text-3xl mx-5 text-center">
                                     <FcLike className="text-black" />
-                                    {likeable_count === null ? (
+                                    {(likeable_count === null) ? (
                                         <span className="text-xl">0</span>
                                     ):(
                                         <span className="text-xl">{likeable_count}</span>
@@ -64,7 +64,7 @@ const BlogStats = () => {
                                 </div>
                                 <div className="flex flex-col text-3xl mx-5 text-center">
                                     <FaBookmark />
-                                    {bookmarks_count === null ? (
+                                    {(bookmarks_count === null) ? (
                                         <span className="text-xl">0</span>
                                     ):(
                                         <span className="text-xl">{bookmarks_count}</span>

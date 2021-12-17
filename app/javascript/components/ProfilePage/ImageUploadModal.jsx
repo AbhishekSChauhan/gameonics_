@@ -104,7 +104,7 @@ const ImageUploadModal = ({handleCheckFileSize,handleImageSubmit,uploadLoading, 
         </Dialog>
       </Transition>
             
-        </div>
+      </div>
     )
 }
 

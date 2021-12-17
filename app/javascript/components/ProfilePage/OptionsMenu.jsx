@@ -1,7 +1,6 @@
 import { Menu, Transition } from '@headlessui/react'
 import { Fragment, useEffect, useRef, useState } from 'react'
 import { HiChevronDown } from "react-icons/hi";
-import { Link } from 'react-router-dom';
 import React from 'react'
 import { FaUser } from 'react-icons/fa'
 import authApi from '../apis/auth';
@@ -11,9 +10,12 @@ import { MdMenu } from "react-icons/md";
 import { ImHome } from "react-icons/im";
 import { FaBlog, FaStarHalfAlt } from "react-icons/fa";
 import { MdGames } from "react-icons/md";
+import { MdDelete,MdEdit, MdOutlineAnalytics } from "react-icons/md";
+import { CgInsights } from "react-icons/cg";
+import DeleteModal from './DeleteModal';
 
 
-export default function MenuDropdown() {
+export default function OptionsMenu({blog,user,username,updateBlog,destroyBlog,showStats}) {
   const [loading, setLoading] = useState(false)
   let history = useHistory()
 
@@ -22,11 +24,11 @@ export default function MenuDropdown() {
     <div className="text-right">
       <Menu as="div" className="relative inline-block text-left">
         <div>
-          <Menu.Button className="inline-flex justify-center mr-3 w-full text-sm font-medium text-white bg-white rounded-md bg-opacity-20 ">
+          <Menu.Button className="inline-flex justify-center  w-full text-sm font-medium text-white  rounded-md bg-opacity-0 ">
             <div className="flex items-center"> 
                 <div>
                   <MdMenu
-                    className="w-5 h-5 mt-1.5 text-gray-500 hover:text-gray-600"
+                    className="w-5 h-5 mt-1.5 text-gray-50 hover:text-gray-600"
                     aria-hidden="true"
                   />
                 </div>
@@ -42,67 +44,59 @@ export default function MenuDropdown() {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="absolute w-28 z-40 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-            <div className="flex flex-col px-1 py-1 ">
-              <div className="px-1 py-1 text-gray-500">
+          <Menu.Items className="absolute w-28 z-40 right-0 bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+            <div className="flex flex-col px-0.5 py-0.5 ">
+              <div className="px-0.5 py-0.5 text-gray-500">
                 <Menu.Item>
                 {({ active }) => (
-                    <Link to={`/`}
-                    className={`${active && 'text-gray-700 '}`}
+                    <button onClick={()=>showStats(blog.id, blog.slug, blog.comments_count, blog.bookmarks_count, blog.likeable_count, blog.views_count)}
+                       className={`${active && 'text-gray-700 '}`}
                     >
                       <div className="flex flex-row items-center">
-                      <ImHome className="mx-0.5"/>
-                      <span className="mx-0.5">Home</span>
+                      <CgInsights className="mx-0.5"/>
+                      <span className="mx-0.5 text-base">Analytics</span>
                       </div>
-                    </Link>                    
+                    </button>                    
                 )}
                 </Menu.Item>
               </div>
 
-              <div className="px-1 py-1 text-gray-500">
+              <div className="px-0.5 py-0.5 text-gray-500">
                 <Menu.Item>
                 {({ active }) => (
-                    <Link to={`/games`}
-                    className={`${active && 'text-gray-700 '}`}
+                    <button onClick={()=>updateBlog(blog.slug)} 
+                        className={`${active && 'text-gray-700 '}`}
                     >
                       <div className="flex flex-row items-center">
-                      <MdGames className="mx-0.5" />
-                      <span className="mx-0.5">Games</span>
+                      <MdEdit className="mx-0.5" />
+                      <span className="mx-0.5 text-base">Edit</span>
                       </div>
-                    </Link>
+                    </button>
                 )}
                 </Menu.Item>
               </div>
 
-              <div className="px-1 py-1 text-gray-500">
+              <div className="px-0.5 py-0.5 text-gray-500">
                 <Menu.Item>
                 {({ active }) => (
-                    <Link to={`/blog`}
-                    className={`${active && 'text-gray-700 '}`}
+                    <div 
+                    // onClick={()=>destroyBlog(blog.slug)}
+                           className={`${active && 'text-gray-700 '}`}
                     >
                       <div className="flex flex-row items-center">
-                      <FaBlog className="mx-0.5" />
-                      <span className="mx-0.5">Blog</span>
+                      {/* <MdDelete className="mx-0.5" />
+                      <span className="mx-0.5 text-base">Delete</span> */}
+                      <DeleteModal 
+                        blog={blog}
+                        destroyBlog={destroyBlog}
+                      />
                       </div>
-                    </Link>
+                    </div>
                 )}
                 </Menu.Item>
               </div>
 
-              <div className="px-1 py-1 text-gray-500">
-                <Menu.Item>
-                {({ active }) => (
-                    <Link to={`/`}
-                    className={`${active && 'text-gray-700 '}`}
-                    >
-                      <div className="flex flex-row items-center">
-                      <FaStarHalfAlt className="mx-0.5" />
-                      <span className="mx-0.5">Reviews</span>
-                      </div>
-                    </Link>
-                )}
-                </Menu.Item>
-              </div>
+              
             </div>
           </Menu.Items>
         </Transition>

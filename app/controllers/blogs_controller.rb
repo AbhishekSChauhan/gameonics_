@@ -42,7 +42,7 @@ class BlogsController < ApplicationController
       render json: { blog: @blog,
                      tags: @blog.tags,
                      blog_creator: @blog.user.username,
-                     blog_creator_img: @blog.user.avatar ,
+                     blog_creator_img: @blog.user.profile_image ,
                      blog_user: @blog.user,
                      bookmark: @blog.bookmarks, 
                      likes: @blog.likes,

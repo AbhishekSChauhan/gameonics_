@@ -9,7 +9,7 @@ const BookmarkedView = ({data,showBlog}) => {
     return (
         <div className="grid grid-cols-1 sm:grid-cols-1 sm:justify-center md:grid-cols-2 lg:grid-cols-3 gap-10">
         {data.map((blog)=>(
-          <div className="w-96">    
+          <div className="w-96 mx-auto">    
           <img src={blog.blogs.image} 
           alt="geme cover" onClick={()=>showBlog(blog.blogs.slug)}
           className="w-96 h-64 cursor-pointer bg-blend-screen hover:bg-blend-normal 
@@ -25,7 +25,7 @@ const BookmarkedView = ({data,showBlog}) => {
               </div> */}
               
               <h4 onClick={()=>showBlog(blog.blogs.slug)}
-                className="mt-1.5 ml-1 text-lg font-medium cursor-pointer leading-tight truncate">
+                className="mt-1.5 ml-1 text-lg text-left font-medium cursor-pointer leading-tight truncate">
                 {blog.blogs.title}
               </h4>
           
@@ -37,7 +37,7 @@ const BookmarkedView = ({data,showBlog}) => {
               </span>
             </div>
             <div className="mt-1.5">
-            <section className="px-1">
+            <section className="">
               <div className="mt-2 flex items-center justify-between">
                 <div className="flex items-center flex-1">
                   <Link to={`/user/${blog.blog_creator}`} 

@@ -10,9 +10,9 @@ import { FaUser } from 'react-icons/fa'
 export default function BlogsDashboard({data,showBlog,updateBlog,destroyBlog}) {
     
     return (
-      <div className="sm:p-10 grid grid-cols-1 sm:grid-cols-1 sm:justify-center md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="sm:p-10 grid grid-cols-1 mx-auto sm:grid-cols-1 sm:justify-center md:grid-cols-2 lg:grid-cols-3 gap-8">
         {data.map((blog)=>(
-          <div className="w-96">    
+          <div className="w-96 mx-auto">    
             <img src={blog.image} 
             alt="geme cover" onClick={()=>showBlog(blog.slug)}
             className="w-96 h-64 cursor-pointer bg-blend-screen hover:bg-blend-normal 
@@ -28,7 +28,7 @@ export default function BlogsDashboard({data,showBlog,updateBlog,destroyBlog}) {
                 </div> */}
                 
                 <h4 onClick={()=>showBlog(blog.slug)}
-                  className="mt-1.5 ml-1 text-lg font-medium cursor-pointer leading-tight truncate">
+                  className="mt-3 ml-1 text-lg text-left font-medium cursor-pointer leading-tight truncate">
                   {blog.title}
                 </h4>
             
@@ -40,7 +40,7 @@ export default function BlogsDashboard({data,showBlog,updateBlog,destroyBlog}) {
                 </span>
               </div>
               <div className="mt-1.5">
-              <section className="px-1">
+              <section className="">
                 <div className="mt-2 flex items-center justify-between">
                   <div className="flex items-center flex-1">
                     <Link to={`/user/${blog.user.username}`} 

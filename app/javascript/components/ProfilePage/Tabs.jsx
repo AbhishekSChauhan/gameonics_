@@ -129,6 +129,7 @@ export default function Tabs({publishedBlogs,draftBlogs,bookmarkedBlogs,user , u
               <div className="mt-2 pb-10 w-full mx-auto flex flex-col items-center justify-center">
                 <MyBlogs 
                   data={draftBlogs}
+                  user={user}
                   username = {username}
                   showBlog={showBlog}
                   updateBlog={updateBlog}
