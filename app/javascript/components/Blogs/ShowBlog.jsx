@@ -15,6 +15,7 @@ import { FaUser } from 'react-icons/fa'
 import { GrView } from "react-icons/gr";
 
 export default function ShowBlog({user}) {
+    // user is selected user or the logged in user
     const componentMounted = true
     const {slug} = useParams()
     const [blogDetails, setBlogDetails] = useState([])
