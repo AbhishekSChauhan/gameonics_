@@ -151,7 +151,7 @@ export default function ShowBlog({user}) {
                         <div className="w-full ">
                             <div className="flex flex-row items-center justify-center py-1 overflow-hidden">
                                 <div className="text-xl font-bold text-gray-700">
-                                    {parse(blogDetails?.title)}
+                                    {blogDetails?.title}
                                 </div>                                                                
                             </div>
 
