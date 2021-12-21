@@ -39,10 +39,18 @@ class BlogsController < ApplicationController
       # unique_views = @blog.impressionist_count(:filter=>:session_hash)
       # views =  @blog.impressionist_count(:filter=>:all)
 
+      @blogs =  Blog.published
+      @related_blogs = @blogs.joins(:tags).where(tags: {id: @blog.tag_ids})
+      data = @related_blogs.as_json(include: {user: {only: [:username,:id, :avatar]}})
+
       render json: { blog: @blog,
                      tags: @blog.tags,
+                    #  tagged: tagged,
+                    #  blog_tags: blog_tags,
+                    #  relative_posts: @relative_posts,
+                      related_blogs: data,
                      blog_creator: @blog.user.username,
-                     blog_creator_img: @blog.user.profile_image ,
+                     blog_creator_img: @blog.user.avatar,
                      blog_user: @blog.user,
                      bookmark: @blog.bookmarks, 
                      likes: @blog.likes,

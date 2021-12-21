@@ -61,6 +61,9 @@ const Tags = ({tags,setTags,input,setInput,isKeyReleased,setIsKeyReleased}) => {
                 focus:outline-none focus:shadow-outline-blue
                 focus:border-blue-300 sm:text-sm sm:leading-5"
             />
+            <label className="block text-gray-700">
+                Please add between 3 and 5 tags.(seperated by comma)
+            </label>
             
         </div>
     )

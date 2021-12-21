@@ -47,7 +47,7 @@ export default function OptionsMenu({comment,user,fetchEditComment,destroyCommen
           <Menu.Items className="absolute w-28 z-40 right-0 bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
             <div className="flex flex-col px-0.5 py-0.5 ">
               
-              <div className="px-0.5 py-0.5 text-gray-500 cursor-pointer">
+              {/* <div className="px-0.5 py-0.5 text-gray-500 cursor-pointer">
                 <Menu.Item>
                 {({ active }) => (
                     <button onClick={()=>fetchEditComment(comment.id)} 
@@ -60,7 +60,7 @@ export default function OptionsMenu({comment,user,fetchEditComment,destroyCommen
                     </button>
                 )}
                 </Menu.Item>
-              </div>
+              </div> */}
 
               <div className="px-0.5 py-0.5 text-red-500 cursor-pointer">
                 <Menu.Item>

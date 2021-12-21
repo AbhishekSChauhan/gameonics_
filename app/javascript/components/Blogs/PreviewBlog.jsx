@@ -171,18 +171,18 @@ export default function PreviewBlog(props) {
                     <div className="relative text-justify max-w-4xl mx-auto items-center justify-between">
                         <div className="flex flex-col ">
                             <div className="absolute flex items-center justify-center right-0 sm:right-0 lg:-right-36 sm:-top-4 -top-8 py-1 overflow-hidden">
-                                <button className="group inline-flex justify-center px-4 py-2 text-sm font-medium w-32
+                                <button className="group inline-flex justify-center px-4 py-2 text-sm font-medium w-32 
                                     text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:bg-blue-400
-                                    focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500" 
+                                    focus:outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500" 
                                     onClick={handlePublish}          
                                 >
                                     Publish
                                 </button>
                             </div>
                             <div className="absolute flex items-center justify-center right-0 sm:right-0 lg:-right-36 sm:top-8 top-4 py-1 overflow-hidden">
-                                <button className="inline-flex justify-center px-4 py-2 text-sm font-medium w-32
+                                <button className="inline-flex mb-2 justify-center px-4 py-2 text-sm font-medium w-32
                                     text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200
-                                    focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500" 
+                                    focus:outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500" 
                                     onClick={(published && imageSelected) ? handlePublishedSubmit : handleUnpublisherror}          
                                 >
                                     Post your blog
@@ -195,7 +195,7 @@ export default function PreviewBlog(props) {
                                     <Loader />
                                 </div>
                                 ):(
-                                <div className="flex items-center justify-center pb-1 overflow-hidden mt-5">
+                                <div className="flex items-center justify-center pb-1 overflow-hidden mt-8">
                                     {(()=>{
                                         if((imagePosted && blogDetails.image !== "null")){
                                             return <img className="block shadow-xl mx-auto h-96 mt-10 md:mt-16 lg:mt-10 w-full bg-cover bg-center"
@@ -225,7 +225,7 @@ export default function PreviewBlog(props) {
                                     />                                                                                                    
                             </div>
 
-                            <div className="flex items-center mt-5 sm:mt-5 lg:mt-5 justify-center my-3 overflow-hidden">
+                            <div className="flex items-center mt-8 sm:mt-10 lg:mt-12 justify-center my-3 overflow-hidden">
                                 <h2 className="text-gray-700 text-xl font-bold ">
                                     {parse(blogDetails?.title)}
                                 </h2>
