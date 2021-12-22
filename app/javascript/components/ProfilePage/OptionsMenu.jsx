@@ -17,6 +17,8 @@ import DeleteModal from './DeleteModal';
 
 export default function OptionsMenu({blog,user,username,updateBlog,destroyBlog,showStats}) {
   const [loading, setLoading] = useState(false)
+  const [modal, setModal] = useState(false);
+  const Toggle = () => setModal(!modal);
   let history = useHistory()
 
 
@@ -79,23 +81,27 @@ export default function OptionsMenu({blog,user,username,updateBlog,destroyBlog,s
               <div className="px-0.5 py-0.5 text-gray-500">
                 <Menu.Item>
                 {({ active }) => (
+                  <div>
                     <div 
-                    // onClick={()=>destroyBlog(blog.slug)}
+                    onClick={()=>setModal(true)}
                            className={`${active && 'text-gray-700 '}`}
                     >
                       <div className="flex flex-row items-center">
-                      {/* <MdDelete className="mx-0.5" />
-                      <span className="mx-0.5 text-base">Delete</span> */}
-                      <DeleteModal 
-                        blog={blog}
-                        destroyBlog={destroyBlog}
-                      />
+                      <MdDelete className="mx-0.5" />
+                      <span className="mx-0.5 text-base">Delete</span>                      
                       </div>
                     </div>
+                    <DeleteModal 
+                    blog={blog}
+                    destroyBlog={destroyBlog}
+                    show={modal}
+                    close={Toggle}
+                  />
+                  </div>
                 )}
+                
                 </Menu.Item>
               </div>
-
               
             </div>
           </Menu.Items>
