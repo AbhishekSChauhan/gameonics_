@@ -53,28 +53,28 @@ class UsersController < ApplicationController
     end
 
     def update_image
-        if current_user.update_attribute(:profile_image, params[:user][:profile_image])
-            current_user.update_attribute(:avatar, url_for(current_user.profile_image))
-            render json:{user: user_with_image(current_user),
-                        avatar:url_for(current_user.profile_image),
+        if @current_user.update_attribute(:profile_image, params[:user][:profile_image])
+            @current_user.update_attribute(:avatar, url_for(@current_user.profile_image))
+            render json:{user: user_with_image(@current_user),
+                        avatar:url_for(@current_user.profile_image),
                         notice:"Image added successfully"},
                         status: 200
         else
-            render json: {errors:current_user.errors.full_messages}, status: 422
+            render json: {errors:@current_user.errors.full_messages}, status: 422
         end
     end
     
 
     def update_profile
         if @current_user
-            current_user.update_attribute(:username, params[:username])
-            current_user.update_attribute(:bio, params[:bio])
-            current_user.update_attribute(:facebook_url,params[:facebook_url])
-            current_user.update_attribute(:twitter_url,params[:twitter_url])
-            current_user.update_attribute(:instagram_url,params[:instagram_url])
-            render json: {user: user_with_image(current_user),notice:"Profile details updated successfully"}, status: :ok
+            @current_user.update_attribute(:username, params[:username])
+            @current_user.update_attribute(:bio, params[:bio])
+            @current_user.update_attribute(:facebook_url,params[:facebook_url])
+            @current_user.update_attribute(:twitter_url,params[:twitter_url])
+            @current_user.update_attribute(:instagram_url,params[:instagram_url])
+            render json: {user: user_with_image(@current_user),notice:"Profile details updated successfully"}, status: :ok
         else
-            render json: {errors: current_user.errors.full_messages}, status: 422
+            render json: {errors: @current_user.errors.full_messages}, status: 422
         end 
     end
 

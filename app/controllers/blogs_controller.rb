@@ -177,7 +177,7 @@ class BlogsController < ApplicationController
 
   def authorized?
     # @blog.user == @current_user ||  @current_user.admin_level >= 1
-     @blog.user_id == current_user.id || current_user.admin_level >= 1
+     @blog.user_id == @current_user.id || @current_user.admin_level >= 1
   end
 
   def handle_unauthorized

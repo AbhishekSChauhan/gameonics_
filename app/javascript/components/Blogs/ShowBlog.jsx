@@ -200,7 +200,7 @@ export default function ShowBlog({user}) {
 
                             <div className="flex items-center justify-center py-1 overflow-hidden">
                                 <div className="prose-lg">
-                                    {parse(blogDetails.body)}
+                                    {(blogDetails?.body)}
                                 </div>
                             </div>                          
                         </div>                          

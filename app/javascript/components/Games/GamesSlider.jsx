@@ -43,7 +43,7 @@ const GamesSlider = ({history,upcomingGames,trendingGames,popularGames}) => {
         centerMode: true,
         centerPadding: "60px",
         slidesToShow:3,
-        // autoplay:true,
+        autoplay:true,
         slidesToScroll: 1,
         adaptiveHeight:true,
         arrows:true,
@@ -94,7 +94,7 @@ const GamesSlider = ({history,upcomingGames,trendingGames,popularGames}) => {
                       // <div className="grid grid-cols-3 gap-5 ">
                         <div className="lg:mb-20 group ">    
                         <img src={game.background_image} 
-                        alt="geme cover" onClick={()=>showGame(game.slug)}
+                        alt="Videogame cover" onClick={()=>showGame(game.slug)}
                         className="w-88 h-64 cursor-pointer bg-blend-screen hover:bg-blend-normal 
                         object-cover object-center rounded-2xl border-t-2 border-b-2 border-l-4 border-r-4 border-white  bg-opacity-100" />                            
                         <div className="relative px-4 -mt-16 lg:hidden lg:group-hover:block">
@@ -193,7 +193,7 @@ const GamesSlider = ({history,upcomingGames,trendingGames,popularGames}) => {
                     {popularGames.map((game)=>(
                       <div className="lg:mb-20 group">    
                           <img src={game.background_image} 
-                          alt="geme cover" onClick={()=>showGame(game.slug)}
+                          alt="Videogame cover" onClick={()=>showGame(game.slug)}
                           className="w-88 h-64 cursor-pointer bg-gray-400 hover:bg-gray-50 object-cover object-center rounded-2xl border-t-2 border-b-2 border-l-4 border-r-4 border-white " />                            
                           <div className="relative px-4 -mt-16 lg:hidden lg:group-hover:block ">
                             <div className="bg-white p-4 rounded-lg shadow-lg h-32 w-88">
