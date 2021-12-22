@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
     include CompareDates
 
     def authorized_user?
-        render json: { notice: 'Please log in to continue' }, status: :unauthorized unless @current_user
+        render json: { notice: 'Please log in to continue' }, status: :unauthorized unless current_user
     end
 
     def authorized_admin?        
