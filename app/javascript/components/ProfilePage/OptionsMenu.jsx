@@ -30,7 +30,7 @@ export default function OptionsMenu({blog,user,username,updateBlog,destroyBlog,s
             <div className="flex items-center"> 
                 <div>
                   <MdMenu
-                    className="w-5 h-5 mt-1.5 text-gray-50 hover:text-gray-600"
+                    className="w-5 h-5 mt-1.5 mr-3 text-gray-50 hover:text-gray-600"
                     aria-hidden="true"
                   />
                 </div>

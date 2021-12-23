@@ -66,7 +66,7 @@ export default function Tabs({publishedBlogs,draftBlogs,bookmarkedBlogs,user , u
       </Tab.List>
 
 
-      <Tab.Panels className="mt-2">
+      <Tab.Panels className="mt-2 mx-2">
 
       <Tab.Panel
             // key={idx}

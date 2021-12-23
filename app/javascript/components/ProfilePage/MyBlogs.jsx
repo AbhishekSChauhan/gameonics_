@@ -13,9 +13,9 @@ import OptionsMenu from './OptionsMenu';
 export default function MyBlogs({data,user,username,showBlog,updateBlog,destroyBlog,showStats}) {   
     
     return (
-      <div className="sm:p-2 grid grid-cols-1 mx-auto sm:grid-cols-1 sm:justify-center md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="p-0 grid grid-cols-1 mx-auto sm:grid-cols-1 sm:justify-center md:grid-cols-2 lg:grid-cols-3 gap-5">
         {data.map((blog)=>(
-        <div key={blog.id} className="w-96 mx-auto">
+        <div key={blog.id} className="w-full sm:w-96 mx-auto">
             {blog.published ? (
               <div className="md:flex-shrink-0 relative">
                 <div className="z-10 mt-1 flex flex row text-gray-50 text-2xl absolute cursor-pointer mx-1 top-1 right-3">
@@ -68,7 +68,7 @@ export default function MyBlogs({data,user,username,showBlog,updateBlog,destroyB
             )}    
                                         
             <div className="relative px-4 -mt-16 ">
-              <div className="bg-white p-4 rounded-lg shadow-lg h-32 w-88">
+              <div className="bg-white p-2.5 sm:p-3 rounded-lg shadow-lg h-32 w-88">
                 {/* <div className="flex items-baseline">
                   {game.genres.map((genre)=>(                                  
                     <div className="mx-1 text-gray-600 text-xs font-semibold tracking-wider">
@@ -103,7 +103,7 @@ export default function MyBlogs({data,user,username,showBlog,updateBlog,destroyB
                       <img className="h-7 w-7  rounded-full object-cover" 
                       src={user.profile_image} alt="avatar"/>
                     )}                               
-                    <div className="pl-2 flex flex-col ">
+                    <div className="pl-1 sm:pl-2 flex flex-col ">
                         Written by {username}                                    
                     </div>
                     </Link>

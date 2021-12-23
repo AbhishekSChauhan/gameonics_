@@ -7,15 +7,15 @@ import { FaUser } from 'react-icons/fa'
 
 const BookmarkedView = ({data,showBlog}) => {
     return (
-        <div className="sm:p-2 grid grid-cols-1 mx-auto sm:grid-cols-1 sm:justify-center md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="p-0 grid grid-cols-1 mx-auto sm:grid-cols-1 sm:justify-center md:grid-cols-2 lg:grid-cols-3 gap-5">
         {data.map((blog)=>(
-          <div className="w-96 mx-auto">    
+          <div className="w-full sm:w-96 mx-auto">    
           <img src={blog.blogs.image} 
           alt="geme cover" onClick={()=>showBlog(blog.blogs.slug)}
           className="w-96 h-64 cursor-pointer bg-blend-screen hover:bg-blend-normal 
           object-cover object-center rounded-2xl border-t-2 border-b-2 border-l-4 border-r-4 border-white  bg-opacity-100" />                            
           <div className="relative px-4 -mt-16 ">
-            <div className="bg-white p-4 rounded-lg shadow-lg h-32 w-88">
+            <div className="bg-white p-2.5 sm:p-3 rounded-lg shadow-lg h-32 w-88">
               {/* <div className="flex items-baseline">
                 {game.genres.map((genre)=>(                                  
                   <div className="mx-1 text-gray-600 text-xs font-semibold tracking-wider">
@@ -49,7 +49,7 @@ const BookmarkedView = ({data,showBlog}) => {
                       <img className="h-7 w-7  rounded-full object-cover" 
                       src={blog.avatar} alt="avatar"/>
                     )}                               
-                    <div className="pl-2 flex flex-col ">
+                    <div className="pl-1 sm:pl-2 flex flex-col ">
                         Written by {blog.blog_creator}                                    
                     </div>
                     </Link>

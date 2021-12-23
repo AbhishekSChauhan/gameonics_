@@ -44,7 +44,7 @@ const TaggedBlogs = () => {
     return (
         <div className="bg-white mx-10 relative">
             <div className="flex flex-col justify-center max-w-5xl mx-auto mt-8">
-                <h2 className='text-xl font-bold text-gray-700 flex justify-center'>{tag} related articles</h2>
+                <h2 className='text-xl font-bold text-gray-700 flex justify-center mb-5'>{tag} related articles</h2>
                 <TaggedBlogsList
                     data={blogs}
                     showBlog={showBlog}

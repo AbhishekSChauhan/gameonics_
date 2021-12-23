@@ -84,21 +84,25 @@ export default function Blogs({user}) {
         )
     }
 
-    // const blogComponent = blogs.map((blog)=>{
-    //     return <BlogsDashboard 
-    //             blog={blog}
-    //             showBlog={showBlog}
-    //             updateBlog={updateBlog}
-    //             destroyBlog={destroyBlog}
-    //             key={blog.id}
-    //             />  
-    // })
+    const handleClick = () => {
+        if(!user.logged_in){
+            toast.error('Login to continue')
+        }else{
+            history.push('/blog/create')
+        }
+    }
 
     return (        
         <div className="max-w-7xl flex items-center overflow-hidden h-auto flex-wrap mx-auto">
           <div className="w-full rounded-lg shadow-2xl bg-white lg:mx-0">
             <div className="p-4 mx-auto justify-center">              
-                <BlogNav user={user} />                
+                {/* <BlogNav user={user} />  */}
+                <div className="flex justify-center mb-3 sm:mb-5">   
+                    <button onClick={handleClick} 
+                        className="bg-transparent hover:bg-blue-500 text-blue-700 mt-1 font-semibold hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded">
+                        Create your own blog
+                    </button>
+                </div>               
                 <BlogsDashboard 
                     data={blogs}
                     showBlog={showBlog}
