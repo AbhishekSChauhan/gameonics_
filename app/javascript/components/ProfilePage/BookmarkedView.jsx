@@ -7,7 +7,7 @@ import { FaUser } from 'react-icons/fa'
 
 const BookmarkedView = ({data,showBlog}) => {
     return (
-        <div className="sm:p-2 grid grid-cols-1 mx-auto sm:grid-cols-1 sm:justify-center md:grid-cols-2 lg:grid-cols-3 sm:gap-5">
+        <div className="sm:p-2 grid grid-cols-1 mx-auto sm:grid-cols-1 sm:justify-center md:grid-cols-2 lg:grid-cols-3 gap-5">
         {data.map((blog)=>(
           <div className="w-96 mx-auto">    
           <img src={blog.blogs.image} 

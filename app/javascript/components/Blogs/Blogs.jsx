@@ -97,7 +97,7 @@ export default function Blogs({user}) {
     return (        
         <div className="max-w-7xl flex items-center overflow-hidden h-auto flex-wrap mx-auto">
           <div className="w-full rounded-lg shadow-2xl bg-white lg:mx-0">
-            <div className="p-4 text-center">              
+            <div className="p-4 mx-auto justify-center">              
                 <BlogNav user={user} />                
                 <BlogsDashboard 
                     data={blogs}
