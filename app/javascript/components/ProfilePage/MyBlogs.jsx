@@ -13,7 +13,7 @@ import OptionsMenu from './OptionsMenu';
 export default function MyBlogs({data,user,username,showBlog,updateBlog,destroyBlog,showStats}) {   
     
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-1 sm:justify-center md:grid-cols-2 lg:grid-cols-3 gap-10">
+      <div className="sm:p-2 grid grid-cols-1 mx-auto sm:grid-cols-1 sm:justify-center md:grid-cols-2 lg:grid-cols-3 sm:gap-5">
         {data.map((blog)=>(
         <div key={blog.id} className="w-96 mx-auto">
             {blog.published ? (
