@@ -7,7 +7,7 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function Tabs({publishedBlogs,draftBlogs,bookmarkedBlogs,user , username,showBlog,updateBlog,destroyBlog}) {
+export default function Tabs({publishedBlogs,draftBlogs,bookmarkedBlogs,user , username,showBlog,updateBlog,destroyBlog,showStats}) {
   return (
     <Tab.Group>
       <Tab.List className="flex p-1 space-x-1 bg-blue-900/20 rounded-xl">
@@ -66,12 +66,12 @@ export default function Tabs({publishedBlogs,draftBlogs,bookmarkedBlogs,user , u
       </Tab.List>
 
 
-      <Tab.Panels className="mt-2">
+      <Tab.Panels className="mt-2 mx-2">
 
       <Tab.Panel
             // key={idx}
             className={classNames(
-              'bg-white rounded-xl p-3',
+              'bg-white rounded-xl p-0 sm:p-3',
               'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60'
             )}
         >
@@ -88,13 +88,14 @@ export default function Tabs({publishedBlogs,draftBlogs,bookmarkedBlogs,user , u
               showBlog={showBlog}
               updateBlog={updateBlog}
               destroyBlog={destroyBlog}
+              showStats={showStats}
             />
           )}                  
         </Tab.Panel>
         <Tab.Panel
             // key={idx}
             className={classNames(
-              'bg-white rounded-xl p-3',
+              'bg-white rounded-xl p-0 sm:p-3',
               'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60'
             )}
         >
@@ -115,7 +116,7 @@ export default function Tabs({publishedBlogs,draftBlogs,bookmarkedBlogs,user , u
         <Tab.Panel
             // key={idx}
             className={classNames(
-              'bg-white rounded-xl p-3',
+              'bg-white rounded-xl p-0 sm:p-3',
               'focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60'
             )}
         >
@@ -128,6 +129,7 @@ export default function Tabs({publishedBlogs,draftBlogs,bookmarkedBlogs,user , u
               <div className="mt-2 pb-10 w-full mx-auto flex flex-col items-center justify-center">
                 <MyBlogs 
                   data={draftBlogs}
+                  user={user}
                   username = {username}
                   showBlog={showBlog}
                   updateBlog={updateBlog}

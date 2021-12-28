@@ -11,6 +11,8 @@ export const Comments = ({blog,user}) => {
     const [comments, setComments] = useState([])
     const [updateComments, setUpdateComments] = useState(0)
     const [newComment, setNewComment] = useState("")
+    const [editComment, setEditComment] = useState('')
+    // const [editComments, setEditComments] = useState('')
     const [loading, setLoading] = useState(false)
     const [updateLikes, setUpdateLikes] = useState(0)
 
@@ -18,7 +20,7 @@ export const Comments = ({blog,user}) => {
 
     const fetchCommentDetails = async() => {
         try{
-            const response = await axios.get(`/blogs/${blog?.id}/comments`,{cancelToken:source.token})
+            const response = await axios.get(`/blogs/${blog?.id}/comments`)
             setComments(response.data.comments)
 
             console.log("Comments data",response)
@@ -73,13 +75,94 @@ export const Comments = ({blog,user}) => {
         })
     }
 
+    const destroyComment = async(id) => {
+        // setLoading(true)
+        try {
+            const response = await axios.delete(`/blogs/${blog?.id}/comments/${id}`);
+            console.log('comment deleted')
+                if (response.data.notice){
+                    toast.success(response.data.notice)                  
+                } 
+            await fetchCommentDetails() 
+            // setLoading(false)     
+        }catch(error){
+            if(error){
+                toast.error(
+                    error.response?.data?.notice ||
+                    error.response?.data?.error ||
+                    error.message ||
+                    error.notice ||
+                    "Something went wrong!"
+                )
+            }            
+            console.log(error)
+        }
+    }
+
+    const fetchEditComment = async(id) => {
+        // setLoading(true)
+        try {
+          const response = await axios.get(`/blogs/${blog?.id}/comments/${id}`);          
+          setEditComment(response.data.comment)
+          console.log('edit fetch response',response)
+        //   setLoading(false)
+        } catch (error) {
+          console.log('fetchBlog Error',error)
+        }
+    }
+
+    const handleEditSubmit = async(id) => {
+        
+        setLoading(true)
+        try{
+            const response = await axios.put(`/blogs/${blog?.id}/comments/${id}`,{
+                newComment
+            })
+            
+            if(response){
+                response.success = response.status === 200;
+                if (response.data.notice){
+                    toast.success(response.data.notice)                    
+                }
+            }
+            console.log('edit submit response',response)
+            // await fetchCommentDetails() 
+            setLoading(false)           
+        } catch(error){
+            console.log("blog not saved error",error)
+            setLoading(false)
+            if(error){
+                toast.error(
+                    error.response?.data?.notice ||
+                    error.response?.data?.error ||
+                    error.message ||
+                    error.notice ||
+                    "Something went wrong!"
+                )
+            }
+            if (error.response?.status === 423) {
+                window.location.href = "/";
+            }
+        }
+
+    }
+
     const commentsComp = comments.map((comment)=>{
         return <Comment 
-                    comment={comment} 
+                    data={comment} 
                     key={comment.id}
                     user = {user}
                     setUpdateLikes = {setUpdateLikes}
-                    updateLikes = {updateLikes}                    
+                    updateLikes = {updateLikes}
+                    destroyComment={destroyComment} 
+                    fetchEditComment={fetchEditComment}
+                    editComment={editComment}
+                    setNewComment={setNewComment}
+                    // setEditComments={setEditComments}
+                    setEditComment={setEditComment}
+                    // editComments={editComments} 
+                    handleEditSubmit={handleEditSubmit}
+                    // setComment={setComment}                  
                 />
     })
 
@@ -92,12 +175,12 @@ export const Comments = ({blog,user}) => {
                     blogId={blog?.id}
                 /> 
             ):( 
-                <Link to="/login">
+                <Link to="/login" className="font-medium sm:p-2 p-1 text-base border-2 border-gray-500">
                     Login to share your views on this article.
                 </Link>
             )}  
                          
-            <div className="text-lg my-5">
+            <div className="text-lg my-8">
                 {comments.length === 0 ? 
                     <p>Be the first one to comment</p> :
                     <span>Comments({comments.length})</span>

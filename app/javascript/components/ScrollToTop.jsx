@@ -28,7 +28,7 @@ const ScrollToTop = () => {
     return (
         <div>
             {isScrolled && (
-                <div className="z-10 flex text-gray-600 text-5xl fixed cursor-pointer right-6 bottom-6"
+                <div className="z-10 flex text-gray-600 text-5xl fixed cursor-pointer right-6 sm:right-3 bottom-12"
                     onClick={scrollTop}>
                     <CgArrowUpR />
                 </div>

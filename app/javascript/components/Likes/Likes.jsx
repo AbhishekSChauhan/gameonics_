@@ -32,7 +32,8 @@ const Likes = ({blog,user,allLikes,setAllLikes}) => {
         localStorage.setItem('updateBlogLike', likeFound ? 'true': 'false')  
     }
     console.log('allLikes',allLikes)
-    // console.log('likes',likes)
+    const likesCount = allLikes.length
+    console.log('likes',likesCount)
 
     const handleLike = async() => {
         if(user?.logged_in){
@@ -79,7 +80,7 @@ const Likes = ({blog,user,allLikes,setAllLikes}) => {
 
 
     return (
-        <div>
+        <div className="flex items-center">
             {liked ? (
                 <div>
                     <FaHeart onClick={handleUnlike} 
@@ -88,7 +89,7 @@ const Likes = ({blog,user,allLikes,setAllLikes}) => {
                         : {pointerEvents:'inherit'}
                     }
                     className="cursor-pointer text-red-600 hover:text-red-500
-                    hover:text-red-500"
+                    hover:text-red-500 mr-1.5 h-6 w-6"
                 />
                 
                 </div>
@@ -100,13 +101,11 @@ const Likes = ({blog,user,allLikes,setAllLikes}) => {
                         ? {pointerEvents:'none',backgroundColor:'transparent'}
                         : {pointerEvents:'inherit'}
                     }
-                    className="cursor-pointer"
+                    className="cursor-pointer mr-1.5 h-6 w-6"
                 />
                 </div>
-            )}
-            &nbsp;
+            )}            
             {allLikes?.length}  
-
         </div>
     )
 }

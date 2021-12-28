@@ -47,7 +47,7 @@ export default function EditBlog({history}) {
             //     history.push('/blogs')
             // } else {
                 history.push({
-                    pathname: `/blogs/${response.data.blog.slug}/preview`,
+                    pathname: `/blog/${response.data.blog.slug}/preview`,
                     state: {slug: response.data.blog.slug
                         }
                 });

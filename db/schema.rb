@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_22_131403) do
+ActiveRecord::Schema.define(version: 2021_11_29_084746) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -154,6 +154,12 @@ ActiveRecord::Schema.define(version: 2021_10_22_131403) do
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
+  create_table "subscribers", force: :cascade do |t|
+    t.string "email"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "taggings", force: :cascade do |t|
     t.bigint "tag_id", null: false
     t.bigint "blog_id", null: false
@@ -188,6 +194,11 @@ ActiveRecord::Schema.define(version: 2021_10_22_131403) do
     t.integer "blogs_count"
     t.integer "comments_count"
     t.integer "bookmarks_count"
+    t.string "bio"
+    t.string "facebook_url"
+    t.string "twitter_url"
+    t.string "instagram_url"
+    t.string "avatar"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

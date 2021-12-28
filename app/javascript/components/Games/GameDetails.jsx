@@ -136,12 +136,15 @@ const GameDetails = () => {
                 <div className="flex flex-col ">
                     <div className="w-full ">
                         <div className="flex items-center justify-center py-1 overflow-hidden">
-                            <h2 className="text-gray-800 text-xl font-bold ">
+                            <a href={gameDetail.website} 
+                               target="_blank" rel="noopener noreferrer"
+                               className="text-gray-800 text-xl font-bold ">
                                 {gameDetail?.name}
-                            </h2>
+                            </a>
                         </div>
                         
-                        <div className="flex items-center justify-center px-1 py-1 overflow-hidden">
+                        <div className="flex items-center px-1 py-1 overflow-hidden">
+                        <span className="font-semibold items-center"> Genres: &nbsp;</span>
                             {gameDetail?.genres?.map((genre)=> (
                             <div className="flex flex-row items-center">
                                 <div
@@ -153,13 +156,27 @@ const GameDetails = () => {
                             ))}   
                         </div>
 
-                        <div className="flex items-center justify-center px-1 py-1 overflow-hidden">
+                        <div className="flex items-center px-1 py-1 overflow-hidden">
+                            <span className="font-semibold items-center">Published by :&nbsp; </span>
                             {gameDetail?.publishers?.map((publisher)=> (
                             <div className="flex flex-row items-center">
                                 <div
-                                className="text-base text-gray-700 ml-2 mb-1 flex flex-row items-center"
+                                className="text-base text-gray-700 pr-2 flex flex-row items-center"
                                 >
-                                <span>{publisher.name}</span>
+                                  <span>{publisher.name}</span>
+                                </div>
+                            </div>              
+                            ))}   
+                        </div>
+
+                        <div className="flex items-center px-1 py-1 overflow-hidden">
+                            <span className="font-semibold items-center">Developed by:&nbsp;</span>
+                            {gameDetail?.developers?.map((developer)=> (
+                            <div className="flex flex-row items-center">
+                                <div
+                                className="text-base text-gray-700 pr-2 flex flex-row items-center"
+                                >
+                                  <span>{developer.name}</span>
                                 </div>
                             </div>              
                             ))}   
@@ -169,14 +186,17 @@ const GameDetails = () => {
                             <span>by {blogCreator?.username}</span> 
                         </div> */}
                         <div>
+                            <a href={gameDetail.website} 
+                               target="_blank" rel="noopener noreferrer">
                             <img src={gameDetail.background_image}
                                 className="object-fill cursor-pointer rounded-lg h-auto w-full
                                 transition duration-300 transform shadow-md rounded-lg border-2
                                 hover:shadow-lg"
                             />
+                            </a>
                         </div>
 
-                        <div className="prose-lg mt-4">
+                        <div className="prose-lg text-justify prose-indigo mt-4">
                                 {(gameDetail.description_raw)}
                         </div>
                         
@@ -184,9 +204,10 @@ const GameDetails = () => {
                             <SliderWithThumbs screenshot={screenshot} />
                         </div>
 
-                        <a href={gameDetail.website}>
-                            {gameDetail.website}
-                        </a>  
+                        {/* <a href={gameDetail.website} 
+                         target="_blank" rel="noopener noreferrer">
+                            
+                        </a>   */}
                     </div>  
                 </div>
             </div>

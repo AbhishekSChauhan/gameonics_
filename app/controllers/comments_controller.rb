@@ -23,41 +23,45 @@ class CommentsController < ApplicationController
         # return if suspended(@current_user.can_comment_date)
 
         comment = @current_user.comments.new(content: params[:newComment],blog_id: params[:blog_id])
-
-        if comment.save
-            render json: {comment: comment,
-                         notice:"Comment successfully posted"}, status: :ok
-        else
-            errors = comment.errors.full_messages
-            render json: {error: errors}, status: 422
-        end       
         
+        # if authorized?
+            if comment.save
+                render json: {comment: comment,
+                            notice:"Comment successfully posted"}, status: :ok
+            else
+                errors = comment.errors.full_messages
+                render json: {error: errors}, status: 422
+            end  
+            # CommentMailer.new_comment(comment).deliver_now
+        # end
     end
 
     def update
-        # Only allow the owner of the post or an administrator to update the post
-        unless @blog.user == @current_user || @current_user.admin_level >= 1
-            render json:{errors: 'Not authorized to perform this task'}, status:401
-        end
-
-        if @comment.update(comment_params)
-            render json:{comment: @comment,
-                        comments: Blog.author_comments_json(@blog.comments)}
-        else
-            errors = comment.errors.full_messages.to_sentence
-            render json: {error: errors}, status: 422
-        end
+        if authorized?
+            if @comment.update(comment_params)
+                render status: :ok, 
+                        json: {comment: @comment, notice:"Comment successfully updated"}
+            else
+                render status: :unprocessable_entity,
+                    json: {errors: @comment.errors.full_messages.to_sentence}
+            end 
+            else
+            handle_unauthorized
+        end         
     end
 
     def destroy
-        # Only allow the owner of the post or an administrator to update the post
-        unless @blog.user == @current_user || @current_user.admin_level >= 1
-            render json:{errors: 'Not authorized to perform this task'}, status:401
+        if authorized?
+            if @comment.destroy
+                render status: :ok, 
+                json: {notice:'Comment deleted'}
+            else
+                render status: :unprocessable_entity,
+                json: {errors: @comment.errors.full_messages.to_sentence}
+            end 
+            else
+            handle_unauthorized
         end
-        
-        comment.destroy
-        render status: :ok, json: {message:'Comment deleted',
-                                   comments: Blog.author_comments_json(@blog.comments)}
     end
 
     private
@@ -83,5 +87,17 @@ class CommentsController < ApplicationController
         false
     end
 
+    # Only allow the owner of the post or an administrator to destroy/update the post
+
+    def authorized?
+        # @blog.user == @current_user ||  @current_user.admin_level >= 1
+        @comment.user_id == current_user.id || current_user.admin_level >= 1
+    end
+
+    def handle_unauthorized
+        unless authorized?
+        render json:{notice:"Not authorized to perform this task"}, status:401
+        end
+    end
 
 end

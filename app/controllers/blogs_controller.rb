@@ -2,7 +2,7 @@ class BlogsController < ApplicationController
   before_action :set_blog, only: [:show, :update, :destroy, :lock_blog, :pin_blog]
   before_action :authorized_user?, except: [:index, :show, :lock_blog, :pin_blog]
   before_action :authorized_admin?, only: [:lock_blog,:pin_blog]
-  # impressionist actions: [:show], unique: [:session_hash]
+  # impressionist :actions=>[:show,:index]
 
   def index
     @blogs =  Blog.published
@@ -17,14 +17,16 @@ class BlogsController < ApplicationController
     #                             }
     #                           )
     #                   }
-    data = @blogs.as_json(include: {user: {only: [:username,:id]}})
+    data = @blogs.as_json(include: {user: {only: [:username,:id, :avatar]}})
+    # data = @blogs.includes(:user, :tags)
+    tags = @blogs.as_json(include: :tags)
     if params[:tag]
       tagged_blogs = Blog.tagged_with(params[:tag])
       pub_tagged_blogs = tagged_blogs.where(published:true)
       data = pub_tagged_blogs.as_json(include: {user: {only: :username}})
       render json: { blogs: data, tag_count: data.length} , status: :ok
     else
-      render json: { blogs: data } , status: :ok
+      render json: { blogs: data, tags: tags } , status: :ok
     end
 
 
@@ -33,14 +35,27 @@ class BlogsController < ApplicationController
 
   def show   
       # comments = @blog.comments.select("comments.*, users.username").joins(:user).by_created_at
-      impressionist(@blog)
-      # views = @blog.impressionist_count(:filter=>:session_hash) 
+      unique_views = impressionist(@blog)
+      # unique_views = @blog.impressionist_count(:filter=>:session_hash)
+      # views =  @blog.impressionist_count(:filter=>:all)
+
+      @blogs =  Blog.published
+      @related_blogs = @blogs.joins(:tags).where(tags: {id: @blog.tag_ids})
+      data = @related_blogs.as_json(include: {user: {only: [:username,:id, :avatar]}})
+
       render json: { blog: @blog,
                      tags: @blog.tags,
-                     blog_creator: @blog.user.username, 
+                    #  tagged: tagged,
+                    #  blog_tags: blog_tags,
+                    #  relative_posts: @relative_posts,
+                      related_blogs: data,
+                     blog_creator: @blog.user.username,
+                     blog_creator_img: @blog.user.avatar,
+                     blog_user: @blog.user,
                      bookmark: @blog.bookmarks, 
                      likes: @blog.likes,
-                    #  views: views
+                    #  views: views,
+                     unique_views: unique_views,
                     }, 
                     status: :ok
   end
@@ -162,7 +177,7 @@ class BlogsController < ApplicationController
 
   def authorized?
     # @blog.user == @current_user ||  @current_user.admin_level >= 1
-     @blog.user_id == current_user.id || current_user.admin_level >= 1
+     @blog.user_id == @current_user.id || @current_user.admin_level >= 1
   end
 
   def handle_unauthorized

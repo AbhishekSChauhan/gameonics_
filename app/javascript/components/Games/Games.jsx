@@ -1,18 +1,18 @@
 import React, { useEffect, useReducer, useState } from 'react'
 import axios from 'axios'
-import { gamesDetailsURL, newGamesURL, popularGamesURL, searchedGamesURL, searchGameURL, upcomingGamesURL } from "../apis/RawgApi";
+import { gamesDetailsURL, trendingGamesURL, popularGamesURL, searchedGamesURL, searchGameURL, upcomingGamesURL } from "../apis/RawgApi";
 import GamesSlider from '../Games/GamesSlider';
 import PageLoader from '../PageLoader'
 import SearchGames from './SearchGames';
 const Games = () => {    
     const [loading, setLoading] = useState(false)
     const [upcomingGames, setUpcomingGames] = useState([])
-    const [newGames, setNewGames] = useState([])
+    const [trendingGames, setTrendingGames] = useState([])
     const [popularGames, setPopularGames] = useState([])
     const [searchGames, setSearchGames] = useState([])
     useEffect(()=>{
         getUpcomingGames();
-        getNewGames();
+        getTrendingGames();
         getPopularGames();
         // getSearchedGames();
     },[])
@@ -29,11 +29,11 @@ const Games = () => {
         }
     }
 
-    const getNewGames = async (event) => {
+    const getTrendingGames = async (event) => {
         setLoading(true)
         try {
-            const response = await axios.get(newGamesURL())
-            setNewGames(response.data.results)
+            const response = await axios.get(trendingGamesURL())
+            setTrendingGames(response.data.results)
             setLoading(false)
         } catch (error) {
             console.log(error)
@@ -62,10 +62,13 @@ const Games = () => {
 
     return (
         <div>
+            <div>
+                <SearchGames />
+            </div>
             <div>                
                 <GamesSlider 
                     upcomingGames={upcomingGames}
-                    newGames={newGames}
+                    trendingGames={trendingGames}
                     popularGames={popularGames}                    
                 />
             </div>
@@ -73,14 +76,12 @@ const Games = () => {
             {/* {upcomingGames.map((game)=>(
                 <GamesSlider 
                     upcomingGames={upcomingGames}
-                    newGames={newGames}
+                    TrendingGames={TrendingGames}
                     popularGames={popularGames}
                     gameDetails={gameDetails}
                 />
             ))}            */}
-            <div>
-                <SearchGames />
-            </div>
+            
         </div>
     )
 }

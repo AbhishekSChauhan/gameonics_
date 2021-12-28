@@ -18,14 +18,16 @@ class User < ApplicationRecord
 
     validates :username, length: {in: 4..32 }, presence: true,
                         uniqueness: {case_sensitive: true}
+
     
-    VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i.freeze
+    VALID_EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i.freeze
+    
 
     validates :email, length:{maximum:255}, presence: true,
                         uniqueness: {case_sensitive: false},
-                        format:{with: VALID_EMAIL_REGEX }
+                        format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }
     
-    validates :password, length: {minimum: 8}, presence: true, on: :create
+    validates :password, length: {minimum: 8}, presence: true
     validates :password, confirmation: true
 
 
@@ -41,20 +43,5 @@ class User < ApplicationRecord
         offset = (Time.zone.now - password_reset_date).round
         offset / 1.hours >= 1 # Token expires after 1 hour
     end
-
-    # #Follows a user
-    # def follow(other_user)
-    #     given_follows.create(followed_id: other_user.id)
-    # end
-
-    # #Unfollows a user
-    # def unfollow(other_user)
-    #     given_follows.find_by(followed_id: other_user.id).destroy
-    # end
-
-    # # Returns true if the current user is following the other user.
-    # def following?(other_user)
-    #     following.include?(other_user)
-    # end
 
 end

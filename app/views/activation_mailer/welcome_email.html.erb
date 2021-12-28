@@ -12,7 +12,10 @@
     <p>
     
       To activate your account and login to the site, just follow this link: 
-      <%= link_to "Confirmation link", activate_account_url(:id => @user.id, :activation_key => @user.activation_key) %>
+      <%= link_to "Confirmation link", 
+      activate_account_url(:activation_key => @user.activation_key , :id => @user.id)
+      # url_for({ user_id: @user.id, activation_key: @user.activation_key, controller: "registrations",action: "activate_account", only_path: false }) 
+      %>
     </p>
     <p>Thanks for joining and have a great day!</p>
   </body>
