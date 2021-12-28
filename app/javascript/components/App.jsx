@@ -109,7 +109,7 @@ const App = () => {
 
   return ( 
       <Router>
-        <div>
+        <React.StrictMode>
           <HelmetMetaData />
           <Toaster position="top-right" reverseOrder={false}/>          
           <NavBar handleLogout={handleLogout} user={user} setUser={setUser} />
@@ -227,7 +227,7 @@ const App = () => {
 
           </Switch>
           {/* <Footer /> */}
-        </div>      
+        </React.StrictMode>      
       </Router>
  
   );

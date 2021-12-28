@@ -239,7 +239,7 @@ const ProfilePage = ({
       <div>
         <div className="max-w-7xl flex items-center overflow-hidden h-auto flex-wrap mx-auto ">
           <div className="w-full rounded-lg shadow-2xl bg-white lg:mx-0">
-            <div className="p-4 md:p-14 text-center">
+            <div className="p-2 text-center">
               <div>
                 <div className="relative">
                   <div className="flex justify-center">
@@ -247,7 +247,7 @@ const ProfilePage = ({
                     <div>
                       <button className="hover:text-blue-700 flex flex-row text-blue-500 
                           text-lg absolute cursor-pointer left-20 -bottom-28 ml-5 sm:-bottom-28
-                          sm:left-56  md:ml-5 md:-bottom-28 md:left-80 lg:-bottom-28 lg:left-96 lg:ml-28"
+                          sm:left-56  md:ml-5 md:-bottom-28 md:left-80 lg:-bottom-28 lg:left-96 lg:ml-40"
                           onClick={showEditOptions}>
                           <MdEdit onClick={showEditOptions}
                           className="px-1 pt-1 text-2xl justify-centert text-center"
@@ -321,7 +321,7 @@ const ProfilePage = ({
                 />                
               </div>
 
-              <div className="mt-3 pb-16 lg:pb-0 w-4/5 lg:w-full mx-auto flex flex-wrap items-center justify-center cursor-pointer">
+              <div className="mt-3 pb-1 lg:pb-0 w-4/5 lg:w-full mx-auto flex flex-wrap items-center justify-center cursor-pointer">
                 <div onClick={showFollowers} className="flex flex-col pr-5">
                   <div>Followers</div>
                   <h2>{receivedFollows?.length}</h2>                  
@@ -339,7 +339,7 @@ const ProfilePage = ({
               </div>              
 
 
-              <div className="mt-3 pb-4 lg:pb-0 w-4/5 lg:w-full mx-auto flex flex-wrap items-center justify-center">
+              <div className="mt-3 pb-1 lg:pb-0 w-4/5 lg:w-full mx-auto flex flex-wrap items-center justify-center">
                  <div className="flex flex-row items-center justify-center my-5 overflow-hidden">
                         {(selectedUser.facebook_url === "") ? (
                             null
@@ -366,7 +366,7 @@ const ProfilePage = ({
               </div>
 
               {(user.username === username) ? (
-                <div className="flex items-center justify-center my-5 overflow-hidden">
+                <div className="flex items-center justify-center my-2 pb-3 overflow-hidden">
                   <Link to="/blog/create">
                     <button className="inline-flex justify-center px-4 py-2 text-sm font-medium
                             text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200

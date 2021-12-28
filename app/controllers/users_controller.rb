@@ -66,7 +66,7 @@ class UsersController < ApplicationController
     
 
     def update_profile
-        if @current_user
+        if current_user
             current_user.update_attribute(:username, params[:username])
             current_user.update_attribute(:bio, params[:bio])
             current_user.update_attribute(:facebook_url,params[:facebook_url])

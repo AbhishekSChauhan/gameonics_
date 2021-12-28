@@ -10,20 +10,9 @@ class ApplicationController < ActionController::Base
         render json: { notice: 'Please log in to continue' }, status: :unauthorized unless current_user
     end
 
-    def authorized_admin?
-        # if current_user.admin_level.positive?
-        #     render json: { notice: 'Welcome ' }
-        # else
-        #     render json: { notice: 'Insufficient Administrative Rights' }
-        # end
+    def authorized_admin?        
         authorized_user?
         render json: { errors: 'Insufficient Administrative Rights' }, status: 401 unless current_user.admin_level.positive?
-    end
-
-    def logged_in
-       
-        !current_user.nil?
-        
     end
 
     private

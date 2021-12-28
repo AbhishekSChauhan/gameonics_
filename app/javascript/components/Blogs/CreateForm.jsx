@@ -152,14 +152,19 @@ export default function CreateForm(
                                     value={body}        
                                 />
 
-                                <Tags 
-                                    tags={tags}
-                                    setTags={setTags}
-                                    isKeyReleased={isKeyReleased}
-                                    setIsKeyReleased={setIsKeyReleased}
-                                    input={input}
-                                    setInput={setInput}
-                                />
+                                {(type=="create")?(
+                                    <Tags 
+                                        tags={tags}
+                                        setTags={setTags}
+                                        isKeyReleased={isKeyReleased}
+                                        setIsKeyReleased={setIsKeyReleased}
+                                        input={input}
+                                        setInput={setInput}
+                                    />
+                                ):(
+                                    null
+                                )}
+                                
 
                                 <Button
                                     type="submit" disabled={loading}
