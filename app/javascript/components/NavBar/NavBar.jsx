@@ -3,22 +3,16 @@ import {Link} from 'react-router-dom'
 import { IoMdLogIn } from "react-icons/io";
 import { AiOutlineMenuFold,AiOutlineMenuUnfold } from "react-icons/ai";
 import NavItems from './NavItems';
-import {AuthContext} from '../App'
-import axios from 'axios'
-import toast, { Toaster } from "react-hot-toast";
 import Dropdown from './Dropdown';
 
-function NavBar({handleLogout}) {
-    const UserDetails = React.useContext(AuthContext)
-    console.log("UserDetails = ",UserDetails)
+function NavBar({handleLogout,user}) {
 
-    
     return (
         
         <header className="bg-white">
             <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
                 <div className="relative flex items-center justify-between h-16">
-                    <div>
+                    <div className="mx-auto ml-8">
                         <Link to="/" className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                             <div className="flex-shrink-0 flex">
                                 <span className="font-bold font-serif text-gray-700 ">Gameonics</span>
@@ -29,18 +23,17 @@ function NavBar({handleLogout}) {
                         </Link>
                     </div>
                     
-                    <div>
+                    <div className="mx-auto">
                         <NavItems />
                     </div>
 
-                    <div>
+                    <div className="mx-auto mr-10">
                         {
-                         UserDetails.logged_in ? 
-                            (
-                                <Dropdown handleLogout={handleLogout}/>
-                            // <div>Welcome {UserDetails.logged_in}
-                            //     <button onClick={handleLogout}>Logout</button>
-                            // </div>
+                         user.logged_in ? 
+                            (   
+                                <div>
+                                    <Dropdown handleLogout={handleLogout} user={user}/>
+                                </div>
                             ) : (
                             <Link to="/login"
                                 className="absolute inset-y-0 right-0 flex items-center sm:static sm:inset-auto sm:ml-4 sm:pr-0 ">

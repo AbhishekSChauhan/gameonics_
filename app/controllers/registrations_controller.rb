@@ -18,17 +18,8 @@ class RegistrationsController < ApplicationController
     #         }
     #     else
     #         errors = user.errors.full_messages.to_sentence
-    #         username_error = user.errors.full_messages_for(:username)
-    #         email_error = user.errors.full_messages_for(:email)
-    #         password_error = user.errors.full_messages_for(:password)
-    #         passwordConf_error = user.errors.full_messages_for(:password_confirmation)
 
-    #         render json: { username_error:username_error,
-    #                         email_error:email_error,
-    #                         password_error:password_error,
-    #                         passwordConf_error: passwordConf_error,
-    #                         error:errors
-    #                         },
+    #         render json: { error:errors},
     #             status: 500
     #     end
     # end
@@ -40,13 +31,15 @@ class RegistrationsController < ApplicationController
         if user.update_attribute(:activation_key, new_activation_key)
             ActivationMailer.with(user: user).welcome_email.deliver_now
         end
+        session[:user_id] = user.id
         render json:{notice: 'Account registered but activation required'},
                         status: :created
+        
     end
 
 
     def activate_account
-        url = 'http://localhost:3000/login'
+        url = 'https://shielded-spire-91772.herokuapp.com/'
         user = User.find(params[:id])
 
         if user.activation_key == params[:activation_key]

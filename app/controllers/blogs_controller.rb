@@ -1,5 +1,4 @@
 class BlogsController < ApplicationController
-
   before_action :set_blog, only: [:show, :update, :destroy, :lock_blog, :pin_blog]
   before_action :authorized_user?, except: [:index, :show, :lock_blog, :pin_blog]
   before_action :authorized_admin?, only: [:lock_blog,:pin_blog]
@@ -7,73 +6,68 @@ class BlogsController < ApplicationController
 
   def index
     #only current users blogs
-    # @blogs = Blog.where(user_id: @current_user.id)
-    # @blogs = @current_user.blogs.all    
+    # @current_user_blogs = Blog.where(user_id: @current_user.id)
+    # @current_user_blogs = @current_user.blogs.all    
 
     #All users blogs
     @blogs = Blog.all
-    # @users = User.all 
-    render json: { blogs: @blogs },status: :ok
-
+    all_users = User.blogs 
+    render json: { blogs: @blogs, all_users:all_users },status: :ok
   end
 
   def show
-    # blog_creator = User.find(@blog.user_id)
-    # comments = @blog.comments.select("comments.*, users.username").joins(:user).by_created_at
-    comments = Blog.author_comments_json(@blog.comments)
-    render status: :ok, json: { blog: @blog.blog_json, blog_creator: @blog.user, comments: comments }
+    comments = @blog.comments.select("comments.*, users.username").joins(:user).by_created_at
+    render status: :ok, json: { blog: @blog, blog_creator: @blog.user, comments: comments }
   end
 
   def create
-    return if suspended(@current_user.can_blog_date)
+    # return if suspended(@current_user.can_post_date)
 
-    # @blog = Blog.new(blog_params.merge(user_id: @current_user.id))
-    @blog = @current_user.blogs.build(blog_params)
+    @blog = Blog.new(blog_params.merge(user_id: @current_user.id))
     
-    # if authorized?
+    if authorized?
       if @blog.save
         render status: :ok,
-              json: {blog: @blog.blog_json , notice: "Blog Successfully created"}
+              json: {blog: @blog , notice: "Blog Successfully created"}
       else
         errors = @blog.errors.full_messages.to_sentence
         render status: :unprocessable_entity, json: {error:errors}
       end
-    # end
+    end
   end
 
   def update
-    # Only allow the owner of the post or an administrator to update the post
-    unless @blog.user == @current_user || @current_user.admin_level >= 1
-      render json:{errors: 'Not authorized to perform this task'}, status:401
-    end
-
-    if @blog.update(blog_params)
-      render status: :ok, 
-                json: {blog: @blog.blog_json, notice:"Blog successfully updated"}
+    if authorized?
+      if @blog.update(blog_params)
+        render status: :ok, 
+                  json: {blog: @blog, notice:"Blog successfully updated"}
+      else
+        render status: :unprocessable_entity,
+            json: {errors: @blog.errors.full_messages.to_sentence}
+      end 
     else
-      render status: :unprocessable_entity,
-          json: {errors: @blog.errors.full_messages.to_sentence}
-    end
+      handle_unauthorized
+    end 
   end
 
-  def destroy
-    # Only allow the owner of the post or an administrator to destroy the post
-    unless @blog.user == @current_user || @current_user.admin_level >= 1
-      render json:{errors: 'Not authorized to perform this task'}, status:401
-    end
+  def destroy 
 
-    if @blog.destroy
-      render status: :ok, 
-        json: {notice:'Blog deleted'}
+    if authorized?
+      if @blog.destroy
+        render status: :ok, 
+          json: {notice:'Blog deleted'}
+      else
+        render status: :unprocessable_entity,
+          json: {errors: @blog.errors.full_messages.to_sentence}
+      end 
     else
-      render status: :unprocessable_entity,
-        json: {errors: @blog.errors.full_messages.to_sentence}
-    end  
+      handle_unauthorized
+    end    
   end
 
   def pin_blog
     if @blog.update(is_pinned: !@blog.is_pinned)
-      render json:{blog: @blog.blog_json}
+      render json:{blog: @blog}
     else
       render json: {errors: @blog.errors.full_messages.to_sentence}, status: 401
     end
@@ -81,7 +75,7 @@ class BlogsController < ApplicationController
 
   def lock_blog
     if @blog.update(is_locked: !@blog.is_locked)
-      render json:{blog:@blog.blog_json}
+      render json:{blog:@blog}
     else
       render json:{errors:@blog.errors.full_messages.to_sentence}, status: 401
     end
@@ -111,15 +105,19 @@ class BlogsController < ApplicationController
     false
   end
 
-  # def authorized?
-  #   #  @blog.user == @current_user
-  #    @blog.user_id == @current_user.id
-  # end
 
-  # def handle_unauthorized
-  #   unless authorized?
-  #     render json:{notice:"Not authorized to perform this task"}, status:401
-  #   end
-  # end
+  # Only allow the owner of the post or an administrator to destroy/update the post
+
+  def authorized?
+
+    #  @blog.user == @current_user ||  @current_user.admin_level >= 1
+     @blog.user_id == @current_user.id || @current_user.admin_level >= 1
+  end
+
+  def handle_unauthorized
+    unless authorized?
+      render json:{notice:"Not authorized to perform this task"}, status:401
+    end
+  end
   
 end

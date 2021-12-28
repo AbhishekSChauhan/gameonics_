@@ -11,7 +11,7 @@ const userImage = async(id, user) => {
 }
 
 const fetchUser = async(id)=> {
-    axios.get(`/users/${id}`)
+    return axios.get(`/users/${id}`)
 }
 
 const usersApi = {

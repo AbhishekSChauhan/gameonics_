@@ -25,22 +25,51 @@ class SessionsController < ApplicationController
         user=User.where(username: params[:user][:username].downcase)
                  .or(User.where(email: params[:user][:email].downcase))
                  .first
-        render json:{errors: 'Incorrect login credentials'}, status: 401 unless user
+                
+        if user
+            authenticate_user(user)
+        else
+            render json:{errors: 'Incorrect login credentials'}, status: 401 
+        end        
+    end
 
-        authenticate_user(user)
+    def authenticate_user(user)
+        if user.try(:authenticate, params[:user][:password])
+            # return unless activated(user)s
+            session[:user_id] = user.id
+
+            new_token = generate_token(user.id)
+            if user.update_attribute(:token, new_token)
+                user.update_attribute(:token_date, DateTime.now)
+                session[:token] = new_token
+                render json:{user: user_status(user),
+                            status: :created,
+                            notice: "Login Successful",
+                            current_user:@current_user
+                           }
+            else
+                render json:{errors: user.errors.full_messages.to_sentence}, status: 401
+            end
+        else
+            render json:{ errors:'Incorrect login credentials'}, status: 401
+        end
     end
 
     def destroy
-        @current_user.update(token: nil)
+        # @current_user.update(token: nil)
+        reset_session
         render json:{user:{logged_in:false}, notice:'Logout Successful'}, status:200
     end
 
-
     def logged_in
+        # render json:{
+        #         # logged_in: true,
+        #         user: user_status(@current_user)
+        #     }
         if @current_user
             render json:{
                 logged_in: true,
-                user: user_status(@current_user)
+                user: @current_user
             }
         else
             render json: {
@@ -57,33 +86,21 @@ class SessionsController < ApplicationController
 
     def user_status(user)
         user_with_status = user.as_json(only: %i[id username
-                                        is_activated token admin_level can_blog_date
+                                        is_activated token admin_level can_post_date
                                         can_comment_date])
         user_with_status['logged_in'] = true
-        user_with_status['can_post'] = DateTime.now > user.can_blog_date
-        user_with_status['can_comment'] = DateTime.now > user.can_comment_date
+        user_with_status['profile_image'] = nil
+        # user_with_status['can_post'] = DateTime.now > user.can_post_date
+        # user_with_status['can_comment'] = DateTime.now > user.can_comment_date
+        unless user.profile_image_attachment.nil?
+            user_with_status['profile_image'] = url_for(user.profile_image)
+        end
 
         user_with_status
+
     end
 
-    def authenticate_user(user)
-        if user.try(:authenticate, params[:user][:password])
-            return unless activated(user)
-
-            new_token = generate_token(user.id)
-            if user.update_attribute(:token, new_token)
-                user.update_attribute(:token_date, DateTime.now)
-                render json:{user: user_status(user),
-                            status: :created,
-                            notice: "Login Successful"
-                           }
-            else
-                render json:{errors: user.errors.full_messages.to_sentence}, status: 401
-            end
-        else
-            render json:{ errors:'Incorrect login credentials'}, status: 401
-        end
-    end
+    
 
     def activated(user)
         unless user.is_activated

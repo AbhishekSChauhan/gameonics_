@@ -8,6 +8,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 export default function Blogs({history}) {
     const [blogs, setBlogs] = useState([]);
+    const [allUsers, setAllUsers] = useState([])
     const [loading, setLoading] = useState(true)
     const source = axios.CancelToken.source()
 
@@ -15,7 +16,7 @@ export default function Blogs({history}) {
         try {
             const response = await blogsApi.list({cancelToken:source.token})
             setBlogs(response.data.blogs)
-
+            setAllUsers(response.data.all_users)
             console.log("Blogs",response)
             setLoading(false)
         } catch (error) {
@@ -95,6 +96,7 @@ export default function Blogs({history}) {
             <div>
             <BlogsDashboard 
                 data={blogs}
+                users={allUsers}
                 showBlog={showBlog}
                 updateBlog={updateBlog}
                 destroyBlog={destroyBlog}

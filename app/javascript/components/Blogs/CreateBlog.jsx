@@ -2,13 +2,11 @@ import axios from 'axios'
 import Trix from "trix";
 import React, { useState } from "react";
 import { ReactTrixRTEInput } from "react-trix-rte";
-import { AuthContext } from '../App'
 import PageLoader from '../PageLoader'
 import CreateForm from './CreateForm'
 import toast from "react-hot-toast";
 
 export default function CreateBlog({history}) {
-    const UserDetails = React.useContext(AuthContext)
     const [title, setTitle] = useState("")
     const [body, setBody] = useState("")
     const [loading, setLoading] = useState(false)

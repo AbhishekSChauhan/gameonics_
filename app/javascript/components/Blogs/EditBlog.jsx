@@ -1,13 +1,11 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
-import { AuthContext } from '../App'
 import PageLoader from '../PageLoader'
 import CreateForm from './CreateForm'
 import toast, { Toaster } from "react-hot-toast";
 import { useParams } from 'react-router-dom'
 
 export default function EditBlog({history}) {
-    const UserDetails = React.useContext(AuthContext)
     const {id} = useParams()
     const [title, setTitle] = useState("")
     const [body, setBody] = useState("")

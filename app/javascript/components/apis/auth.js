@@ -9,9 +9,10 @@ const logout = () => {
     let login
     if(sessionStorage.getItem('user')){
         login = JSON.parse(sessionStorage.getItem('user'));
+        // console.log('login token', login.token)
     }
     sessionStorage.clear();
-    return axios.delete("/logout",null, { headers: { Authorization: login.token } });
+    return axios.delete("/logout");
 }
 
 const signup = (payload) => {
@@ -28,10 +29,7 @@ const resetPassword = (payload) => {
 }
 
 const loggedIn = () => {
-    if(sessionStorage.getItem('user')){
-        const user = JSON.parse(sessionStorage.getItem('user'))
-        return axios.get("/logged_in",{ headers: { Authorization: user.token } })
-    }
+    axios.get("/logged_in",{ headers: { Authorization: user.token } })
 }
 
 const authApi = {
