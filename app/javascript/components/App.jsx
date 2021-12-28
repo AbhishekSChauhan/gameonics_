@@ -69,7 +69,7 @@ const App = () => {
       }
       
     }catch(error) {
-      console.log("signup error",error)
+      // console.log("signup error",error)
       setLoading(false)
       if(error){
           toast.error(
@@ -90,11 +90,11 @@ const App = () => {
       const response = await authApi.loggedIn()
       // const response = await axios.get("/logged_in",{ withCredentials: true })
       setUser(response.data.user)
-      console.log('logged in status', response)
+      // console.log('logged in status', response)
       setLoading(false)
     }catch(error) {
       setLoading(false)
-      console.log('check login error',error)
+      // console.log('check login error',error)
     } 
   }
   
@@ -109,7 +109,7 @@ const App = () => {
 
   return ( 
       <Router>
-        <React.StrictMode>
+        {/* <React.StrictMode> */}
           <HelmetMetaData />
           <Toaster position="top-right" reverseOrder={false}/>          
           <NavBar handleLogout={handleLogout} user={user} setUser={setUser} />
@@ -227,7 +227,7 @@ const App = () => {
 
           </Switch>
           {/* <Footer /> */}
-        </React.StrictMode>      
+        {/* </React.StrictMode>       */}
       </Router>
  
   );
