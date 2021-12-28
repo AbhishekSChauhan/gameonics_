@@ -6,15 +6,30 @@ import toast, { Toaster } from "react-hot-toast";
 import { useParams } from 'react-router-dom'
 
 export default function EditBlog({history}) {
-    const {id} = useParams()
+    const {slug} = useParams()
     const [title, setTitle] = useState("")
     const [body, setBody] = useState("")
     const [loading, setLoading] = useState(false)
+    const [isPublished, setIsPublished] = useState(false)
+    const [tags, setTags] = useState([])
+    const [input, setInput] = useState('')
+    const [isKeyReleased, setIsKeyReleased] = useState(false);
+    
+    const handleBodyChange = (value)=>{
+        setBody(value)
+        console.log(value)
+    }
+
+    const handleTitleChange = (value)=>{
+        setTitle(value)
+        console.log(value)
+    }
 
     const handleSubmit = async (event) => {
         event.preventDefault()
+        setLoading(true)
         try{
-            const response = await axios.put(`/blogs/${id}`,{
+            const response = await axios.put(`/blogs/${slug}`,{
                 blog:{
                     title,
                     body,
@@ -27,7 +42,16 @@ export default function EditBlog({history}) {
                     toast.success(response.data.notice)                    
                 }
             }
-            history.push("/blogs")
+            console.log('edit submit response',response)
+            // if(isPublished){
+            //     history.push('/blogs')
+            // } else {
+                history.push({
+                    pathname: `/blog/${response.data.blog.slug}/preview`,
+                    state: {slug: response.data.blog.slug
+                        }
+                });
+            // }            
         } catch(error){
             console.log("blog not saved error",error)
             setLoading(false)
@@ -47,10 +71,17 @@ export default function EditBlog({history}) {
     }
 
     const fetchBlogDetails = async () => {
+        setLoading(true)
         try {
-          const response = await axios.get(`/blogs/${id}`)
+          const response = await axios.get(`/blogs/${slug}`)
           setTitle(response.data.blog.title);
           setBody(response.data.blog.body)
+          if(response.data.blog.published === true){
+              setIsPublished(true)
+          }
+          console.log('edit fetch response',response)
+
+          setLoading(false)
         } catch (error) {
           console.log('fetchBlog Error',error)
         }
@@ -73,11 +104,20 @@ export default function EditBlog({history}) {
         <div>
             <CreateForm 
                 type="update"
+                title={title}
+                body={body}
                 setTitle={setTitle}
-                setBody={setBody}
                 loading={loading}
-                handleSubmit={handleSubmit}            
-            />            
+                handleSubmit={handleSubmit} 
+                handleTitleChange = {handleTitleChange} 
+                handleBodyChange = {handleBodyChange} 
+                tags={tags}
+                setTags={setTags}
+                isKeyReleased={isKeyReleased}
+                setIsKeyReleased={setIsKeyReleased}
+                input={input}
+                setInput={setInput}
+            />           
         </div>
     )
 }

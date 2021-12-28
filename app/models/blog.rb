@@ -1,51 +1,73 @@
 class Blog < ApplicationRecord
   default_scope {order(created_at: :desc)}
 
-  belongs_to :user
-  has_many :comments, dependent: :destroy
+  after_validation :set_slug, only: [:create, :update]
 
-  validates :title, length: { in: 3..48 }, presence: true
-  validates :body, length: { in: 5..100000000 }, presence: true
+
+  belongs_to :user, counter_cache: true
+  has_many :comments, dependent: :destroy
+  has_many :likes, as: :likeable, dependent: :destroy
+  has_many :bookmarks, dependent: :destroy
+  has_many :taggings
+  has_many :tags, through: :taggings, dependent: :destroy
+
+  validates :title, length: { in: 4..1000 }, presence: true
+  # validates :slug, uniqueness: true
+  validates :body, length: { in: 100..100000000 }, presence: true
+  validates :image, presence: true
+
   scope :pins, -> { where('is_pinned = true')}
   scope :not_pinned, ->{ where('is_pinned = false')}
 
-  def blog_json
-    new_blog = attributes
-    new_blog['author'] = user.username
+  is_impressionable :counter_cache => true, :column_name => :views_count, :unique => :session_hash
+ 
+  
+  scope :published, -> do
+    where(published: true)
   end
 
-  # def self.author_blogs_json(blogs_array)
-  #   returned_blogs = []
-  #   blogs_array.each do |blog|
-  #     new_blog['title'] = blog.title.slice(0..30)
-  #     new_blog['body'] = blog.body.slice(0..32)
-  #     new_blog['author'] = blog.user.username
-  #   end
-  # end
+  scope :most_recently_published, -> do
+    where(published_at: :desc)
+  end
 
-  # def self.author_comments_json(comments_array)
-  #   returned_comments=[]
-  #   comments_array.each do |comment|
-  #     new_comment = comment.as_json
-  #     new_comment['author'] = comment.user.username
-  #     new_comment['server_date'] = DateTime.now
-  #     returned_comments.push(new_comment)
-  #   end
-  #   returned_comments
-  # end
-
-  # def self.pins_json
-  #   results = []
-  #   all_pins = Blog.pins
-  #   all_pins.each do |p|
-  #     new_blog = p.blog_json
-  #   end
-  #   results
-  # end
-  
   def created_at
     time = attributes['created_at']
     time.strftime('%a, %-d %b %Y')
   end
+
+  def updated_at
+    time = attributes['updated_at']
+    time.strftime('%a, %-d %b %Y')
+  end
+
+  def self.tagged_with(name)
+    Tag.find_by!(name: name).blogs
+  end
+
+  def self.tag_counts
+    Tag.select('tags.*, count(taggings.tag_id) as count').joins(:taggings).group('taggings.tag_id')
+  end
+
+  def tag_list
+    tags.map(&:name).join(', ')
+  end
+
+  def tag_list=(names)
+    self.tags = names.split(',').map do |n|
+      Tag.where(name: n.strip).first_or_create!
+    end
+  end
+
+  def self.impressions
+    Impression.where(impressionable_type: "Blog")
+  end
+  
+  def to_param
+    "#{id}-#{slug}"
+  end
+
+  def set_slug
+    self.slug = title.to_s.parameterize
+  end 
 
 end

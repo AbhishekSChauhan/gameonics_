@@ -35,7 +35,7 @@ class SessionsController < ApplicationController
 
     def authenticate_user(user)
         if user.try(:authenticate, params[:user][:password])
-            # return unless activated(user)s
+            # return unless activated(user)
             session[:user_id] = user.id
 
             new_token = generate_token(user.id)
@@ -45,7 +45,7 @@ class SessionsController < ApplicationController
                 render json:{user: user_status(user),
                             status: :created,
                             notice: "Login Successful",
-                            current_user:@current_user
+                            # current_user:@current_user
                            }
             else
                 render json:{errors: user.errors.full_messages.to_sentence}, status: 401
@@ -62,14 +62,11 @@ class SessionsController < ApplicationController
     end
 
     def logged_in
-        # render json:{
-        #         # logged_in: true,
-        #         user: user_status(@current_user)
-        #     }
+        # !current_user.nil?
         if @current_user
             render json:{
                 logged_in: true,
-                user: @current_user
+                user: user_status(@current_user)
             }
         else
             render json: {
@@ -78,14 +75,9 @@ class SessionsController < ApplicationController
         end
     end
 
-    def logout
-        reset_session
-        render json: {status:200, logged_out: true,
-                notice:"Logout Successful"}
-    end
 
     def user_status(user)
-        user_with_status = user.as_json(only: %i[id username
+        user_with_status = user.as_json(only: %i[id username bio email
                                         is_activated token admin_level can_post_date
                                         can_comment_date])
         user_with_status['logged_in'] = true
@@ -98,9 +90,7 @@ class SessionsController < ApplicationController
 
         user_with_status
 
-    end
-
-    
+    end    
 
     def activated(user)
         unless user.is_activated

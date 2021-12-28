@@ -20,11 +20,29 @@ import ProfilePage from "./ProfilePage/ProfilePage";
 import authApi from "./apis/auth";
 import GameDetails from "./Games/GameDetails";
 import { Redirect } from "react-router-dom";
+import axios from "axios";
+
+import PreviewBlog from "./Blogs/PreviewBlog";
+import TaggedBlogs from "./Tags/TaggedBlogs";
+import ProtectedRoute from "./ProtectedRoute";
+import Unauthorized from './Unauthorized'
+import Followers from "./Follow/Followers";
+import Following from "./Follow/Following";
+import ActivationPage from "./Auth/ActivationPage";
+import HelmetMetaData from "./Share/HelmetMetaData";
+import Subscribe from "./Subscribe.jsx/Subscribe";
+import BlogStats from "./Stats/Stats";
+import EditProfile from "./ProfilePage/EditProfile";
+import Games from "./Games/Games";
+
 
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({logged_in: false})
   const [selectedBlog, setSelectedBlog] = useState(null)
+
+  const url = 'https://morning-anchorage-15866.herokuapp.com'
+
 
   useEffect(() => {
     checkLoginStatus();
@@ -51,7 +69,7 @@ const App = () => {
       }
       
     }catch(error) {
-      console.log("signup error",error)
+      // console.log("signup error",error)
       setLoading(false)
       if(error){
           toast.error(
@@ -67,23 +85,17 @@ const App = () => {
   }
 
   const checkLoginStatus = async() => {
-    setLoading(true)
-    if(sessionStorage.getItem('user')){
-      const retrievedUser = JSON.parse(sessionStorage.getItem('user'))
-      console.log('Session Storage user',retrievedUser)
-      setUser(retrievedUser)
-    }
-    // try{
-    //   // const response = await authApi.logged_in()
-    //   const response = await axios.get("/logged_in",{ headers: { Authorization: user.token } })
-    //   setUser(response.data.user)
-    //   console.log('logged in status', response)
-    //   if(sessionStorage.getItem('user')){
-    //     setLoading(false);
-    //   }
-    // }catch(error) {
-    //   setLoading(false)
-    // } 
+    setLoading(true)    
+    try{
+      const response = await authApi.loggedIn()
+      // const response = await axios.get("/logged_in",{ withCredentials: true })
+      setUser(response.data.user)
+      // console.log('logged in status', response)
+      setLoading(false)
+    }catch(error) {
+      setLoading(false)
+      // console.log('check login error',error)
+    } 
   }
   
 
@@ -97,9 +109,10 @@ const App = () => {
 
   return ( 
       <Router>
-        <div>
+        {/* <React.StrictMode> */}
+          <HelmetMetaData />
           <Toaster position="top-right" reverseOrder={false}/>          
-          <NavBar handleLogout={handleLogout} user={user} />
+          <NavBar handleLogout={handleLogout} user={user} setUser={setUser} />
           <ScrollToTop />
           <Switch>
             <Route exact path="/" component={Home}/>
@@ -113,29 +126,108 @@ const App = () => {
             <Route exact path="/signup"  component={Signup} />
             <Route exact path="/forgot_password" component={ForgotPassword} />
             <Route exact path="/reset_password" component={ResetPassword} />
-            <Route exact path="/blogs" component={Blogs} /> 
-            <Route exact path="/blogs/:id/show" component={ShowBlog} />  
-            <Route exact path="/blogs/:id/edit" component={EditBlog} />   
-            <Route exact path="/blogs/create" component={CreateBlog} />
-            <Route exact path="/blogs/:id/comments" component={Comments} />
-            <Route exact path="/users/:id" 
+
+            <Route exact path="/subscribe" component={Subscribe} />
+
+            <Route exact path="/blog" 
+              render={(props)=>(
+                <Blogs 
+                  user = {user} 
+                />
+              )}
+            /> 
+            <Route exact path="/blog/:slug/show" 
+              render={(props)=>(
+                <ShowBlog 
+                  user = {user} 
+                />
+              )}
+            /> 
+            <Route exact path="/blog/:slug/preview" component={PreviewBlog} /> 
+            <Route exact path="/blog/:slug/update" component={EditBlog} />   
+            <Route exact path="/blog/create" component={CreateBlog}/>
+            <Route exact path="/blog/:id/comments" component={Comments} />          
+            <Route exact path="/user/:username" 
               render={(props)=>(
                 <ProfilePage 
                   user = {user} 
                   handleLogout={handleLogout} 
                   handleBlogSelect={handleBlogSelect}
                 />
-              )} />
+              )} 
+            />
+
+            <Route exact path="/user/:username/edit" 
+              render={(props)=>(
+                <EditProfile 
+                  user = {user} 
+                />
+              )} 
+            />
+            
+            <Route exact path="/user/:username/followers" 
+              render={(props)=>(
+                <Followers 
+                  user = {user} 
+                />
+              )} 
+            />
+
+            <Route exact path="/user/:username/following" 
+              render={(props)=>(
+                <Following 
+                  user = {user} 
+                />
+              )} 
+            />
+            
+            <Route exact path="/games" component = {Games} />
+            <Route exact path="/games/:slug" component = {GameDetails} />
+
+            {/* <Route path="/games" 
+              render={(props)=>(
+                <Games 
+                />
+              )}
+            />
+
             <Route path="/games/:slug" 
               render={(props)=>(
                 <GameDetails 
                 />
               )}
+            /> */}
+
+            <Route exact path="/:slug/stats" 
+              render={(props)=>(
+                <BlogStats 
+                  user={user} 
+                />
+              )}
+            />
+
+            <Route exact path="/stats" component = {BlogStats} />
+            <Route exact path="/tags/:tag" component={TaggedBlogs} />
+
+            <ProtectedRoute              
+              path="/admin"
+              redirectRoute="/login"
+              user={user}
+              component={Home}
+            />
+            <Route exact path='/unauthorized' component={Unauthorized} />
+              
+            <Route exact path="/activate_account" 
+              render={(props)=>(
+                <ActivationPage 
+                  user = {user} 
+                />
+              )} 
             />
 
           </Switch>
           {/* <Footer /> */}
-        </div>      
+        {/* </React.StrictMode>       */}
       </Router>
  
   );

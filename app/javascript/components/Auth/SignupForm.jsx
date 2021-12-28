@@ -5,23 +5,23 @@ import { VscAccount } from "react-icons/vsc";
 import { MdLockOutline } from "react-icons/md";
 import Input from "../Input";
 import Button from "../Button";
+import Loader from "./Loader";
 const SignupForm = ({
   handleSubmit,
   setUsername,
   setEmail,
   setPassword,
   setPasswordConfirmation,
+  loading
 }) => {
   
   return (
 
-<div className="flex flex-col md:flex-row h-screen items-center">
+<div className="flex flex-col md:flex-row mt-10 sm:mt-12 lg:mt-20 items-centerr">
 
-<div className="bg-indigo-600 hidden lg:block w-full md:w-1/2 xl:w-2/3 h-screen">
-  <img src="https://source.unsplash.com/random" alt="" className="w-full h-full object-cover" />
-</div>
 
-<div className="bg-white w-full md:max-w-md lg:max-w-full md:mx-auto md:mx-0 md:w-1/2 xl:w-1/3 h-screen px-6 lg:px-16 xl:px-12
+
+<div className="bg-white w-full md:max-w-md lg:max-w-full md:mx-auto md:mx-0 md:w-1/2 xl:w-1/3 px-6 lg:px-16 xl:px-12
       flex items-center justify-center">
 
   <div className="w-full h-100">
@@ -84,8 +84,17 @@ const SignupForm = ({
         </div>
       </div>
 
-      <button type="submit" className="w-full block bg-indigo-500 hover:bg-indigo-400 focus:bg-indigo-400 text-white font-semibold rounded-lg
-            px-4 py-3 mt-6">Register
+      
+      <button type="submit" disabled={loading}
+         className="w-full block bg-indigo-500 hover:bg-indigo-400 focus:bg-indigo-400 
+          text-white font-semibold rounded-lg px-4 py-3 mt-6">
+          {loading ? (
+            <div>
+              <Loader />
+            </div>
+          ) : (
+            <span>Register</span>
+          )}
       </button>
     </form>
   </div>

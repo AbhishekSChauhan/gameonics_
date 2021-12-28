@@ -21,7 +21,7 @@ const SliderWithThumbs = ({screenshot}) => {
         slidesToShow: 3,
         slidesToScroll: 1,
         dots: true,
-        // centerMode: true,
+        centerMode: true,
         swipeToSlide: true,
         focusOnSelect: true,
       };

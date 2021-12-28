@@ -1,0 +1,20 @@
+default: &default
+  subscription_worker:
+    cron: "0 * * * *"
+    class: "SubscriptionWorker"
+    queue: "default"
+
+development:
+  subscription_worker:
+    cron: "5 * * * *"
+    class: "SubscriptionWorker"
+    queue: "default"
+
+test:
+  <<: *default
+
+staging:
+  <<: *default
+
+production:
+  <<: *default

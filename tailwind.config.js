@@ -5,7 +5,10 @@ module.exports = {
     extend: {},
   },
   variants: {
-    extend: {},
+    extend: {
+      backgroundColor: ['group-focus'],
+      display: ["group-hover"],
+    },
   },
   plugins: [
     require('@tailwindcss/typography'),

@@ -1,4 +1,3 @@
-import Trix from "trix";
 import React,{useMemo,useRef} from 'react'
 import Input from '../Input'
 import Button from '../Button'
@@ -6,18 +5,26 @@ import 'react-quill/dist/quill.snow.css'
 import 'react-quill/dist/quill.bubble.css'
 import ReactQuill,{Quill} from "react-quill";
 import ImageResize from 'quill-image-resize-module-react';
-import Editor from "./Editor";
+import toast from 'react-hot-toast'
+import Tags from '../Tags/Tags'
 
 Quill.register('modules/imageResize', ImageResize);
 
 export default function CreateForm(
     {
-    type="create",
-    setTitle,setBody,loading,handleSubmit,setImage,
-    handleChange,body
+    type="create",loading,handleSubmit,setImage,tags,setTags,
+    handleTitleChange,handleBodyChange,body,title,setTitle,input,setInput,setIsKeyReleased,isKeyReleased
     }) {
 
     const editorRef = useRef(null);
+
+    const titlemodules = useMemo(()=>({
+        toolbar:{
+            container: [  
+                [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
+              ]
+        }
+    }));
 
     const modules = useMemo(()=>({
         imageResize: {
@@ -27,12 +34,12 @@ export default function CreateForm(
         toolbar:{
             container: [  
                 [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
-                [{size: []}],
+                // [{size: []}],
                 ['bold', 'italic', 'underline', 'strike', 'blockquote'],
                 [{'list': 'ordered'}, {'list': 'bullet'}, 
                 {'indent': '-1'}, {'indent': '+1'}],
                 ['link', 'image', 'video'],
-                ['clean']  
+                // ['clean']  
               ],
 
               handlers: {
@@ -49,6 +56,10 @@ export default function CreateForm(
         'bold', 'italic', 'underline', 'strike', 'blockquote',
         'list', 'bullet', 'indent',
         'link', 'image', 'video'
+    ]
+
+    const titleformats= [
+        'header', 'font'
     ]
     
     const imageHandler = () => {
@@ -74,7 +85,7 @@ export default function CreateForm(
         const fd = new FormData();
         fd.append("upload", file);  
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", "/blogs", true);
+        xhr.open("POST", "/blog", true);
 
         xhr.upload.onprogress = function(event){
             const progress =event.loaded / event.total * 100;
@@ -100,30 +111,74 @@ export default function CreateForm(
     }
 
     return (
-        <form className="max-w-full prose" onSubmit={handleSubmit}>
-            <Input
-                label="Title"
-                placeholder="Blog Title (Max 50 Characters Allowed)"
-                onChange={e => setTitle(e.target.value)}
-            />
+        <div className="bg-white">
+            <div className="max-w-6xl mx-auto mt-10">
+                <div className="relative max-w-4xl mx-auto items-center justify-between">
+                    <div className="flex flex-col ">
+                        <div className="w-full ">
+                            <form className="max-w-full" onSubmit={handleSubmit}>
+                                {/* <ReactQuill 
+                                    theme="bubble"
+                                    placeholder="Your amazing title" 
+                                    modules={titlemodules}
+                                    formats={titleformats}
+                                    forwardedRef={editorRef}
+                                    onChange={handleTitleChange}
+                                    value={title}        
+                                /> */}
+
+                                <input
+                                    required={true}
+                                    value={title}
+                                    // onKeyDown={onKeyDown}
+                                    // onKeyUp={onKeyUp}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                    // onChange={(e) => setInput(e.target.value)}
+                                    placeholder="Enter Title"
+                                    className="block w-full px-3 py-2 placeholder-gray-400
+                                    transition duration-150 ease-in-out border
+                                    border-gray-300 rounded-md appearance-none
+                                    focus:outline-none focus:shadow-outline-blue
+                                    focus:border-blue-300 sm:text-sm sm:leading-5"
+                                />
+                            
+                                <ReactQuill 
+                                    theme="snow"
+                                    placeholder="Write your story" 
+                                    modules={modules}
+                                    formats={formats}
+                                    forwardedRef={editorRef}
+                                    onChange={handleBodyChange}
+                                    value={body}        
+                                />
+
+                                {(type=="create")?(
+                                    <Tags 
+                                        tags={tags}
+                                        setTags={setTags}
+                                        isKeyReleased={isKeyReleased}
+                                        setIsKeyReleased={setIsKeyReleased}
+                                        input={input}
+                                        setInput={setInput}
+                                    />
+                                ):(
+                                    null
+                                )}
+                                
+
+                                <Button
+                                    type="submit" disabled={loading}
+                                    buttonText={type === "create" ? "Preview and Save as Draft" : "Update and Preview"}
+                                    loading={loading}
+                                />
+                                
+                            </form>          
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        </div>
+
         
-            <ReactQuill 
-                theme="bubble"
-                placeholder="Write your story" 
-                modules={modules}
-                formats={formats}
-                forwardedRef={editorRef}
-                onChange={handleChange}
-                value={body}        
-            />
-
-            {/* <Editor body={body} /> */}
-
-            <Button
-                type="submit"
-                buttonText={type === "create" ? "Create Blog" : "Update Blog"}
-                loading={loading}
-            />
-        </form>
     )
 }
